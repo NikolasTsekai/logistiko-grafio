@@ -1,0 +1,855 @@
+<!doctype html>
+<html lang="el">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>e-logistiki | Λογιστικές & Φοροτεχνικές Υπηρεσίες</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              navy: "#1a2e5a",
+              navyDark: "#111e3d",
+              accent: "#3b5fc0",
+              accentLight: "#4e72d6",
+            },
+            fontFamily: {
+              sans: ["Segoe UI", "Arial", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* ---------- HERO ---------- */
+      #hero {
+        background:
+          linear-gradient(
+            135deg,
+            rgba(17, 30, 61, 0.92) 0%,
+            rgba(26, 46, 90, 0.85) 100%
+          ),
+          url("https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1600&q=80")
+            center/cover no-repeat;
+        min-height: 88vh;
+      }
+
+      /* ---------- WATERMARK TEXT ---------- */
+      .watermark {
+        position: absolute;
+        font-size: 8rem;
+        font-weight: 900;
+        letter-spacing: 0.1em;
+        color: rgba(0, 0, 0, 0.04);
+        user-select: none;
+        pointer-events: none;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        white-space: nowrap;
+      }
+
+      /* ---------- STAT COUNTER ---------- */
+      .stat-number {
+        transition: all 0.4s ease;
+      }
+
+      /* ---------- NAV LINK HOVER ---------- */
+      .nav-link {
+        position: relative;
+      }
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #3b5fc0;
+        transition: width 0.25s ease;
+      }
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      /* ---------- CARD HOVER ---------- */
+      .service-card {
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease;
+      }
+      .service-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+      }
+
+      /* ---------- NEWS CARD ---------- */
+      .news-card {
+        display: flex;
+        flex-direction: column;
+        border-radius: 0 !important;
+        height: 100%;
+      }
+      .news-img-wrap {
+        aspect-ratio: 16/9;
+        overflow: hidden;
+        position: relative;
+        background: #e5e7eb;
+        display: block;
+      }
+      .news-img-wrap::after {
+        content: "No Image Available";
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #9ca3af;
+        font-size: 0.75rem;
+        pointer-events: none;
+      }
+      .news-img-wrap img {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.4s ease;
+        border-radius: 0 !important;
+      }
+      .news-img-wrap img.broken {
+        display: none;
+      }
+      .news-card:hover .news-img-wrap img {
+        transform: scale(1.04);
+      }
+      #news-grid {
+        align-items: stretch;
+      }
+
+      /* ---------- HERO CAROUSEL FADE ---------- */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .hero-animate {
+        animation: fadeIn 0.8s ease forwards;
+      }
+    </style>
+  </head>
+  <body class="font-sans text-gray-700 bg-white">
+    <!-- ============================================================
+     TOP BAR
+============================================================ -->
+    <div class="bg-navy text-white text-sm py-2 px-4">
+      <div
+        class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2"
+      >
+        <!-- left -->
+        <div class="flex items-center gap-5 flex-wrap">
+          <a
+            href="tel:+302493401010"
+            class="flex items-center gap-1.5 hover:text-blue-300 transition-colors"
+          >
+            <i class="fa-solid fa-phone text-xs opacity-75"></i>
+            Τ. 2493401010 | Κ. 6972194107
+          </a>
+          <a
+            href="mailto:annapipili2107@gmail.com"
+            class="flex items-center gap-1.5 hover:text-blue-300 transition-colors"
+          >
+            <i class="fa-regular fa-envelope text-xs opacity-75"></i>
+            annapipili2107@gmail.com
+          </a>
+        </div>
+        <!-- right -->
+        <div class="flex items-center gap-3">
+          <span
+            class="text-xs opacity-75 border border-white/30 px-2 py-0.5 cursor-pointer hover:border-white/70 transition-colors"
+          >
+            Ελληνικά ▾
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+     NAVBAR
+============================================================ -->
+    <nav
+      id="navbar"
+      class="bg-white shadow-sm sticky top-0 z-50 transition-all duration-300"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between"
+      >
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-2">
+          <img src="logo.png" alt="ΠΙΠΙΛΗ ΑΝΝΑ" class="h-20 w-auto" />
+        </a>
+
+        <!-- Desktop links -->
+        <ul
+          class="hidden lg:flex items-center gap-6 text-sm font-medium text-gray-600"
+        >
+          <li>
+            <a href="#" class="nav-link hover:text-navy transition-colors"
+              >Αρχική</a
+            >
+          </li>
+          <li>
+            <a
+              href="services.html"
+              class="nav-link hover:text-navy transition-colors"
+              >Υπηρεσίες</a
+            >
+          </li>
+          <li>
+            <a
+              href="blog.html"
+              class="nav-link hover:text-navy transition-colors"
+              >Blog</a
+            >
+          </li>
+          <li>
+            <a
+              href="contact.html"
+              class="nav-link hover:text-navy transition-colors"
+              >Επικοινωνία</a
+            >
+          </li>
+        </ul>
+
+        <!-- CTA + hamburger -->
+        <div class="flex items-center gap-3">
+          <!-- Hamburger -->
+          <button
+            id="menuBtn"
+            class="lg:hidden p-2 text-gray-600 hover:text-navy transition-colors"
+            aria-label="Menu"
+          >
+            <i class="fas fa-bars text-lg"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile menu -->
+      <div
+        id="mobileMenu"
+        class="hidden lg:hidden border-t border-gray-100 bg-white px-4 py-3"
+      >
+        <ul class="flex flex-col gap-3 text-sm font-medium text-gray-600">
+          <li>
+            <a href="#" class="block hover:text-navy transition-colors py-1"
+              >Αρχική</a
+            >
+          </li>
+          <li>
+            <a
+              href="services.html"
+              class="block hover:text-navy transition-colors py-1"
+              >Υπηρεσίες</a
+            >
+          </li>
+          <li>
+            <a
+              href="blog.html"
+              class="block hover:text-navy transition-colors py-1"
+              >Blog</a
+            >
+          </li>
+          <li>
+            <a
+              href="contact.html"
+              class="block hover:text-navy transition-colors py-1"
+              >Επικοινωνία</a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- ============================================================
+     HERO
+============================================================ -->
+    <section id="hero" class="relative flex items-center">
+      <div class="max-w-7xl mx-auto px-6 py-24 hero-animate">
+        <img
+          src="Gemini_Generated_Image_lmuzqclmuzqclmuz__1_-removebg-preview.png"
+          alt="ΠΙΠΙΛΗ ΑΝΝΑ"
+          class="h-64 w-auto mb-6"
+        />
+        <p
+          class="text-white/80 text-lg md:text-xl max-w-xl mb-10 leading-relaxed"
+        >
+          Παροχή εξειδικευμένων λογιστικών, φοροτεχνικών και συμβουλευτικών
+          υπηρεσιών.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a
+            href="#about"
+            class="border-2 border-white text-white px-8 py-3 font-semibold hover:bg-white hover:text-navy transition-all duration-200"
+          >
+            Προφίλ
+          </a>
+          <a
+            href="#contact"
+            class="bg-navy border-2 border-navy text-white px-8 py-3 font-semibold hover:bg-navyDark hover:border-navyDark transition-all duration-200"
+          >
+            Επικοινωνία
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+     ABOUT (SPLIT LAYOUT)
+============================================================ -->
+    <section id="about" class="py-20 bg-white">
+      <div class="max-w-7xl mx-auto px-6">
+        <div
+          class="grid lg:grid-cols-2 gap-0 items-stretch overflow-hidden shadow-xl"
+        >
+          <!-- Image -->
+          <div class="relative min-h-72 lg:min-h-0">
+            <img
+              src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&q=80"
+              alt="Γραφεία e-logistiki"
+              class="w-full h-full object-cover"
+            />
+          </div>
+
+          <!-- Text -->
+          <div class="bg-white p-10 flex flex-col justify-center">
+            <p
+              class="text-base tracking-[.25em] text-gray-600 uppercase mb-3 font-bold"
+            >
+              Γνωρίστε μας
+            </p>
+            <p class="text-gray-600 text-sm leading-relaxed mb-3">
+              Το <strong>λογιστίκο γραφείο</strong> ιδρύθηκε το 2025, με έδρα
+              την Ελασσόνα.
+            </p>
+            <p class="text-gray-600 text-sm leading-relaxed mb-3">
+              Δραστηριοποιείται στην παροχή εξειδικευμένων
+              <span class="text-accent font-medium">λογιστικών</span> και
+              <span class="text-accent font-medium"
+                >φοροτεχνικών υπηρεσιών</span
+              >
+              σε επιχειρήσεις και ιδιώτες.
+            </p>
+            <p class="text-gray-600 text-sm leading-relaxed mb-8">
+              Το ανθρώπινο δυναμικό της συνεχώς από συνεργάτες εξειδικευμένους
+              σε θέματα λογιστικής, φορολογικής και εργατικής νομοθεσίας,
+              συμβάλλει στην ανάπτυξη σχέσεων εμπιστοσύνης.
+            </p>
+          </div>
+        </div>
+
+        <!-- Professional competence blue box -->
+        <div
+          class="relative mt-0 overflow-hidden shadow-xl bg-accent"
+          style="min-height: 340px"
+        >
+          <!-- Photo fills the right side -->
+          <div class="absolute inset-y-0 right-0 w-1/2">
+            <img
+              src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=900&q=80"
+              alt="Επαγγελματική επάρκεια"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <!-- Blue chevron pointing right -->
+          <div
+            class="relative z-10 bg-accent text-white p-10"
+            style="width: 50%"
+          >
+            <h3 class="text-xl font-bold mb-5">
+              Αξιοπιστία &amp; Εμπιστευτικότητα Λογιστικών Υπηρεσιών
+            </h3>
+            <ul class="space-y-2 text-sm text-blue-100">
+              <li class="flex items-start gap-2">
+                <i class="fas fa-check text-white mt-0.5 shrink-0"></i>
+                Διακριτική και ασφαλής διαχείριση οικονομικών στοιχείων
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fas fa-check text-white mt-0.5 shrink-0"></i>
+                Απόλυτη τήρηση φορολογικών υποχρεώσεων και κανονισμών
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fas fa-check text-white mt-0.5 shrink-0"></i>
+                Έγκαιρη υποβολή δηλώσεων και υποχρεώσεων
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fas fa-check text-white mt-0.5 shrink-0"></i>
+                Υπεύθυνη καθοδήγηση σε φορολογικά και λογιστικά θέματα
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fas fa-check text-white mt-0.5 shrink-0"></i>
+                Άμεση εξυπηρέτηση και προσωπική επαφή με τον πελάτη
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fas fa-check text-white mt-0.5 shrink-0"></i>
+                Στόχος: η σωστή οικονομική οργάνωση και σταθερότητα της
+                επιχείρησης
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+     QUOTE + NEWS
+============================================================ -->
+    <section id="news" class="py-20 bg-gray-50 relative overflow-hidden">
+      <span class="watermark">NEWS</span>
+      <div class="max-w-7xl mx-auto px-6 relative z-10">
+        <!-- Quote block -->
+        <div class="flex flex-col items-center text-center mb-20">
+          <div class="text-6xl text-accent font-black leading-none mb-4">"</div>
+          <p
+            class="text-2xl font-semibold text-gray-800 leading-relaxed mb-6 max-w-2xl"
+          >
+            Στόχος είναι να κάνουμε την καθημερινότητα ιδιωτών και επιχειρήσεων
+            ευκολότερη και απλούστερη.
+          </p>
+        </div>
+
+        <!-- News grid -->
+        <div class="text-center mb-12">
+          <h2 class="text-4xl font-bold text-gray-800 mb-2">Τελευταία Νέα</h2>
+          <p class="text-xs tracking-[.3em] text-gray-400 uppercase">
+            Διαβάστε όλες τις δημοσιεύσεις μας
+          </p>
+        </div>
+
+        <div id="news-grid" class="grid md:grid-cols-3 gap-8">
+          <!-- skeleton placeholders while loading -->
+          <div
+            class="bg-white overflow-hidden shadow-sm border border-gray-100 animate-pulse"
+          >
+            <div style="aspect-ratio: 16/9" class="bg-gray-200"></div>
+            <div class="p-6 space-y-3">
+              <div class="h-3 bg-gray-200 w-1/3"></div>
+              <div class="h-4 bg-gray-200"></div>
+              <div class="h-4 bg-gray-200 w-5/6"></div>
+            </div>
+          </div>
+          <div
+            class="bg-white overflow-hidden shadow-sm border border-gray-100 animate-pulse"
+          >
+            <div style="aspect-ratio: 16/9" class="bg-gray-200"></div>
+            <div class="p-6 space-y-3">
+              <div class="h-3 bg-gray-200 w-1/3"></div>
+              <div class="h-4 bg-gray-200"></div>
+              <div class="h-4 bg-gray-200 w-5/6"></div>
+            </div>
+          </div>
+          <div
+            class="bg-white overflow-hidden shadow-sm border border-gray-100 animate-pulse"
+          >
+            <div style="aspect-ratio: 16/9" class="bg-gray-200"></div>
+            <div class="p-6 space-y-3">
+              <div class="h-3 bg-gray-200 w-1/3"></div>
+              <div class="h-4 bg-gray-200"></div>
+              <div class="h-4 bg-gray-200 w-5/6"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+     CONTACT
+============================================================ -->
+    <section id="contact" class="py-20 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-6">
+        <h2 class="text-3xl md:text-4xl font-bold text-navy text-center mb-12">
+          Επικοινωνήστε μαζί μας
+        </h2>
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+          <!-- Left text -->
+          <div>
+            <h2 class="text-3xl font-bold text-accent mb-4">
+              Θέλετε να σας καλέσουμε;
+            </h2>
+            <div class="w-12 h-1 bg-accent mb-6"></div>
+            <p class="text-gray-600 leading-relaxed">
+              Παρακαλούμε συμπληρώστε τη φόρμα.
+            </p>
+          </div>
+
+          <!-- Form -->
+          <form
+            id="contactForm"
+            class="grid grid-cols-2 gap-4"
+            onsubmit="handleFormSubmit(event)"
+          >
+            <input
+              type="text"
+              placeholder="Ονοματεπώνυμο*"
+              required
+              class="border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 placeholder-gray-400"
+            />
+            <input
+              type="email"
+              placeholder="Email*"
+              required
+              class="border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 placeholder-gray-400"
+            />
+            <input
+              type="text"
+              placeholder="Θέμα*"
+              required
+              class="border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 placeholder-gray-400"
+            />
+            <input
+              type="tel"
+              placeholder="Τηλέφωνο"
+              class="border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 placeholder-gray-400"
+            />
+            <textarea
+              placeholder="Μήνυμα*"
+              required
+              rows="5"
+              class="col-span-2 border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 placeholder-gray-400 resize-none"
+            ></textarea>
+            <div class="col-span-2">
+              <button
+                type="submit"
+                class="bg-navy text-white font-semibold px-8 py-3 hover:bg-navyDark transition-colors text-sm"
+              >
+                Αποστολή
+              </button>
+              <p id="formSuccess" class="hidden text-green-600 text-sm mt-3">
+                <i class="fas fa-check-circle mr-1"></i> Το μήνυμά σας εστάλη
+                επιτυχώς!
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+     FOOTER
+============================================================ -->
+    <footer class="bg-navyDark text-gray-400 pt-16 pb-6">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="grid md:grid-cols-3 gap-12 mb-12">
+          <!-- Contact info -->
+          <div>
+            <p class="flex items-start gap-2 text-xs mb-2">
+              <i class="fas fa-location-dot shrink-0 text-accent mt-0.5"></i>
+              Π.ΖΗΔΡΟΥ 3, ΕΛΑΣΣΟΝΑ<br />ΤΚ. 40200
+            </p>
+            <p class="flex items-center gap-2 text-xs mb-1.5">
+              <i class="fas fa-phone shrink-0 text-accent"></i>
+              <a
+                href="tel:+302493401010"
+                class="hover:text-white transition-colors"
+                >24930401010</a
+              >
+            </p>
+            <p class="flex items-center gap-2 text-xs mb-1.5">
+              <i class="fas fa-phone shrink-0 text-accent"></i>
+              <a
+                href="tel:+306972194107"
+                class="hover:text-white transition-colors"
+                >6972194107</a
+              >
+            </p>
+            <p class="flex items-center gap-2 text-xs">
+              <i class="fas fa-envelope shrink-0 text-accent"></i>
+              <a
+                href="mailto:annapipili2107@gmail.com"
+                class="hover:text-white transition-colors"
+                >annapipili2107@gmail.com</a
+              >
+            </p>
+            <p class="flex items-start gap-2 text-xs mt-2">
+              <i class="fas fa-clock shrink-0 text-accent mt-0.5"></i>
+              <span
+                >Δευ-Τετ-Παρ 9:00-14:00 &amp; 17:30-20:30<br />Τρι-Πεμ
+                9:00-16:00</span
+              >
+            </p>
+          </div>
+
+          <!-- Recent news -->
+          <div>
+            <div
+              class="text-white font-bold text-sm tracking-widest mb-4 uppercase"
+            >
+              Τελευταία Νέα
+            </div>
+            <ul id="footerNews" class="space-y-4 text-xs">
+              <li>
+                <div
+                  class="h-3 bg-gray-700 rounded w-3/4 mb-1 animate-pulse"
+                ></div>
+                <div
+                  class="h-2.5 bg-gray-800 rounded w-1/3 animate-pulse"
+                ></div>
+              </li>
+              <li>
+                <div
+                  class="h-3 bg-gray-700 rounded w-full mb-1 animate-pulse"
+                ></div>
+                <div
+                  class="h-2.5 bg-gray-800 rounded w-1/3 animate-pulse"
+                ></div>
+              </li>
+              <li>
+                <div
+                  class="h-3 bg-gray-700 rounded w-2/3 mb-1 animate-pulse"
+                ></div>
+                <div
+                  class="h-2.5 bg-gray-800 rounded w-1/3 animate-pulse"
+                ></div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Quick links -->
+          <div>
+            <div
+              class="text-white font-bold text-sm tracking-widest mb-4 uppercase"
+            >
+              Χρήσιμα
+            </div>
+            <ul class="space-y-2 text-xs">
+              <li>
+                <a
+                  href="index.html"
+                  class="hover:text-white transition-colors flex items-center gap-2"
+                  ><i class="fas fa-arrow-right text-[10px]"></i> Αρχική</a
+                >
+              </li>
+              <li>
+                <a
+                  href="services.html"
+                  class="hover:text-white transition-colors flex items-center gap-2"
+                  ><i class="fas fa-arrow-right text-[10px]"></i> Υπηρεσίες</a
+                >
+              </li>
+              <li>
+                <a
+                  href="blog.html"
+                  class="hover:text-white transition-colors flex items-center gap-2"
+                  ><i class="fas fa-arrow-right text-[10px]"></i> Blog</a
+                >
+              </li>
+              <li>
+                <a
+                  href="contact.html"
+                  class="hover:text-white transition-colors flex items-center gap-2"
+                  ><i class="fas fa-arrow-right text-[10px]"></i> Επικοινωνία</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div
+          class="border-t border-gray-700/50 pt-6 flex flex-wrap justify-between items-center gap-4 text-xs text-gray-600"
+        >
+          <div class="flex gap-4">
+            <a href="#" class="hover:text-gray-400 transition-colors"
+              >Πολιτική Απορρήτου</a
+            >
+            <a href="#" class="hover:text-gray-400 transition-colors"
+              >Όροι Χρήσης</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+    <script>
+      /* ---- Mobile menu toggle ---- */
+      const menuBtn = document.getElementById("menuBtn");
+      const mobileMenu = document.getElementById("mobileMenu");
+      menuBtn.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+      });
+
+      /* ---- Navbar scroll shadow ---- */
+      const navbar = document.getElementById("navbar");
+      window.addEventListener("scroll", () => {
+        navbar.classList.toggle("shadow-md", window.scrollY > 10);
+      });
+
+      /* ---- Stat counter animation ---- */
+      function animateCounter(el, target, duration = 1800) {
+        let start = 0;
+        const step = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += step;
+          if (start >= target) {
+            el.textContent = target;
+            clearInterval(timer);
+          } else {
+            el.textContent = Math.floor(start);
+          }
+        }, 16);
+      }
+
+      const statsSection = document.querySelector("#stat1")?.closest("section");
+      if (statsSection) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            if (entries[0].isIntersecting) {
+              animateCounter(document.getElementById("stat1"), 11);
+              animateCounter(document.getElementById("stat2"), 30);
+              animateCounter(document.getElementById("stat3"), 130);
+              observer.disconnect();
+            }
+          },
+          { threshold: 0.4 },
+        );
+        observer.observe(statsSection);
+      }
+
+      /* ---- Contact form ---- */
+      function handleFormSubmit(e) {
+        e.preventDefault();
+        const form = document.getElementById("contactForm");
+        const success = document.getElementById("formSuccess");
+        success.classList.remove("hidden");
+        form.reset();
+        setTimeout(() => success.classList.add("hidden"), 5000);
+      }
+    </script>
+
+    <!-- ── Safety net: if module never runs (CDN fail / ad-blocker), clear skeletons after 8s -->
+    <script>
+      var _newsSafetyNet = setTimeout(function () {
+        var g = document.getElementById("news-grid");
+        if (g && g.querySelector(".animate-pulse")) {
+          g.innerHTML =
+            '<p class="col-span-3 text-center text-gray-400 text-sm py-8">Αδυναμία φόρτωσης. <a href="" class="underline">Ανανεώστε</a>.</p>';
+        }
+      }, 8000);
+    </script>
+
+    <!-- ── Dynamic latest news from Supabase ───────────────────── -->
+    <script type="module">
+      let supabase;
+      try {
+        const { createClient } =
+          await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
+        supabase = createClient(
+          "https://smotabhgpokfvsxjdxmz.supabase.co",
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtb3RhYmhncG9rZnZzeGpkeG16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNjEyOTUsImV4cCI6MjA4OTYzNzI5NX0.jW1l6SwtCqQCm4OnWoO8KsIFDl9Pzy-KQ9TQvuPJ8Ew",
+        );
+      } catch {
+        // Module import failed — safety net script above will clear skeletons
+        return;
+      }
+
+      function formatDate(iso) {
+        if (!iso) return "";
+        return new Date(iso).toLocaleDateString("el-GR", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+      }
+
+      function newsCardHTML(post) {
+        const img = post.image_url || "";
+        const date = formatDate(post.published_at);
+        const title = post.title || "(χωρίς τίτλο)";
+        const cat = post.category || "";
+        const href = `post.html?id=${post.id}`;
+        return `
+      <article class="news-card bg-white overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+        <a href="${href}" class="news-img-wrap">
+          ${img ? `<img src="${img}" alt="${title}" loading="lazy" onerror="this.classList.add('broken')" />` : ""}
+        </a>
+        <div class="p-6 flex flex-col flex-1">
+          <p class="text-xs text-gray-400 mb-2">${date}</p>
+          <a href="${href}" class="font-semibold text-accent hover:underline text-sm leading-snug flex-1">${title}</a>
+          ${cat ? `<div class="mt-3"><span class="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5">${cat}</span></div>` : ""}
+        </div>
+      </article>`;
+      }
+
+      const grid = document.getElementById("news-grid");
+
+      try {
+        const { data, error } = await new Promise((resolve, reject) => {
+          const timer = setTimeout(() => reject(new Error("timeout")), 7000);
+          supabase
+            .from("posts")
+            .select("id, title, image_url, published_at, category")
+            .order("published_at", { ascending: false })
+            .limit(3)
+            .then((r) => {
+              clearTimeout(timer);
+              resolve(r);
+            })
+            .catch((e) => {
+              clearTimeout(timer);
+              reject(e);
+            });
+        });
+
+        clearTimeout(window._newsSafetyNet);
+
+        if (!error && data && data.length > 0) {
+          grid.innerHTML = data.map(newsCardHTML).join("");
+
+          document.getElementById("footerNews").innerHTML = data
+            .map((p) => {
+              const date = formatDate(p.published_at);
+              const title = p.title || "(χωρίς τίτλο)";
+              const href = `post.html?id=${p.id}`;
+              return `<li>
+          <a href="${href}" class="text-accent hover:text-white transition-colors font-medium leading-snug block">${title}</a>
+          <p class="text-gray-500 mt-0.5">${date}</p>
+        </li>`;
+            })
+            .join("");
+        } else {
+          grid.innerHTML =
+            '<p class="col-span-3 text-center text-gray-400 text-sm py-8">Δεν βρέθηκαν δημοσιεύσεις.</p>';
+        }
+      } catch {
+        clearTimeout(window._newsSafetyNet);
+        grid.innerHTML =
+          '<p class="col-span-3 text-center text-gray-400 text-sm py-8">Αδυναμία φόρτωσης. <a href="" class="underline">Ανανεώστε</a>.</p>';
+      }
+    </script>
+
+    <!-- UserWay Accessibility Widget -->
+    <script
+      src="https://cdn.userway.org/widget.js"
+      data-account="3zdxx06sOy"
+      data-position="2"
+      data-size="large"
+    ></script>
+  </body>
+</html>

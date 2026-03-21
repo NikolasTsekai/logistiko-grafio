@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Επικοινωνία | e-logistiki</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:        '#1a2e5a',
+            navyDark:    '#111e3d',
+            accent:      '#3b5fc0',
+            accentLight: '#4e72d6',
+          },
+          fontFamily: {
+            sans: ['Segoe UI', 'Arial', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+
+    /* NAV LINK UNDERLINE */
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 0; height: 2px;
+      background: #3b5fc0;
+      transition: width .25s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link.active::after { width: 100%; }
+
+    /* PAGE HERO */
+    #pageHero {
+      background: linear-gradient(135deg, rgba(17,30,61,0.88) 0%, rgba(26,46,90,0.80) 100%),
+                  url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&q=80') center/cover no-repeat;
+      min-height: 38vh;
+    }
+
+    /* SECTION HEADING UNDERLINE */
+    .section-heading::after {
+      content: '';
+      display: block;
+      width: 36px;
+      height: 2px;
+      background: #3b5fc0;
+      margin-top: 0.5rem;
+    }
+
+    /* FORM INPUTS */
+    .form-input:focus {
+      outline: none;
+      border-color: #3b5fc0;
+      box-shadow: 0 0 0 3px rgba(59,95,192,.15);
+    }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(24px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .fade-up { animation: fadeUp .7s ease forwards; }
+  </style>
+</head>
+<body class="font-sans text-gray-700 bg-white">
+
+<!-- ============================================================
+     TOP BAR
+============================================================ -->
+<div class="bg-navy text-white text-sm py-2 px-4">
+  <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+    <div class="flex items-center gap-5 flex-wrap">
+      <a href="tel:+302493401010" class="flex items-center gap-1.5 hover:text-blue-300 transition-colors">
+        <i class="fa-solid fa-phone text-xs opacity-75"></i>
+        Τ. 2493401010 | Κ. 6972194107
+      </a>
+      <a href="mailto:annapipili2107@gmail.com" class="flex items-center gap-1.5 hover:text-blue-300 transition-colors">
+        <i class="fa-regular fa-envelope text-xs opacity-75"></i>
+        annapipili2107@gmail.com
+      </a>
+    </div>
+    <div class="flex items-center gap-3">
+      <span class="text-xs opacity-75 border border-white/30 px-2 py-0.5 cursor-pointer hover:border-white/70 transition-colors">
+        Ελληνικά ▾
+      </span>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============================================================
+     NAVBAR
+============================================================ -->
+<nav id="navbar" class="bg-white shadow-sm sticky top-0 z-50 transition-all duration-300">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="index.html" class="flex items-center gap-2">
+      <img src="logo.png" alt="ΠΙΠΙΛΗ ΑΝΝΑ" class="h-20 w-auto" />
+      
+    </a>
+
+    <!-- Desktop links -->
+    <ul class="hidden lg:flex items-center gap-6 text-sm font-medium text-gray-600">
+      <li><a href="index.html"          class="nav-link hover:text-navy transition-colors">Αρχική</a></li>
+      <li><a href="services.html" class="nav-link hover:text-navy transition-colors">Υπηρεσίες</a></li>
+      <li><a href="blog.html"           class="nav-link hover:text-navy transition-colors">Blog</a></li>
+      <li><a href="contact.html"        class="nav-link active text-accent font-semibold">Επικοινωνία</a></li>
+    </ul>
+
+    <!-- CTA + hamburger -->
+    <div class="flex items-center gap-3">
+      <button id="menuBtn" class="lg:hidden p-2 text-gray-600 hover:text-navy transition-colors" aria-label="Menu">
+        <i class="fas fa-bars text-lg"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobileMenu" class="hidden lg:hidden border-t border-gray-100 bg-white px-4 py-3">
+    <ul class="flex flex-col gap-3 text-sm font-medium text-gray-600">
+      <li><a href="index.html"          class="block hover:text-navy transition-colors py-1">Αρχική</a></li>
+      <li><a href="services.html" class="block hover:text-navy transition-colors py-1">Υπηρεσίες</a></li>
+      <li><a href="blog.html"           class="block hover:text-navy transition-colors py-1">Blog</a></li>
+      <li><a href="contact.html"        class="block text-accent font-semibold py-1">Επικοινωνία</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============================================================
+     PAGE HERO
+============================================================ -->
+<section id="pageHero" class="flex items-center justify-center text-center">
+  <div class="fade-up py-20">
+    <p class="text-white/50 text-xs tracking-[.3em] uppercase mb-4">
+      <a href="index.html" class="hover:text-white/80 transition-colors">Αρχική</a>
+      <span class="mx-2">/</span>
+      Επικοινωνία
+    </p>
+    <h1 class="text-5xl md:text-6xl font-black text-white leading-tight">
+      Επικοινωνήστε μαζί μας
+    </h1>
+    <p class="text-white/60 text-xs tracking-[.3em] uppercase mt-4">Γνωρίστε τις υπηρεσίες μας</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     CONTACT SECTION
+============================================================ -->
+<section class="py-20 bg-gray-50">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="grid lg:grid-cols-5 gap-16">
+
+      <!-- LEFT: Contact Form (wider) -->
+      <div class="lg:col-span-3">
+        <h2 class="text-2xl font-bold text-gray-800 section-heading mb-6">Στείλτε μήνυμα</h2>
+        <p class="text-gray-500 text-sm leading-relaxed mb-8">
+          Παρακαλούμε, μη διστάσετε να επικοινωνήσετε μαζί μας για οποιοδήποτε ζήτημα.
+          Θα χαρούμε να σας εξυπηρετήσουμε και να συνεργαστούμε.
+        </p>
+
+        <form id="contactForm" novalidate class="space-y-5">
+          <div>
+            <label class="block text-sm font-medium text-gray-600 mb-1.5" for="cName">Ονοματεπώνυμο</label>
+            <input id="cName" type="text" placeholder="Ονοματεπώνυμο*" required
+                   class="form-input w-full border border-gray-200 rounded px-4 py-2.5 text-sm transition-all" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-600 mb-1.5" for="cEmail">Email</label>
+            <input id="cEmail" type="email" placeholder="Email*" required
+                   class="form-input w-full border border-gray-200 rounded px-4 py-2.5 text-sm transition-all" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-600 mb-1.5" for="cSubject">Θέμα</label>
+            <input id="cSubject" type="text" placeholder="Θέμα*" required
+                   class="form-input w-full border border-gray-200 rounded px-4 py-2.5 text-sm transition-all" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-600 mb-1.5" for="cMessage">Μήνυμα</label>
+            <textarea id="cMessage" rows="6" placeholder="Μήνυμα*" required
+                      class="form-input w-full border border-gray-200 rounded px-4 py-2.5 text-sm transition-all resize-y"></textarea>
+          </div>
+
+          <!-- Success message (hidden by default) -->
+          <div id="formSuccess" class="hidden bg-green-50 border border-green-200 text-green-700 text-sm rounded px-4 py-3 flex items-center gap-2">
+            <i class="fas fa-circle-check"></i>
+            <span>Το μήνυμά σας στάλθηκε επιτυχώς!</span>
+          </div>
+
+          <button type="submit"
+                  class="bg-gray-900 hover:bg-black text-white font-semibold text-sm px-8 py-3 rounded transition-colors tracking-wide">
+            Αποστολή
+          </button>
+        </form>
+      </div>
+
+      <!-- RIGHT: Info + Map -->
+      <div class="lg:col-span-2">
+
+        <!-- Location -->
+        <div class="mb-10">
+          <h2 class="text-2xl font-bold text-gray-800 section-heading mb-6">Τοποθεσία</h2>
+          <p class="text-gray-600 text-sm leading-relaxed mt-4">
+            Πάνου Ζήδρου 3, Ελασσόνα<br>
+            402 00
+          </p>
+          <ul class="mt-5 space-y-3">
+            <li class="flex items-center gap-2.5 text-sm text-gray-600">
+              <i class="fas fa-phone text-accent text-xs w-4 text-center"></i>
+              <a href="tel:+302493401010" class="hover:text-accent transition-colors">24930401010</a>
+            </li>
+            <li class="flex items-center gap-2.5 text-sm text-gray-600">
+              <i class="fas fa-phone text-accent text-xs w-4 text-center"></i>
+              <a href="tel:+306972194107" class="hover:text-accent transition-colors">6972194107</a>
+            </li>
+            <li class="flex items-center gap-2.5 text-sm text-gray-600">
+              <i class="far fa-envelope text-accent text-xs w-4 text-center"></i>
+              <a href="mailto:annapipili2107@gmail.com" class="text-accent hover:underline">annapipili2107@gmail.com</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Map -->
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800 section-heading mb-6">Χάρτης</h2>
+          <div class="mt-4 border border-gray-200 rounded overflow-hidden">
+            <iframe
+              src="https://maps.google.com/maps?q=Π%CE%AC%CE%BD%CE%BF%CF%85+%CE%96%CE%AE%CE%B4%CF%81%CE%BF%CF%85+3+%CE%95%CE%BB%CE%B1%CF%83%CF%83%CF%8C%CE%BD%CE%B1&output=embed"
+              width="100%" height="280"
+              style="border:0; display:block;"
+              allowfullscreen
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Χάρτης e-logistiki">
+            </iframe>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER (matching other pages)
+============================================================ -->
+<footer class="bg-navyDark text-gray-400 pt-16 pb-6">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="grid md:grid-cols-3 gap-12 mb-12">
+          <!-- Contact info -->
+          <div>
+            <p class="flex items-start gap-2 text-xs mb-2">
+              <i class="fas fa-location-dot shrink-0 text-accent mt-0.5"></i>
+              Π.ΖΗΔΡΟΥ 3, ΕΛΑΣΣΟΝΑ<br />ΤΚ. 40200
+            </p>
+            <p class="flex items-center gap-2 text-xs mb-1.5">
+              <i class="fas fa-phone shrink-0 text-accent"></i>
+              <a href="tel:+302493401010" class="hover:text-white transition-colors">24930401010</a>
+            </p>
+            <p class="flex items-center gap-2 text-xs mb-1.5">
+              <i class="fas fa-phone shrink-0 text-accent"></i>
+              <a href="tel:+306972194107" class="hover:text-white transition-colors">6972194107</a>
+            </p>
+            <p class="flex items-center gap-2 text-xs">
+              <i class="fas fa-envelope shrink-0 text-accent"></i>
+              <a href="mailto:annapipili2107@gmail.com" class="hover:text-white transition-colors">annapipili2107@gmail.com</a>
+            </p>
+            <p class="flex items-start gap-2 text-xs mt-2">
+              <i class="fas fa-clock shrink-0 text-accent mt-0.5"></i>
+              <span>Δευ-Τετ-Παρ 9:00-14:00 &amp; 17:30-20:30<br/>Τρι-Πεμ 9:00-16:00</span>
+            </p>
+          </div>
+
+          <!-- Recent news -->
+          <div>
+            <div class="text-white font-bold text-sm tracking-widest mb-4 uppercase">Τελευταία Νέα</div>
+            <ul id="footerNews" class="space-y-4 text-xs">
+              <li><div class="h-3 bg-gray-700 rounded w-3/4 mb-1 animate-pulse"></div><div class="h-2.5 bg-gray-800 rounded w-1/3 animate-pulse"></div></li>
+              <li><div class="h-3 bg-gray-700 rounded w-full mb-1 animate-pulse"></div><div class="h-2.5 bg-gray-800 rounded w-1/3 animate-pulse"></div></li>
+              <li><div class="h-3 bg-gray-700 rounded w-2/3 mb-1 animate-pulse"></div><div class="h-2.5 bg-gray-800 rounded w-1/3 animate-pulse"></div></li>
+            </ul>
+          </div>
+
+          <!-- Quick links -->
+          <div>
+            <div class="text-white font-bold text-sm tracking-widest mb-4 uppercase">Χρήσιμα</div>
+            <ul class="space-y-2 text-xs">
+              <li><a href="index.html" class="hover:text-white transition-colors flex items-center gap-2"><i class="fas fa-arrow-right text-[10px]"></i> Αρχική</a></li>
+              <li><a href="services.html" class="hover:text-white transition-colors flex items-center gap-2"><i class="fas fa-arrow-right text-[10px]"></i> Υπηρεσίες</a></li>
+              <li><a href="blog.html" class="hover:text-white transition-colors flex items-center gap-2"><i class="fas fa-arrow-right text-[10px]"></i> Blog</a></li>
+              <li><a href="contact.html" class="hover:text-white transition-colors flex items-center gap-2"><i class="fas fa-arrow-right text-[10px]"></i> Επικοινωνία</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-700/50 pt-6 flex flex-wrap justify-between items-center gap-4 text-xs text-gray-600">
+          <div class="flex gap-4">
+            <a href="#" class="hover:text-gray-400 transition-colors">Πολιτική Απορρήτου</a>
+            <a href="#" class="hover:text-gray-400 transition-colors">Όροι Χρήσης</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+<script>
+  // Mobile menu toggle
+  document.getElementById('menuBtn').addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.toggle('hidden');
+  });
+
+  // Form submit
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    document.getElementById('formSuccess').classList.remove('hidden');
+    this.reset();
+    setTimeout(() => document.getElementById('formSuccess').classList.add('hidden'), 5000);
+  });
+</script>
+
+  <!-- UserWay Accessibility Widget -->
+  <script src="https://cdn.userway.org/widget.js" data-account="3zdxx06sOy" data-position="2" data-size="large"></script>
+</body>
+</html>

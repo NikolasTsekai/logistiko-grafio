@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog | e-logistiki</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:        '#1a2e5a',
+            navyDark:    '#111e3d',
+            accent:      '#3b5fc0',
+            accentLight: '#4e72d6',
+          },
+          fontFamily: {
+            sans: ['Segoe UI', 'Arial', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+
+    /* NAV LINK UNDERLINE */
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 0; height: 2px;
+      background: #3b5fc0;
+      transition: width .25s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link.active::after { width: 100%; }
+
+    /* PAGE HERO */
+    #pageHero {
+      background: linear-gradient(135deg, rgba(17,30,61,0.88) 0%, rgba(26,46,90,0.80) 100%),
+                  url('https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1600&q=80') center/cover no-repeat;
+      min-height: 32vh;
+    }
+
+    /* POST CARD */
+    .post-card { transition: box-shadow .2s ease; border-radius: 0 !important; display: flex; flex-direction: column; height: 100%; }
+    .post-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,.10); }
+    .post-img-wrap { aspect-ratio: 16/9; overflow: hidden; position: relative; background: #e5e7eb; display: block; }
+    .post-img-wrap::after { content: 'No Image Available'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #9ca3af; font-size: .75rem; pointer-events: none; }
+    .post-img-wrap img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease; border-radius: 0 !important; }
+    .post-img-wrap img.broken { display: none; }
+    .post-card:hover .post-img-wrap img { transform: scale(1.04); }
+    #posts-container { align-items: stretch; }
+
+    /* CATEGORY LINK */
+    .cat-link { transition: color .15s, padding-left .15s; }
+    .cat-link:hover, .cat-link.active { color: #3b5fc0; padding-left: 6px; }
+    .cat-link.active { font-weight: 600; }
+
+    /* SKELETON LOADER */
+    .skeleton { background: #e5e7eb !important; border-radius: 0 !important; animation: skeletonPulse 1.8s ease-in-out infinite; }
+    @keyframes skeletonPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+    /* SEARCH FOCUS */
+    #searchInput:focus { outline: none; border-color: #3b5fc0; box-shadow: 0 0 0 3px rgba(59,95,192,.15); }
+  </style>
+</head>
+<body class="font-sans text-gray-700 bg-white">
+
+<!-- ============================================================
+     TOP BAR
+============================================================ -->
+<div class="bg-navy text-white text-sm py-2 px-4">
+  <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+    <div class="flex items-center gap-5 flex-wrap">
+      <a href="tel:+302493401010" class="flex items-center gap-1.5 hover:text-blue-300 transition-colors">
+        <i class="fa-solid fa-phone text-xs opacity-75"></i>
+        Τ. 2493401010 | Κ. 6972194107
+      </a>
+      <a href="mailto:annapipili2107@gmail.com" class="flex items-center gap-1.5 hover:text-blue-300 transition-colors">
+        <i class="fa-regular fa-envelope text-xs opacity-75"></i>
+        annapipili2107@gmail.com
+      </a>
+    </div>
+    <div class="flex items-center gap-3">
+      <span class="text-xs opacity-75 border border-white/30 px-2 py-0.5 cursor-pointer hover:border-white/70 transition-colors">
+        Ελληνικά ▾
+      </span>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============================================================
+     NAVBAR
+============================================================ -->
+<nav id="navbar" class="bg-white shadow-sm sticky top-0 z-50 transition-all duration-300">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2">
+      <img src="logo.png" alt="ΠΙΠΙΛΗ ΑΝΝΑ" class="h-20 w-auto" />
+      
+    </a>
+
+    <ul class="hidden lg:flex items-center gap-6 text-sm font-medium text-gray-600">
+      <li><a href="index.html"         class="nav-link hover:text-navy transition-colors">Αρχική</a></li>
+      <li><a href="services.html" class="nav-link hover:text-navy transition-colors">Υπηρεσίες</a></li>
+      <li><a href="blog.html"          class="nav-link active text-accent font-semibold">Blog</a></li>
+      <li><a href="contact.html" class="nav-link hover:text-navy transition-colors">Επικοινωνία</a></li>
+    </ul>
+
+    <div class="flex items-center gap-3">
+      <button id="menuBtn" class="lg:hidden p-2 text-gray-600 hover:text-navy transition-colors" aria-label="Menu">
+        <i class="fas fa-bars text-lg"></i>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobileMenu" class="hidden lg:hidden border-t border-gray-100 bg-white px-4 py-3">
+    <ul class="flex flex-col gap-3 text-sm font-medium text-gray-600">
+      <li><a href="index.html"          class="block hover:text-navy transition-colors py-1">Αρχική</a></li>
+      <li><a href="services.html" class="block hover:text-navy transition-colors py-1">Υπηρεσίες</a></li>
+      <li><a href="blog.html"           class="block text-accent font-semibold py-1">Blog</a></li>
+      <li><a href="contact.html"  class="block hover:text-navy transition-colors py-1">Επικοινωνία</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============================================================
+     PAGE HERO
+============================================================ -->
+<section id="pageHero" class="flex items-end pb-10">
+  <div class="max-w-7xl mx-auto px-6 w-full pt-20">
+    <p class="text-white/50 text-xs tracking-[.3em] uppercase mb-3">
+      <a href="index.html" class="hover:text-white/80 transition-colors">Αρχική</a>
+      <span class="mx-2">/</span>Blog
+    </p>
+    <h1 class="text-5xl md:text-6xl font-black text-white">Blog</h1>
+  </div>
+</section>
+
+<!-- ============================================================
+     MAIN CONTENT  (3/4 posts + 1/4 sidebar)
+============================================================ -->
+<main class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid lg:grid-cols-4 gap-10 items-start">
+
+      <!-- ======================================================
+           LEFT: Posts container (3 columns wide)
+      ====================================================== -->
+      <div class="lg:col-span-3">
+
+        <!-- Active filter pill (shown when a filter is active) -->
+        <div id="filterBar" class="hidden mb-6 flex items-center gap-3">
+          <span class="text-sm text-gray-500">Φίλτρο:</span>
+          <span id="filterLabel"
+                class="inline-flex items-center gap-2 bg-accent/10 text-accent text-sm font-medium px-3 py-1 rounded-full">
+            <span id="filterLabelText"></span>
+            <button id="clearFilter" class="hover:text-navy transition-colors">
+              <i class="fas fa-times text-xs"></i>
+            </button>
+          </span>
+        </div>
+
+        <!-- Posts grid — injected by JS -->
+        <div id="posts-container" class="grid sm:grid-cols-2 gap-8">
+          <!-- JS injects skeleton/content here -->
+        </div>
+
+        <!-- Empty state -->
+        <div id="emptyState" class="hidden text-center py-20">
+          <i class="fas fa-newspaper text-5xl text-gray-200 mb-4"></i>
+          <p class="text-gray-400 text-lg font-medium">Δεν βρέθηκαν άρθρα.</p>
+          <p class="text-gray-300 text-sm mt-1">Δοκιμάστε διαφορετικό φίλτρο ή αναζήτηση.</p>
+        </div>
+
+        <!-- Pagination -->
+        <div id="pagination" class="mt-12 flex items-center justify-center gap-2 hidden">
+          <button id="prevPage"
+                  class="px-4 py-2 rounded border border-gray-200 text-sm text-gray-500 hover:border-accent hover:text-accent transition-colors disabled:opacity-30 disabled:pointer-events-none">
+            <i class="fas fa-chevron-left mr-1"></i> Προηγ.
+          </button>
+          <span id="pageInfo" class="text-sm text-gray-400 px-3"></span>
+          <button id="nextPage"
+                  class="px-4 py-2 rounded border border-gray-200 text-sm text-gray-500 hover:border-accent hover:text-accent transition-colors disabled:opacity-30 disabled:pointer-events-none">
+            Επόμ. <i class="fas fa-chevron-right ml-1"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- ======================================================
+           RIGHT: Sidebar
+      ====================================================== -->
+      <aside class="lg:col-span-1 space-y-8 lg:sticky lg:top-24">
+
+        <!-- Search -->
+        <div>
+          <h3 class="font-bold text-gray-800 text-base mb-3">Αναζήτηση</h3>
+          <div class="relative">
+            <input
+              id="searchInput"
+              type="text"
+              placeholder="Search..."
+              class="w-full border border-gray-200 rounded px-4 py-2.5 text-sm pr-10 transition-all"
+            />
+            <button id="searchBtn"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-accent transition-colors">
+              <i class="fas fa-search text-sm"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Categories -->
+        <div>
+          <h3 class="font-bold text-gray-800 text-base mb-3">Κατηγορίες</h3>
+          <ul id="categoryList" class="space-y-2">
+            <!-- "All" option -->
+            <li>
+              <button
+                data-category=""
+                class="cat-link active text-left w-full text-sm text-gray-600 py-0.5"
+              >Όλα τα άρθρα</button>
+            </li>
+            <li><button data-category="Blog"                  class="cat-link text-left w-full text-sm text-gray-600 py-0.5">Blog</button></li>
+            <li><button data-category="Briefing της ημέρας"   class="cat-link text-left w-full text-sm text-gray-600 py-0.5">Briefing της ημέρας</button></li>
+            <li><button data-category="Covid-19"              class="cat-link text-left w-full text-sm text-gray-600 py-0.5">Covid-19</button></li>
+            <li><button data-category="myDATA"                class="cat-link text-left w-full text-sm text-gray-600 py-0.5">myDATA</button></li>
+            <li><button data-category="Taxheaven"             class="cat-link text-left w-full text-sm text-gray-600 py-0.5">Taxheaven</button></li>
+            <li><button data-category="Αγγελίες"              class="cat-link text-left w-full text-sm text-gray-600 py-0.5">Αγγελίες</button></li>
+            <li><button data-category="Ανακοινώσεις"          class="cat-link text-left w-full text-sm text-gray-600 py-0.5">Ανακοινώσεις</button></li>
+            <li><button data-category="Άρθρα"                 class="cat-link text-left w-full text-sm text-gray-600 py-0.5">Άρθρα</button></li>
+          </ul>
+        </div>
+
+        <!-- Recent posts (populated by JS) -->
+        <div>
+          <h3 class="font-bold text-gray-800 text-base mb-3">Πρόσφατα Άρθρα</h3>
+          <ul id="recentPosts" class="space-y-3 text-sm text-gray-500">
+            <li class="skeleton h-4 w-full"></li>
+            <li class="skeleton h-4 w-5/6"></li>
+            <li class="skeleton h-4 w-4/5"></li>
+          </ul>
+        </div>
+
+      </aside>
+    </div>
+  </div>
+</main>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer class="bg-navyDark text-gray-400 pt-16 pb-6">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="grid md:grid-cols-3 gap-12 mb-12">
+          <!-- Contact info -->
+          <div>
+            <p class="flex items-start gap-2 text-xs mb-2">
+              <i class="fas fa-location-dot shrink-0 text-accent mt-0.5"></i>
+              Π.ΖΗΔΡΟΥ 3, ΕΛΑΣΣΟΝΑ<br />ΤΚ. 40200
+            </p>
+            <p class="flex items-center gap-2 text-xs mb-1.5">
+              <i class="fas fa-phone shrink-0 text-accent"></i>
+              <a href="tel:+302493401010" class="hover:text-white transition-colors">24930401010</a>
+            </p>
+            <p class="flex items-center gap-2 text-xs mb-1.5">
+              <i class="fas fa-phone shrink-0 text-accent"></i>
+              <a href="tel:+306972194107" class="hover:text-white transition-colors">6972194107</a>
+            </p>
+            <p class="flex items-center gap-2 text-xs">
+              <i class="fas fa-envelope shrink-0 text-accent"></i>
+              <a href="mailto:annapipili2107@gmail.com" class="hover:text-white transition-colors">annapipili2107@gmail.com</a>
+            </p>
+            <p class="flex items-start gap-2 text-xs mt-2">
+              <i class="fas fa-clock shrink-0 text-accent mt-0.5"></i>
+              <span>Δευ-Τετ-Παρ 9:00-14:00 &amp; 17:30-20:30<br/>Τρι-Πεμ 9:00-16:00</span>
+            </p>
+          </div>
+
+          <!-- Recent news -->
+          <div>
+            <div class="text-white font-bold text-sm tracking-widest mb-4 uppercase">Τελευταία Νέα</div>
+            <ul id="footerNews" class="space-y-4 text-xs">
+              <li><div class="h-3 bg-gray-700 rounded w-3/4 mb-1 animate-pulse"></div><div class="h-2.5 bg-gray-800 rounded w-1/3 animate-pulse"></div></li>
+              <li><div class="h-3 bg-gray-700 rounded w-full mb-1 animate-pulse"></div><div class="h-2.5 bg-gray-800 rounded w-1/3 animate-pulse"></div></li>
+              <li><div class="h-3 bg-gray-700 rounded w-2/3 mb-1 animate-pulse"></div><div class="h-2.5 bg-gray-800 rounded w-1/3 animate-pulse"></div></li>
+            </ul>
+          </div>
+
+          <!-- Quick links -->
+          <div>
+            <div class="text-white font-bold text-sm tracking-widest mb-4 uppercase">Χρήσιμα</div>
+            <ul class="space-y-2 text-xs">
+              <li><a href="index.html" class="hover:text-white transition-colors flex items-center gap-2"><i class="fas fa-arrow-right text-[10px]"></i> Αρχική</a></li>
+              <li><a href="services.html" class="hover:text-white transition-colors flex items-center gap-2"><i class="fas fa-arrow-right text-[10px]"></i> Υπηρεσίες</a></li>
+              <li><a href="blog.html" class="hover:text-white transition-colors flex items-center gap-2"><i class="fas fa-arrow-right text-[10px]"></i> Blog</a></li>
+              <li><a href="contact.html" class="hover:text-white transition-colors flex items-center gap-2"><i class="fas fa-arrow-right text-[10px]"></i> Επικοινωνία</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-700/50 pt-6 flex flex-wrap justify-between items-center gap-4 text-xs text-gray-600">
+          <div class="flex gap-4">
+            <a href="#" class="hover:text-gray-400 transition-colors">Πολιτική Απορρήτου</a>
+            <a href="#" class="hover:text-gray-400 transition-colors">Όροι Χρήσης</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+<!-- ============================================================
+     VANILLA JS  (non-module: mobile menu + navbar)
+============================================================ -->
+<script>
+  document.getElementById('menuBtn').addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.toggle('hidden');
+  });
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('shadow-md', window.scrollY > 10);
+  });
+</script>
+
+<!-- ============================================================
+     SUPABASE — loaded as UMD (works in all environments including
+     file:// protocol, no ESM/CORS issues)
+============================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+(function () {
+  // ── 1. SUPABASE INIT ────────────────────────────────────────
+  const SUPABASE_URL      = 'https://smotabhgpokfvsxjdxmz.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtb3RhYmhncG9rZnZzeGpkeG16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNjEyOTUsImV4cCI6MjA4OTYzNzI5NX0.jW1l6SwtCqQCm4OnWoO8KsIFDl9Pzy-KQ9TQvuPJ8Ew';
+
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // ── 2. STATE ────────────────────────────────────────────────
+  const PAGE_SIZE = 6;
+  let currentPage     = 1;
+  let activeCategory  = null;   // null = all categories
+  let activeSearch    = '';
+  let debounceTimer   = null;
+
+  // ── 3. HELPERS ──────────────────────────────────────────────
+  function formatDate(iso) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    return d.toLocaleDateString('el-GR', { day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase();
+  }
+
+  function categoryBadges(category) {
+    if (!category) return '';
+    return `<span class="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 uppercase tracking-wide">${category}</span>`;
+  }
+
+  // ── 4. CARD TEMPLATE ────────────────────────────────────────
+  // Each post object from Supabase should have:
+  //   id, title, excerpt, image_url, published_at,
+  //   categories (text[]), slug, comment_count (int4)
+  function postCardHTML(post) {
+    const image    = post.image_url || '';
+    const date     = formatDate(post.published_at);
+    const title    = post.title   || '(χωρίς τίτλο)';
+    const cats     = post.category || null;
+    const slug     = `post.html?id=${post.id}`;
+
+    return `
+      <article class="post-card bg-white border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+        <a href="${slug}" class="post-img-wrap">
+          ${image ? `<img src="${image}" alt="${title}" loading="lazy" onerror="this.classList.add('broken')" />` : ''}
+        </a>
+        <div class="p-5 flex flex-col flex-1">
+          <p class="text-xs text-gray-400 mb-2 tracking-wide">${date}</p>
+          <a href="${slug}" class="block font-bold text-gray-800 text-base leading-snug hover:text-accent transition-colors mb-3 flex-1">
+            ${title}
+          </a>
+          ${post.excerpt
+            ? `<p class="text-gray-500 text-sm leading-relaxed mb-3 line-clamp-2">${post.excerpt}</p>`
+            : ''}
+          <div class="flex items-center justify-between mt-3">
+            <div class="flex flex-wrap gap-1.5">
+              <i class="far fa-folder text-gray-300 text-xs mt-0.5"></i>
+              ${categoryBadges(cats)}
+            </div>
+          </div>
+        </div>
+      </article>`;
+  }
+
+  // ── 5. RENDER FUNCTIONS ─────────────────────────────────────
+  function renderPosts(posts) {
+    const container  = document.getElementById('posts-container');
+    const emptyState = document.getElementById('emptyState');
+
+    if (!posts || posts.length === 0) {
+      container.innerHTML  = '';
+      emptyState.classList.remove('hidden');
+      return;
+    }
+
+    emptyState.classList.add('hidden');
+    container.innerHTML = posts.map(postCardHTML).join('');
+  }
+
+  function renderRecentSidebar(posts) {
+    const el = document.getElementById('recentPosts');
+    if (!posts || posts.length === 0) { el.innerHTML = '<li class="text-gray-400 text-xs">Δεν υπάρχουν άρθρα.</li>'; return; }
+    el.innerHTML = posts.slice(0, 5).map(p => `
+      <li>
+        <a href="${p.slug || '#'}" class="text-accent hover:text-navy transition-colors leading-snug block text-sm">
+          ${p.title}
+        </a>
+        <p class="text-gray-400 text-[11px] mt-0.5">${formatDate(p.published_at)}</p>
+      </li>`).join('');
+  }
+
+  function renderFooterRecent(posts) {
+    const el = document.getElementById('footerRecentPosts');
+    if (!posts || posts.length === 0) { el.innerHTML = ''; return; }
+    el.innerHTML = posts.slice(0, 3).map(p => `
+      <li>
+        <a href="${p.slug || '#'}" class="text-accent hover:text-white transition-colors font-medium leading-snug block">
+          ${p.title}
+        </a>
+        <p class="text-gray-500 mt-0.5">${formatDate(p.published_at)}</p>
+      </li>`).join('');
+  }
+
+  function updatePagination(totalCount) {
+    const pagination = document.getElementById('pagination');
+    const pageInfo   = document.getElementById('pageInfo');
+    const prevBtn    = document.getElementById('prevPage');
+    const nextBtn    = document.getElementById('nextPage');
+    const totalPages = Math.ceil(totalCount / PAGE_SIZE);
+
+    if (totalPages <= 1) { pagination.classList.add('hidden'); return; }
+    pagination.classList.remove('hidden');
+    pageInfo.textContent = `Σελίδα ${currentPage} / ${totalPages}`;
+    prevBtn.disabled = currentPage <= 1;
+    nextBtn.disabled = currentPage >= totalPages;
+  }
+
+  // ── 6. FETCH POSTS ──────────────────────────────────────────
+  async function fetchPosts(categoryFilter = null, searchQuery = '') {
+    const container = document.getElementById('posts-container');
+
+    // Show skeleton while loading
+    container.innerHTML = Array(4).fill(
+      '<div class="skeleton w-full" style="aspect-ratio:16/9"></div>'
+    ).join('');
+    document.getElementById('emptyState').classList.add('hidden');
+    document.getElementById('pagination').classList.add('hidden');
+
+    const from = (currentPage - 1) * PAGE_SIZE;
+    const to   = from + PAGE_SIZE - 1;
+
+    try {
+      let query = supabase
+        .from('posts')
+        .select('id, title, excerpt, image_url, published_at, category, slug', { count: 'exact' })
+        .order('published_at', { ascending: false })
+        .range(from, to);
+
+      if (categoryFilter) {
+        query = query.eq('category', categoryFilter);
+      }
+
+      if (searchQuery && searchQuery.trim() !== '') {
+        query = query.or(`title.ilike.%${searchQuery.trim()}%,excerpt.ilike.%${searchQuery.trim()}%`);
+      }
+
+      // Wrap Supabase thenable in a native Promise with 8-second timeout
+      // (Promise.race with Supabase thenables is unreliable in some environments)
+      const { data, error, count } = await new Promise((resolve, reject) => {
+        const timer = setTimeout(
+          () => reject(new Error('Η σύνδεση με τη βάση δεδομένων έληξε. Δοκιμάστε ξανά.')),
+          8000
+        );
+        query
+          .then(result => { clearTimeout(timer); resolve(result); })
+          .catch(err  => { clearTimeout(timer); reject(err);    });
+      });
+
+      if (error) {
+        container.innerHTML = `
+          <div class="col-span-2 text-center py-16 text-red-400">
+            <i class="fas fa-triangle-exclamation text-4xl mb-3"></i>
+            <p class="font-medium">Σφάλμα φόρτωσης άρθρων.</p>
+            <p class="text-xs mt-1 text-gray-400">${error.message}</p>
+          </div>`;
+        return;
+      }
+
+      renderPosts(data);
+      updatePagination(count || 0);
+
+      if (!categoryFilter && !searchQuery) {
+        renderRecentSidebar(data);
+        renderFooterRecent(data);
+      }
+    } catch (err) {
+      container.innerHTML = `
+        <div class="col-span-2 text-center py-16 text-red-400">
+          <i class="fas fa-triangle-exclamation text-4xl mb-3"></i>
+          <p class="font-medium">Σφάλμα φόρτωσης άρθρων.</p>
+          <p class="text-xs mt-1 text-gray-400">${err.message || 'Άγνωστο σφάλμα.'}</p>
+        </div>`;
+    }
+  }
+
+  // ── 7. FILTER BAR STATE ─────────────────────────────────────
+  function showFilterBar(label) {
+    const bar = document.getElementById('filterBar');
+    document.getElementById('filterLabelText').textContent = label;
+    bar.classList.remove('hidden');
+    bar.classList.add('flex');
+  }
+
+  function hideFilterBar() {
+    const bar = document.getElementById('filterBar');
+    bar.classList.add('hidden');
+    bar.classList.remove('flex');
+  }
+
+  // ── 8. CATEGORY CLICK HANDLER ────────────────────────────────
+  document.getElementById('categoryList').addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-category]');
+    if (!btn) return;
+
+    // Update active state on buttons
+    document.querySelectorAll('.cat-link').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    activeCategory = btn.dataset.category || null;
+    currentPage    = 1;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (activeCategory) {
+      showFilterBar(activeCategory);
+    } else {
+      hideFilterBar();
+    }
+
+    fetchPosts(activeCategory, activeSearch);
+  });
+
+  // ── 9. SEARCH HANDLER (debounced, 350ms) ────────────────────
+  document.getElementById('searchInput').addEventListener('input', (e) => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      activeSearch = e.target.value;
+      currentPage  = 1;
+
+      if (activeSearch.trim()) {
+        showFilterBar(`"${activeSearch.trim()}"`);
+      } else if (!activeCategory) {
+        hideFilterBar();
+      }
+
+      fetchPosts(activeCategory, activeSearch);
+    }, 350);
+  });
+
+  document.getElementById('searchBtn').addEventListener('click', () => {
+    activeSearch = document.getElementById('searchInput').value;
+    currentPage  = 1;
+    fetchPosts(activeCategory, activeSearch);
+  });
+
+  // ── 10. CLEAR FILTER ────────────────────────────────────────
+  document.getElementById('clearFilter').addEventListener('click', () => {
+    activeCategory = null;
+    activeSearch   = '';
+    currentPage    = 1;
+    document.getElementById('searchInput').value = '';
+    document.querySelectorAll('.cat-link').forEach(b => b.classList.remove('active'));
+    document.querySelector('[data-category=""]').classList.add('active');
+    hideFilterBar();
+    fetchPosts();
+  });
+
+  // ── 11. PAGINATION ───────────────────────────────────────────
+  document.getElementById('prevPage').addEventListener('click', () => {
+    if (currentPage > 1) { currentPage--; fetchPosts(activeCategory, activeSearch); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+  });
+  document.getElementById('nextPage').addEventListener('click', () => {
+    currentPage++; fetchPosts(activeCategory, activeSearch); window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ── 12. INITIAL LOAD ─────────────────────────────────────────
+  fetchPosts();
+})();
+</script>
+
+  <!-- Safety net (no longer needed for ESM, kept as final fallback) -->
+  <script>
+    setTimeout(function () {
+      var container = document.getElementById('posts-container');
+      if (container && container.querySelector('.skeleton')) {
+        container.innerHTML =
+          '<div class="col-span-2 text-center py-20 text-gray-400">' +
+          '<i class="fas fa-triangle-exclamation text-4xl mb-3 block"></i>' +
+          '<p class="font-medium">Αδυναμία φόρτωσης άρθρων.</p>' +
+          '<p class="text-sm mt-1">Ανανεώστε τη σελίδα για να δοκιμάσετε ξανά.</p>' +
+          '</div>';
+      }
+    }, 12000);
+  </script>
+
+  <!-- UserWay Accessibility Widget -->
+  <script src="https://cdn.userway.org/widget.js" data-account="3zdxx06sOy" data-position="2" data-size="large"></script>
+</body>
+</html>

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin · Blog Editor | e-logistiki</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Quill rich text editor -->
+  <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet" />
+  <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:     '#1a2e5a',
+            navyDark: '#111e3d',
+            accent:   '#3b5fc0',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background: #f1f5f9; }
+
+    /* ── QUILL EDITOR OVERRIDES ───────────────────────── */
+    .ql-toolbar.ql-snow {
+      border-radius: .375rem .375rem 0 0;
+      border-color: #e2e8f0 !important;
+      background: #f8fafc;
+    }
+    .ql-container.ql-snow {
+      border-radius: 0 0 .375rem .375rem;
+      border-color: #e2e8f0 !important;
+      font-size: 15px;
+      min-height: 360px;
+    }
+    .ql-editor { min-height: 340px; line-height: 1.75; color: #374151; }
+    .ql-editor p { margin-bottom: .5rem; }
+
+    /* ── FOCUS RING ───────────────────────────────────── */
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #3b5fc0;
+      box-shadow: 0 0 0 3px rgba(59,95,192,.15);
+    }
+
+    /* ── STATUS TOAST ─────────────────────────────────── */
+    #toast {
+      transition: opacity .3s ease, transform .3s ease;
+    }
+    #toast.hidden { opacity: 0; transform: translateY(20px); pointer-events: none; }
+    #toast.show   { opacity: 1; transform: translateY(0); }
+
+    /* ── POST ROW HOVER ───────────────────────────────── */
+    .post-row { transition: background .15s; }
+    .post-row:hover { background: #f8fafc; }
+  </style>
+</head>
+<body class="font-sans text-gray-700 min-h-screen">
+
+<!-- ============================================================
+     ADMIN TOPBAR
+============================================================ -->
+<header class="bg-navy text-white px-6 py-4 flex items-center justify-between shadow-lg">
+  <div class="flex items-center gap-3">
+    <div class="w-8 h-8 bg-white/10 rounded flex items-center justify-center">
+      <i class="fas fa-pen-nib text-sm text-white"></i>
+    </div>
+    <div>
+      <img src="logo.png" alt="ΠΙΠΙΛΗ ΑΝΝΑ" class="h-20 w-auto" />
+      <p class="text-white/60 text-xs">Admin · Blog CMS</p>
+    </div>
+  </div>
+  <div class="flex items-center gap-3">
+    <a href="blog.html" target="_blank"
+       class="text-white/70 hover:text-white text-sm flex items-center gap-1.5 transition-colors">
+      <i class="fas fa-external-link-alt text-xs"></i> Προβολή Blog
+    </a>
+    <div class="w-px h-4 bg-white/20"></div>
+    <button id="logoutBtn" type="button"
+            class="flex items-center gap-1.5 text-white/70 hover:text-white text-sm transition-colors">
+      <i class="fas fa-right-from-bracket text-xs"></i> Αποσύνδεση
+    </button>
+  </div>
+</header>
+
+<!-- ============================================================
+     MAIN LAYOUT
+============================================================ -->
+<div class="max-w-6xl mx-auto px-4 py-10 grid lg:grid-cols-3 gap-8 items-start">
+
+  <!-- ── LEFT: EDITOR PANEL ─────────────────────────────────── -->
+  <div class="lg:col-span-2 space-y-6">
+
+    <!-- Panel header -->
+    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+      <div class="flex items-center justify-between mb-6">
+        <h1 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+          <i class="fas fa-file-pen text-accent"></i>
+          <span id="panelTitle">Νέο Άρθρο</span>
+        </h1>
+        <button id="clearFormBtn" type="button"
+                class="text-xs text-gray-400 hover:text-red-400 transition-colors flex items-center gap-1">
+          <i class="fas fa-rotate-left"></i> Καθαρισμός
+        </button>
+      </div>
+
+      <form id="postForm" class="space-y-5" novalidate>
+        <!-- Hidden: editing post id -->
+        <input type="hidden" id="editingId" value="" />
+
+        <!-- Title -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-600 mb-1.5" for="postTitle">
+            Τίτλος Άρθρου <span class="text-red-400">*</span>
+          </label>
+          <input id="postTitle" type="text" placeholder="π.χ. Αναζήτηση Λογιστή Α' Τάξης"
+                 class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm transition-all" />
+        </div>
+
+        <!-- Category + Cover Image URL side by side -->
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-gray-600 mb-1.5" for="postCategory">
+              Κατηγορία <span class="text-red-400">*</span>
+            </label>
+            <select id="postCategory"
+                    class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm bg-white transition-all">
+              <option value="">— Επιλέξτε κατηγορία —</option>
+              <option value="Blog">Blog</option>
+              <option value="Briefing της ημέρας">Briefing της ημέρας</option>
+              <option value="Covid-19">Covid-19</option>
+              <option value="myDATA">myDATA</option>
+              <option value="Taxheaven">Taxheaven</option>
+              <option value="Αγγελίες">Αγγελίες</option>
+              <option value="Ανακοινώσεις">Ανακοινώσεις</option>
+              <option value="Άρθρα">Άρθρα</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-600 mb-1.5" for="postImageUrl">
+              URL Εικόνας Εξωφύλλου
+            </label>
+            <input id="postImageUrl" type="url" placeholder="https://..."
+                   class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm transition-all" />
+          </div>
+        </div>
+
+        <!-- Image preview -->
+        <div id="imagePreviewWrapper" class="hidden">
+          <p class="text-xs text-gray-400 mb-1.5 font-medium">Προεπισκόπηση εικόνας</p>
+          <img id="imagePreview" src="" alt="Preview"
+               class="w-full max-h-48 object-cover rounded-lg border border-gray-100" />
+        </div>
+
+        <!-- Excerpt -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-600 mb-1.5" for="postExcerpt">
+            Σύντομη Περιγραφή <span class="text-gray-400 font-normal text-xs">(προαιρετικό)</span>
+          </label>
+          <textarea id="postExcerpt" rows="2"
+                    placeholder="1-2 προτάσεις που εμφανίζονται στη λίστα του blog..."
+                    class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm transition-all resize-none"></textarea>
+        </div>
+
+        <!-- Quill editor -->
+        <div>
+          <label id="quill-label" for="quill-editor" class="block text-sm font-semibold text-gray-600 mb-1.5">
+            Περιεχόμενο Άρθρου <span class="text-red-400">*</span>
+          </label>
+          <div id="quill-editor" aria-labelledby="quill-label"></div>
+        </div>
+
+        <!-- Submit row -->
+        <div class="flex items-center gap-4 pt-2">
+          <button type="submit" id="submitBtn"
+                  class="bg-navy text-white font-semibold px-8 py-3 rounded-lg hover:bg-navyDark transition-colors text-sm flex items-center gap-2">
+            <i class="fas fa-cloud-arrow-up"></i>
+            <span id="submitBtnLabel">Δημοσίευση</span>
+          </button>
+          <button type="button" id="cancelEditBtn"
+                  class="hidden text-sm text-gray-400 hover:text-red-400 transition-colors flex items-center gap-1">
+            <i class="fas fa-xmark"></i> Ακύρωση επεξεργασίας
+          </button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+  <!-- ── RIGHT: SIDEBAR ─────────────────────────────────────── -->
+  <div class="space-y-6">
+
+    <!-- Quick stats -->
+    <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
+      <h2 class="font-bold text-gray-700 text-sm mb-4 flex items-center gap-2">
+        <i class="fas fa-chart-simple text-accent text-xs"></i> Στατιστικά
+      </h2>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="bg-gray-50 rounded-lg p-3 text-center">
+          <div id="statTotal" class="text-2xl font-black text-accent">—</div>
+          <p class="text-xs text-gray-400 mt-0.5">Σύνολο άρθρων</p>
+        </div>
+        <div class="bg-gray-50 rounded-lg p-3 text-center">
+          <div id="statThisMonth" class="text-2xl font-black text-accent">—</div>
+          <p class="text-xs text-gray-400 mt-0.5">Αυτόν τον μήνα</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Published posts list -->
+    <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
+      <h2 class="font-bold text-gray-700 text-sm mb-4 flex items-center gap-2">
+        <i class="fas fa-list text-accent text-xs"></i> Δημοσιευμένα Άρθρα
+      </h2>
+      <div id="postsList" class="space-y-1 text-sm">
+        <div class="skeleton h-4 w-full rounded"></div>
+        <div class="skeleton h-4 w-5/6 rounded mt-2"></div>
+        <div class="skeleton h-4 w-4/5 rounded mt-2"></div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ── TOAST NOTIFICATION ─────────────────────────────────── -->
+<div id="toast"
+     class="fixed bottom-6 right-6 z-50 hidden px-5 py-3 rounded-xl shadow-xl text-white text-sm font-medium flex items-center gap-3 min-w-[260px]">
+  <i id="toastIcon" class="fas fa-check-circle text-lg shrink-0"></i>
+  <span id="toastMsg"></span>
+</div>
+
+<!-- ============================================================
+     QUILL INIT (non-module, must run before Supabase module)
+============================================================ -->
+<script>
+  const quill = new Quill('#quill-editor', {
+    theme: 'snow',
+    placeholder: 'Γράψτε το περιεχόμενο του άρθρου...',
+    modules: {
+      toolbar: [
+        [{ header: [1, 2, 3, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ color: [] }, { background: [] }],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        [{ indent: '-1' }, { indent: '+1' }],
+        ['blockquote', 'code-block'],
+        ['link', 'image'],
+        ['clean']
+      ]
+    }
+  });
+
+  // Image URL preview
+  document.getElementById('postImageUrl').addEventListener('input', function () {
+    const url = this.value.trim();
+    const wrapper = document.getElementById('imagePreviewWrapper');
+    const img     = document.getElementById('imagePreview');
+    if (url) {
+      img.src = url;
+      wrapper.classList.remove('hidden');
+    } else {
+      wrapper.classList.add('hidden');
+    }
+  });
+
+  // Clear form
+  document.getElementById('clearFormBtn').addEventListener('click', resetForm);
+  document.getElementById('cancelEditBtn').addEventListener('click', resetForm);
+
+  function resetForm() {
+    document.getElementById('editingId').value    = '';
+    document.getElementById('postTitle').value    = '';
+    document.getElementById('postCategory').value = '';
+    document.getElementById('postImageUrl').value = '';
+    document.getElementById('postExcerpt').value  = '';
+    quill.setContents([]);
+    document.getElementById('imagePreviewWrapper').classList.add('hidden');
+    document.getElementById('panelTitle').textContent    = 'Νέο Άρθρο';
+    document.getElementById('submitBtnLabel').textContent = 'Δημοσίευση';
+    document.getElementById('cancelEditBtn').classList.add('hidden');
+  }
+</script>
+
+<!-- ============================================================
+     SUPABASE MODULE
+     Expected table: posts
+       id (uuid/bigint, PK), title (text), content (text),
+       excerpt (text), image_url (text), published_at (timestamptz),
+       categories (text[]), slug (text), comment_count (int4)
+============================================================ -->
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  // TODO: Replace these two values with your Supabase credentials.
+  const SUPABASE_URL      = 'https://smotabhgpokfvsxjdxmz.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtb3RhYmhncG9rZnZzeGpkeG16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNjEyOTUsImV4cCI6MjA4OTYzNzI5NX0.jW1l6SwtCqQCm4OnWoO8KsIFDl9Pzy-KQ9TQvuPJ8Ew';
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // ── AUTH GUARD ───────────────────────────────────────────────
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) { window.location.href = 'login.html'; }
+
+  // ── LOGOUT ───────────────────────────────────────────────────
+  document.getElementById('logoutBtn').addEventListener('click', async () => {
+    await supabase.auth.signOut();
+    window.location.href = 'login.html';
+  });
+
+  // ── TOAST HELPER ────────────────────────────────────────────
+  function showToast(message, type = 'success') {
+    const toast   = document.getElementById('toast');
+    const icon    = document.getElementById('toastIcon');
+    const msgEl   = document.getElementById('toastMsg');
+    const isError = type === 'error';
+
+    toast.className = `fixed bottom-6 right-6 z-50 px-5 py-3 rounded-xl shadow-xl text-white text-sm font-medium flex items-center gap-3 min-w-[260px] show ${isError ? 'bg-red-500' : 'bg-green-600'}`;
+    icon.className  = `fas ${isError ? 'fa-circle-exclamation' : 'fa-check-circle'} text-lg shrink-0`;
+    msgEl.textContent = message;
+
+    clearTimeout(window._toastTimer);
+    window._toastTimer = setTimeout(() => {
+      toast.classList.remove('show');
+      toast.classList.add('hidden');
+    }, 4000);
+  }
+
+  // ── DB STATUS ────────────────────────────────────────────────
+  async function checkConnection() {
+    const { error } = await supabase.from('posts').select('id').limit(1);
+    const el = document.getElementById('dbStatus');
+    if (error) {
+      el.innerHTML = '<span class="w-2 h-2 rounded-full bg-red-500 inline-block"></span> Αποτυχία σύνδεσης — ελέγξτε τα credentials.';
+    } else {
+      el.innerHTML = '<span class="w-2 h-2 rounded-full bg-green-500 inline-block"></span> Συνδεδεμένο στη Supabase.';
+      loadStats();
+      loadPostsList();
+    }
+  }
+
+  // ── STATS ────────────────────────────────────────────────────
+  async function loadStats() {
+    const now = new Date();
+    const firstOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+
+    const [{ count: total }, { count: monthly }] = await Promise.all([
+      supabase.from('posts').select('id', { count: 'exact', head: true }),
+      supabase.from('posts').select('id', { count: 'exact', head: true })
+              .gte('published_at', firstOfMonth)
+    ]);
+
+    document.getElementById('statTotal').textContent      = total ?? '—';
+    document.getElementById('statThisMonth').textContent  = monthly ?? '—';
+  }
+
+  // ── POSTS LIST (sidebar) ─────────────────────────────────────
+  async function loadPostsList() {
+    const { data, error } = await supabase
+      .from('posts')
+      .select('id, title, published_at, category')
+      .order('published_at', { ascending: false })
+      .limit(20);
+
+    const listEl = document.getElementById('postsList');
+    if (error || !data || data.length === 0) {
+      listEl.innerHTML = '<p class="text-gray-400 text-xs">Δεν υπάρχουν άρθρα ακόμα.</p>';
+      return;
+    }
+
+    listEl.innerHTML = data.map(p => {
+      const cats = p.category || '—';
+      const date = new Date(p.published_at).toLocaleDateString('el-GR', { day: 'numeric', month: 'short', year: 'numeric' });
+      return `
+        <div class="post-row rounded-lg px-2 py-2 flex items-start justify-between gap-2 group">
+          <div class="min-w-0">
+            <p class="text-sm font-medium text-gray-700 truncate leading-snug">${p.title}</p>
+            <p class="text-[11px] text-gray-400 mt-0.5">${date} · <span class="text-accent">${cats}</span></p>
+          </div>
+          <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+            <button data-edit="${p.id}" title="Επεξεργασία"
+                    class="text-gray-400 hover:text-accent transition-colors text-xs">
+              <i class="fas fa-pen"></i>
+            </button>
+            <button data-delete="${p.id}" title="Διαγραφή"
+                    class="text-gray-400 hover:text-red-400 transition-colors text-xs">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>`;
+    }).join('');
+
+    // Edit button handlers
+    listEl.querySelectorAll('[data-edit]').forEach(btn => {
+      btn.addEventListener('click', () => loadPostForEdit(btn.dataset.edit));
+    });
+
+    // Delete button handlers
+    listEl.querySelectorAll('[data-delete]').forEach(btn => {
+      btn.addEventListener('click', () => deletePost(btn.dataset.delete));
+    });
+  }
+
+  // ── LOAD POST FOR EDITING ────────────────────────────────────
+  async function loadPostForEdit(id) {
+    const { data: post, error } = await supabase
+      .from('posts').select('*').eq('id', id).single();
+
+    if (error || !post) { showToast('Αποτυχία φόρτωσης άρθρου.', 'error'); return; }
+
+    document.getElementById('editingId').value    = post.id;
+    document.getElementById('postTitle').value    = post.title || '';
+    document.getElementById('postCategory').value = post.category || '';
+    document.getElementById('postImageUrl').value = post.image_url || '';
+    document.getElementById('postExcerpt').value  = post.excerpt || '';
+
+    // Set Quill content (expects stored HTML)
+    quill.clipboard.dangerouslyPasteHTML(post.content || '');
+
+    // Update image preview
+    if (post.image_url) {
+      document.getElementById('imagePreview').src = post.image_url;
+      document.getElementById('imagePreviewWrapper').classList.remove('hidden');
+    }
+
+    document.getElementById('panelTitle').textContent     = 'Επεξεργασία Άρθρου';
+    document.getElementById('submitBtnLabel').textContent  = 'Αποθήκευση';
+    document.getElementById('cancelEditBtn').classList.remove('hidden');
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── DELETE POST ──────────────────────────────────────────────
+  async function deletePost(id) {
+    if (!confirm('Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το άρθρο;')) return;
+
+    const { error } = await supabase.from('posts').delete().eq('id', id);
+    if (error) { showToast('Αποτυχία διαγραφής: ' + error.message, 'error'); return; }
+
+    showToast('Το άρθρο διαγράφηκε.');
+    loadStats();
+    loadPostsList();
+  }
+
+  // ── FORM SUBMIT (INSERT or UPDATE) ───────────────────────────
+  document.getElementById('postForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const editingId   = document.getElementById('editingId').value.trim();
+    const title       = document.getElementById('postTitle').value.trim();
+    const category    = document.getElementById('postCategory').value;
+    const imageUrl    = document.getElementById('postImageUrl').value.trim();
+    const excerpt     = document.getElementById('postExcerpt').value.trim();
+    const htmlContent = quill.root.innerHTML;
+
+    // Basic validation
+    if (!title) { showToast('Εισάγετε τίτλο άρθρου.', 'error'); return; }
+    if (!category) { showToast('Επιλέξτε κατηγορία.', 'error'); return; }
+    if (quill.getText().trim().length < 10) { showToast('Το περιεχόμενο είναι πολύ σύντομο.', 'error'); return; }
+
+    const submitBtn   = document.getElementById('submitBtn');
+    const btnLabel    = document.getElementById('submitBtnLabel');
+    const origLabel   = btnLabel.textContent;
+    submitBtn.disabled = true;
+    btnLabel.textContent = editingId ? 'Αποθήκευση...' : 'Δημοσίευση...';
+
+    // Slug from title (simple ASCII-safe slug)
+    const slug = title.toLowerCase()
+      .replace(/[^a-z0-9\u0370-\u03ff\u1f00-\u1fff\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+
+    const payload = {
+      title,
+      content:      htmlContent,
+      excerpt:      excerpt || null,
+      image_url:    imageUrl || null,
+      category,
+      slug,
+      // Only set published_at on insert (don't overwrite on update)
+      ...(editingId ? {} : { published_at: new Date().toISOString() }),
+    };
+
+    let error;
+    if (editingId) {
+      ({ error } = await supabase.from('posts').update(payload).eq('id', editingId));
+    } else {
+      ({ error } = await supabase.from('posts').insert([payload]));
+    }
+
+    submitBtn.disabled = false;
+    btnLabel.textContent = origLabel;
+
+    if (error) {
+      showToast('Σφάλμα: ' + error.message, 'error');
+      return;
+    }
+
+    showToast(editingId ? 'Το άρθρο αποθηκεύτηκε!' : 'Το άρθρο δημοσιεύτηκε!');
+    resetForm();
+    loadStats();
+    loadPostsList();
+  });
+
+  // ── INIT ─────────────────────────────────────────────────────
+  checkConnection();
+</script>
+
+  <!-- UserWay Accessibility Widget -->
+  <script src="https://cdn.userway.org/widget.js" data-account="3zdxx06sOy" data-position="2" data-size="large"></script>
+</body>
+</html>

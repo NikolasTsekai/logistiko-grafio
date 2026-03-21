@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="el">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Υπηρεσίες | e-logistiki</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              navy: "#1a2e5a",
+              navyDark: "#111e3d",
+              accent: "#3b5fc0",
+              accentLight: "#4e72d6",
+            },
+            fontFamily: {
+              sans: ["Segoe UI", "Arial", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* NAV LINK UNDERLINE */
+      .nav-link {
+        position: relative;
+      }
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #3b5fc0;
+        transition: width 0.25s ease;
+      }
+      .nav-link:hover::after {
+        width: 100%;
+      }
+      .nav-link.active::after {
+        width: 100%;
+      }
+
+      /* PAGE HERO */
+      #pageHero {
+        background:
+          linear-gradient(
+            135deg,
+            rgba(17, 30, 61, 0.92) 0%,
+            rgba(26, 46, 90, 0.85) 100%
+          ),
+          url("https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1600&q=80")
+            center/cover no-repeat;
+        min-height: 38vh;
+      }
+
+      /* SERVICE CARD ICON */
+      .service-icon {
+        width: 72px;
+        height: 72px;
+        border: 1.5px solid #d1d5db;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.25rem;
+      }
+
+      /* SPLIT SECTION */
+      .split-dark {
+        background: #ffffff;
+        font-family: 'Arial Narrow', Arial, sans-serif;
+      }
+
+      /* SPEC CARD */
+      .spec-card {
+        border: 1px solid #e5e7eb;
+        transition: box-shadow 0.2s;
+      }
+      .spec-card:hover {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .fade-up {
+        animation: fadeUp 0.7s ease forwards;
+      }
+    </style>
+  </head>
+  <body class="font-sans text-gray-700 bg-white">
+    <!-- ============================================================
+     TOP BAR
+============================================================ -->
+    <div class="bg-navy text-white text-sm py-2 px-4">
+      <div
+        class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2"
+      >
+        <div class="flex items-center gap-5 flex-wrap">
+          
+          <a
+            href="tel:+302493401010"
+            class="flex items-center gap-1.5 hover:text-blue-300 transition-colors"
+          >
+            <i class="fa-solid fa-phone text-xs opacity-75"></i>
+            Τ. 2493401010 | Κ. 6972194107
+          </a>
+          <a
+            href="mailto:annapipili2107@gmail.com"
+            class="flex items-center gap-1.5 hover:text-blue-300 transition-colors"
+          >
+            <i class="fa-regular fa-envelope text-xs opacity-75"></i>
+            annapipili2107@gmail.com
+          </a>
+        </div>
+        <div class="flex items-center gap-3">
+          <span
+            class="text-xs opacity-75 border border-white/30 rounded px-2 py-0.5 cursor-pointer hover:border-white/70 transition-colors"
+          >
+            Ελληνικά ▾
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+     NAVBAR
+============================================================ -->
+    <nav
+      id="navbar"
+      class="bg-white shadow-sm sticky top-0 z-50 transition-all duration-300"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between"
+      >
+        <!-- Logo -->
+        <a href="index.html" class="flex items-center gap-2">
+          <img src="logo.png" alt="ΠΙΠΙΛΗ ΑΝΝΑ" class="h-20 w-auto" />
+        </a>
+
+        <!-- Desktop links -->
+        <ul
+          class="hidden lg:flex items-center gap-6 text-sm font-medium text-gray-600"
+        >
+          <li>
+            <a
+              href="index.html"
+              class="nav-link hover:text-navy transition-colors"
+              >Αρχική</a
+            >
+          </li>
+          <li>
+            <a
+              href="services.html"
+              class="nav-link active text-accent font-semibold"
+              >Υπηρεσίες</a
+            >
+          </li>
+          <li>
+            <a
+              href="blog.html"
+              class="nav-link hover:text-navy transition-colors"
+              >Blog</a
+            >
+          </li>
+          <li>
+            <a
+              href="contact.html"
+              class="nav-link hover:text-navy transition-colors"
+              >Επικοινωνία</a
+            >
+          </li>
+        </ul>
+
+        <!-- Hamburger -->
+        <div class="flex items-center gap-3">
+          <button
+            id="menuBtn"
+            class="lg:hidden p-2 text-gray-600 hover:text-navy transition-colors"
+            aria-label="Menu"
+          >
+            <i class="fas fa-bars text-lg"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile menu -->
+      <div
+        id="mobileMenu"
+        class="hidden lg:hidden border-t border-gray-100 bg-white px-4 py-3"
+      >
+        <ul class="flex flex-col gap-3 text-sm font-medium text-gray-600">
+          <li>
+            <a
+              href="index.html"
+              class="block hover:text-navy transition-colors py-1"
+              >Αρχική</a
+            >
+          </li>
+          <li>
+            <a href="services.html" class="block text-accent font-semibold py-1"
+              >Υπηρεσίες</a
+            >
+          </li>
+          <li>
+            <a
+              href="blog.html"
+              class="block hover:text-navy transition-colors py-1"
+              >Blog</a
+            >
+          </li>
+          <li>
+            <a
+              href="contact.html"
+              class="block hover:text-navy transition-colors py-1"
+              >Επικοινωνία</a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- ============================================================
+     PAGE HERO
+============================================================ -->
+    <section id="pageHero" class="flex items-center justify-center text-center">
+      <div class="fade-up py-20">
+        <p class="text-white/50 text-xs tracking-[.3em] uppercase mb-4">
+          <a href="index.html" class="hover:text-white/80 transition-colors"
+            >Αρχική</a
+          >
+          <span class="mx-2">/</span>
+          Υπηρεσίες
+        </p>
+        <h1 class="text-5xl md:text-6xl font-black text-white leading-tight">
+          Οι Υπηρεσίες μας
+        </h1>
+        <p class="text-white/60 text-xs tracking-[.3em] uppercase mt-4">
+          Εξειδικευμένες λύσεις για κάθε ιδιώτη και επιχείρηση
+        </p>
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+     ROW A — Λογιστικές Υπηρεσίες (dark left, image right)
+============================================================ -->
+    <section id="logistikes" class="grid lg:grid-cols-2">
+      <!-- Left: dark + bullet list -->
+      <div class="split-dark px-10 py-16 flex flex-col justify-center">
+        <a
+          class="text-accent text-sm font-semibold tracking-wide uppercase mb-6 inline-block hover:underline"
+          href="#logistikes"
+        >
+          Προς Επιχειρήσεις
+        </a>
+        <ul class="space-y-2.5">
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Πλήρως μηχανογραφημένη τήρηση Λογιστικών Βιβλίων Β' κατηγορίας
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Ενημέρωση και εκτύπωση Βιβλίων Εσόδων – Εξόδων
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Συμπλήρωση και υποβολή περιοδικών δηλώσεων ΦΠΑ-VIES ενδοκοινοτικών συναλλαγών
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Σύνταξη και υποβολή συγκεντρωτικών καταστάσεων πελατών – προμηθευτών
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Υποβολή ετήσιων φορολογικών δηλώσεων Ε1, Ε2, Ε3
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Προβλέψεις αποτελεσμάτων
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Πλήρως μηχανογραφημένη μισθοδοσία
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Διεκπεραίωση συναλλαγών με το δημόσιο και τις τράπεζες
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Ρυθμίσεις οφειλών προς το δημόσιο ή τις τράπεζες
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Διαρκής παρακολούθηση της οικονομικής πορείας της επιχείρησης και έγκαιρη ενημέρωση του επιχειρηματία για τις όποιες κινήσεις πρέπει να ακολουθήσει
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Συμβουλές σε εργατικά – ασφαλιστικά θέματα
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Δημιουργία Αριθμού Φορολογικού Μητρώου (ΑΦΜ) στην αρμόδια ΔΟΥ
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Μεταβολές στο Μητρώο για την ορθή απεικόνιση των στοιχείων
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Διεκπεραίωση γραφειοκρατικών εργασιών σε Δημόσιες Υπηρεσίες και οργανισμούς (ΔΟΥ, ΟΑΕΕ, ΙΚΑ, άλλα ασφαλιστικά ταμεία, επιθεώρηση εργασίας, Δήμους, Νομαρχίες, ΟΑΕΔ, Επιμελητήρια)
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Αίτηση έκδοσης κλειδαρίθμου στο TaxisNet
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Έκδοση Πιστοποιητικού ΕΝΦΙΑ
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Έκδοση φορολογικής ενημερότητας
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Έκδοση τελών κυκλοφορίας
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Ανανέωση κάρτας ανεργίας
+          </li>
+        </ul>
+
+      </div>
+
+      <!-- Right: image -->
+      <div class="h-80 lg:h-auto">
+        <img
+          src="p2.png"
+          alt="Λογιστικές Υπηρεσίες"
+          class="w-full h-full object-cover"
+        />
+      </div>
+    </section>
+
+    <!-- ============================================================
+     ROW B — Φορολογικές Υπηρεσίες (image left, dark right)
+============================================================ -->
+    <section id="forologikes" class="grid lg:grid-cols-2">
+      <!-- Left: image -->
+      <div class="h-80 lg:h-auto order-2 lg:order-1">
+        <img
+          src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&q=80"
+          alt="Φορολογικές Υπηρεσίες"
+          class="w-full h-full object-cover"
+        />
+      </div>
+
+      <!-- Right: dark + bullet list -->
+      <div
+        class="split-dark px-10 py-16 flex flex-col justify-center order-1 lg:order-2"
+      >
+        <a
+          class="text-accent text-sm font-semibold tracking-wide uppercase mb-2 inline-block hover:underline"
+          href="#forologikes"
+        >
+          Προς Ιδιώτες
+        </a>
+
+        <ul class="space-y-2.5">
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Σύνταξη και υποβολή φορολογικών δηλώσεων Ε1, Ε2 και Ε9 Φυσικών Προσώπων &amp; κατοίκων εξωτερικού
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Τροποποιητικές δηλώσεις Ε1, Ε2, Ε9
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Υποβολή αίτησης Α21 οικογενειακού επιδόματος
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Μισθωτήρια συμβόλαια κάθε είδους
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Υποβολή αίτησης ΚΕΑ (Κοινωνικό Εισόδημα Αλληλεγγύης)
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Υποβολή αιτήσεων ρύθμισης φορολογικών οφειλών
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Δήλωση ακατάσχετου τραπεζικού λογαριασμού
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Συμβουλές σε θέματα τεκμηρίων διαβίωσης, αποφυγής υψηλής φορολόγησης, ανάλυση κεφαλαίου
+          </li>
+          <li class="flex items-start gap-2 text-accent text-sm leading-relaxed">
+            <i class="fas fa-circle text-[5px] text-accent mt-2 shrink-0"></i>
+            Συμβουλές σε εργατικά – ασφαλιστικά θέματα
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================================
+     ROW C — Εργατικά Ασφαλιστικά (dark left, image right)
+============================================================ -->
+
+
+    <!-- ============================================================
+     FOOTER
+============================================================ -->
+    <footer class="bg-navyDark text-gray-400 pt-16 pb-6">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="grid md:grid-cols-3 gap-12 mb-12">
+          <!-- Contact info -->
+          <div>
+            <p class="flex items-start gap-2 text-xs mb-2">
+              <i class="fas fa-location-dot shrink-0 text-accent mt-0.5"></i>
+              Π.ΖΗΔΡΟΥ 3, ΕΛΑΣΣΟΝΑ<br />ΤΚ. 40200
+            </p>
+            <p class="flex items-center gap-2 text-xs mb-1.5">
+              <i class="fas fa-phone shrink-0 text-accent"></i>
+              <a
+                href="tel:+302493401010"
+                class="hover:text-white transition-colors"
+                >24930401010</a
+              >
+            </p>
+            <p class="flex items-center gap-2 text-xs mb-1.5">
+              <i class="fas fa-phone shrink-0 text-accent"></i>
+              <a
+                href="tel:+306972194107"
+                class="hover:text-white transition-colors"
+                >6972194107</a
+              >
+            </p>
+            <p class="flex items-center gap-2 text-xs">
+              <i class="fas fa-envelope shrink-0 text-accent"></i>
+              <a
+                href="mailto:annapipili2107@gmail.com"
+                class="hover:text-white transition-colors"
+                >annapipili2107@gmail.com</a
+              >
+            </p>
+            <p class="flex items-start gap-2 text-xs mt-2">
+              <i class="fas fa-clock shrink-0 text-accent mt-0.5"></i>
+              <span>Δευ-Τετ-Παρ 9:00-14:00 &amp; 17:30-20:30<br/>Τρι-Πεμ 9:00-16:00</span>
+            </p>
+          </div>
+
+          <!-- Recent news (dynamic) -->
+          <div>
+            <div
+              class="text-white font-bold text-sm tracking-widest mb-4 uppercase"
+            >
+              Τελευταία Νέα
+            </div>
+            <ul id="footerNews" class="space-y-4 text-xs">
+              <li>
+                <div
+                  class="h-3 bg-gray-700 rounded w-3/4 mb-1 animate-pulse"
+                ></div>
+                <div
+                  class="h-2.5 bg-gray-800 rounded w-1/3 animate-pulse"
+                ></div>
+              </li>
+              <li>
+                <div
+                  class="h-3 bg-gray-700 rounded w-full mb-1 animate-pulse"
+                ></div>
+                <div
+                  class="h-2.5 bg-gray-800 rounded w-1/3 animate-pulse"
+                ></div>
+              </li>
+              <li>
+                <div
+                  class="h-3 bg-gray-700 rounded w-2/3 mb-1 animate-pulse"
+                ></div>
+                <div
+                  class="h-2.5 bg-gray-800 rounded w-1/3 animate-pulse"
+                ></div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Quick links -->
+          <div>
+            <div
+              class="text-white font-bold text-sm tracking-widest mb-4 uppercase"
+            >
+              Χρήσιμα
+            </div>
+            <ul class="space-y-2 text-xs">
+              <li>
+                <a
+                  href="index.html"
+                  class="hover:text-white transition-colors flex items-center gap-2"
+                  ><i class="fas fa-arrow-right text-[10px]"></i> Αρχική</a
+                >
+              </li>
+              <li>
+                <a
+                  href="services.html"
+                  class="text-accent flex items-center gap-2"
+                  ><i class="fas fa-arrow-right text-[10px]"></i> Υπηρεσίες</a
+                >
+              </li>
+              <li>
+                <a
+                  href="blog.html"
+                  class="hover:text-white transition-colors flex items-center gap-2"
+                  ><i class="fas fa-arrow-right text-[10px]"></i> Blog</a
+                >
+              </li>
+              <li>
+                <a
+                  href="contact.html"
+                  class="hover:text-white transition-colors flex items-center gap-2"
+                  ><i class="fas fa-arrow-right text-[10px]"></i> Επικοινωνία</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div
+          class="border-t border-gray-700/50 pt-6 flex flex-wrap justify-between items-center gap-4 text-xs text-gray-600"
+        >
+          <div class="flex gap-4">
+            <a href="#" class="hover:text-gray-400 transition-colors">Πολιτική Απορρήτου</a>
+            <a href="#" class="hover:text-gray-400 transition-colors">Όροι Χρήσης</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Mobile menu toggle
+      document.getElementById("menuBtn").addEventListener("click", () => {
+        document.getElementById("mobileMenu").classList.toggle("hidden");
+      });
+    </script>
+
+    <!-- Dynamic footer news from Supabase -->
+    <script type="module">
+      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+      const SUPABASE_URL = "https://smotabhgpokfvsxjdxmz.supabase.co";
+      const SUPABASE_ANON_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtb3RhYmhncG9rZnZzeGpkeG16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNjEyOTUsImV4cCI6MjA4OTYzNzI5NX0.jW1l6SwtCqQCm4OnWoO8KsIFDl9Pzy-KQ9TQvuPJ8Ew";
+
+      const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      function formatDate(iso) {
+        if (!iso) return "";
+        return new Date(iso).toLocaleDateString("el-GR", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+      }
+
+      const { data, error } = await supabase
+        .from("posts")
+        .select("id, title, published_at")
+        .order("published_at", { ascending: false })
+        .limit(3);
+
+      const footerNews = document.getElementById("footerNews");
+      if (!error && data && data.length > 0) {
+        footerNews.innerHTML = data
+          .map((p) => {
+            const date = formatDate(p.published_at);
+            const title = p.title || "(χωρίς τίτλο)";
+            const href = `post.html?id=${p.id}`;
+            return `<li>
+        <a href="${href}" class="text-accent hover:text-white transition-colors font-medium leading-snug block">${title}</a>
+        <p class="text-gray-500 mt-0.5">${date}</p>
+      </li>`;
+          })
+          .join("");
+      } else {
+        footerNews.innerHTML =
+          '<li class="text-gray-600 text-xs">Δεν βρέθηκαν δημοσιεύσεις.</li>';
+      }
+    </script>
+
+    <!-- UserWay Accessibility Widget -->
+    <script
+      src="https://cdn.userway.org/widget.js"
+      data-account="3zdxx06sOy"
+      data-position="2"
+      data-size="large"
+    ></script>
+  </body>
+</html>
