@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="logo.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Άρθρο | ΠΙΠΙΛΗ ΑΝΝΑ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:     '#1a2e5a',
+            navyDark: '#111e3d',
+            accent:   '#3b5fc0',
+          },
+          typography: {
+            DEFAULT: {
+              css: {
+                color: '#374151',
+                a: { color: '#3b5fc0' },
+                'h1,h2,h3,h4': { color: '#1a2e5a' },
+              }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* ── Navbar ── */
+    #navbar { transition: box-shadow .3s; }
+
+    /* ── Prose styling for Quill HTML content ── */
+    .post-content p   { margin-bottom: 1rem; line-height: 1.8; color: #374151; }
+    .post-content h1,
+    .post-content h2,
+    .post-content h3  { color: #1a2e5a; font-weight: 700; margin: 1.5rem 0 .75rem; }
+    .post-content h1  { font-size: 1.75rem; }
+    .post-content h2  { font-size: 1.4rem; }
+    .post-content h3  { font-size: 1.15rem; }
+    .post-content ul,
+    .post-content ol  { padding-left: 1.5rem; margin-bottom: 1rem; }
+    .post-content ul  { list-style-type: disc; }
+    .post-content ol  { list-style-type: decimal; }
+    .post-content li  { margin-bottom: .4rem; line-height: 1.7; color: #374151; }
+    .post-content a   { color: #3b5fc0; text-decoration: underline; }
+    .post-content strong { color: #111e3d; }
+    .post-content blockquote {
+      border-left: 4px solid #3b5fc0;
+      padding-left: 1rem;
+      margin: 1.25rem 0;
+      color: #6b7280;
+      font-style: italic;
+    }
+    .post-content img { max-width: 100%; border-radius: .5rem; margin: 1rem 0; }
+    .post-content table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+    .post-content th  { background: #1a2e5a; color: #fff; padding: .5rem .75rem; text-align: left; }
+    .post-content td  { border: 1px solid #e5e7eb; padding: .5rem .75rem; }
+
+    /* ── Skeleton ── */
+    @keyframes shimmer { 0%{background-position:-800px 0} 100%{background-position:800px 0} }
+    .skeleton {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 800px 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: .375rem;
+    }
+
+    /* ── Social share row ── */
+    .share-icon { transition: color .2s; }
+    .share-icon:hover { color: #3b5fc0; }
+  </style>
+</head>
+<body class="font-sans bg-white text-gray-800">
+
+<!-- ============================================================
+     NAVBAR
+============================================================ -->
+<header id="navbar" class="sticky top-0 z-50 bg-white border-b border-gray-100">
+  <!-- Top bar -->
+  <div class="bg-navy text-white text-xs py-2">
+    <div class="max-w-7xl mx-auto px-6 flex items-center justify-between gap-4 flex-wrap">
+      <div class="flex items-center gap-4 flex-wrap">
+        <span class="flex items-center gap-1.5">
+          <i class="fas fa-phone text-[10px]"></i> Τ. 2493401010 | Κ. 6972194107
+        </span>
+        <span class="flex items-center gap-1.5">
+          <i class="fas fa-envelope text-[10px]"></i> annapipili2107@gmail.com
+        </span>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="hover:text-gray-300 transition-colors" title="Ελληνικά">ΕΛ</button>
+        <span class="text-gray-600">|</span>
+        <button class="hover:text-gray-300 transition-colors" title="English">EN</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main nav -->
+  <nav class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-3">
+      <img src="logo.png" alt="ΠΙΠΙΛΗ ΑΝΝΑ" class="h-20 w-auto" />
+    </a>
+
+    <!-- Desktop menu -->
+    <ul class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
+      <li><a href="index.html" class="hover:text-navy transition-colors">Αρχική</a></li>
+      <li><a href="services.html" class="hover:text-navy transition-colors">Υπηρεσίες</a></li>
+      <li><a href="blog.html" class="text-accent font-semibold">Blog</a></li>
+      <li><a href="contact.html" class="hover:text-navy transition-colors">Επικοινωνία</a></li>
+    </ul>
+
+    <!-- Mobile burger -->
+    <button id="menuBtn" class="md:hidden text-gray-600 text-xl">
+      <i class="fas fa-bars"></i>
+    </button>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div id="mobileMenu" class="hidden md:hidden border-t border-gray-100 bg-white px-6 pb-4">
+    <ul class="flex flex-col gap-4 pt-4 text-sm font-medium text-gray-600">
+      <li><a href="index.html">Αρχική</a></li>
+      <li><a href="services.html">Υπηρεσίες</a></li>
+      <li><a href="blog.html" class="text-accent font-semibold">Blog</a></li>
+      <li><a href="contact.html">Επικοινωνία</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- ============================================================
+     POST HERO (title + meta — populated by JS)
+============================================================ -->
+<div id="postHero" class="relative bg-navy text-white overflow-hidden" style="min-height:220px">
+  <!-- Background image -->
+  <div id="heroBg" class="absolute inset-0 bg-cover bg-center opacity-30" style="background-image:none"></div>
+  <div class="absolute inset-0 bg-gradient-to-b from-navy/80 to-navy/95"></div>
+
+  <!-- Actual content (hidden until loaded) -->
+  <div id="heroContent" class="hidden relative z-10 max-w-4xl mx-auto px-6 py-16">
+    <h1 id="postTitle" class="text-3xl md:text-4xl font-extrabold leading-tight mb-4"></h1>
+    <div class="flex flex-wrap items-center gap-4 text-sm text-blue-200">
+      <span><i class="far fa-clock mr-1"></i><span id="postDate"></span></span>
+      <span><i class="far fa-folder mr-1"></i><span id="postCategory"></span></span>
+      <span><i class="far fa-comment mr-1"></i> 0</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MAIN LAYOUT
+============================================================ -->
+<main class="max-w-6xl mx-auto px-6 py-14">
+  <!-- Not found message (hidden by default) -->
+  <div id="notFound" class="hidden text-center py-24">
+    <i class="fas fa-file-circle-question text-5xl text-gray-300 mb-4"></i>
+    <h2 class="text-2xl font-bold text-gray-700 mb-2">Το άρθρο δεν βρέθηκε.</h2>
+    <p class="text-gray-400 mb-6">Ο σύνδεσμος μπορεί να είναι λανθασμένος ή το άρθρο να έχει αφαιρεθεί.</p>
+    <a href="blog.html"
+       class="inline-block bg-accent text-white text-sm font-semibold px-6 py-2.5 rounded hover:bg-navy transition-colors">
+      ← Επιστροφή στο Blog
+    </a>
+  </div>
+
+  <!-- Grid layout -->
+  <div id="postGrid" class="grid lg:grid-cols-3 gap-12">
+
+    <!-- ── LEFT: Main content ── -->
+    <article class="lg:col-span-2">
+
+      <!-- Hero image -->
+      <div id="heroImageWrap" class="hidden mb-8 rounded-lg overflow-hidden shadow">
+        <img id="heroImage" src="" alt="" class="w-full object-cover max-h-[480px]" />
+      </div>
+
+      <!-- Actual post content -->
+      <div id="postContent" class="post-content text-gray-700 text-base leading-relaxed hidden"></div>
+
+      <!-- Back to blog -->
+      <div id="shareRow" class="hidden mt-12 pt-6 border-t border-gray-200">
+        <a href="blog.html" class="flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-gray-500 hover:text-accent transition-colors">
+          <i class="fas fa-arrow-left text-[10px]"></i> Επιστροφή στο Blog
+        </a>
+      </div>
+
+    </article>
+
+    <!-- ── RIGHT: Sidebar ── -->
+    <aside class="lg:col-span-1 space-y-10">
+
+      <!-- Search -->
+      <div>
+        <h3 class="text-base font-bold text-gray-800 mb-4 pb-2 border-b border-gray-200">Αναζήτηση</h3>
+        <div class="relative">
+          <input id="sidebarSearch" type="text" placeholder="Search..."
+                 class="w-full border border-gray-200 rounded px-4 py-2.5 text-sm pr-10 focus:outline-none focus:border-accent transition-colors" />
+          <button onclick="doSearch()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-accent transition-colors">
+            <i class="fas fa-magnifying-glass text-sm"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Categories -->
+      <div>
+        <h3 class="text-base font-bold text-gray-800 mb-4 pb-2 border-b border-gray-200">Κατηγορίες</h3>
+        <ul class="space-y-2.5 text-sm text-accent">
+          <li><a href="blog.html?cat=Blog"                    class="hover:underline hover:text-navy transition-colors">Blog</a></li>
+          <li><a href="blog.html?cat=Briefing+της+ημέρας"     class="hover:underline hover:text-navy transition-colors">Briefing της ημέρας</a></li>
+          <li><a href="blog.html?cat=Covid-19"                class="hover:underline hover:text-navy transition-colors">Covid-19</a></li>
+          <li><a href="blog.html?cat=myDATA"                  class="hover:underline hover:text-navy transition-colors">myDATA</a></li>
+          <li><a href="blog.html?cat=Taxheaven"               class="hover:underline hover:text-navy transition-colors">Taxheaven</a></li>
+          <li><a href="blog.html?cat=Αγγελίες"                class="hover:underline hover:text-navy transition-colors">Αγγελίες</a></li>
+          <li><a href="blog.html?cat=Ανακοινώσεις"            class="hover:underline hover:text-navy transition-colors">Ανακοινώσεις</a></li>
+          <li><a href="blog.html?cat=Άρθρα"                   class="hover:underline hover:text-navy transition-colors">Άρθρα</a></li>
+        </ul>
+      </div>
+
+    </aside>
+
+  </div><!-- /postGrid -->
+</main>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer class="bg-navyDark text-gray-400 pt-16 pb-6">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid md:grid-cols-3 gap-12 mb-12">
+      <!-- Brand -->
+      <div>
+        <img src="logo.png" alt="ΠΙΠΙΛΗ ΑΝΝΑ" class="h-16 w-auto mb-4 brightness-200" />
+        <p class="text-xs leading-relaxed">Εξειδικευμένες λογιστικές, φοροτεχνικές και συμβουλευτικές υπηρεσίες.</p>
+      </div>
+      <!-- Contact -->
+      <div>
+        <div class="text-white font-bold text-sm tracking-widest mb-4 uppercase">Επικοινωνία</div>
+        <ul class="space-y-2 text-xs">
+          <li class="flex items-start gap-2"><i class="fas fa-location-dot mt-0.5 text-accent shrink-0"></i> Π.ΖΗΔΡΟΥ 3, ΕΛΑΣΣΟΝΑ / ΤΚ. 40200</li>
+          <li class="flex items-start gap-2"><i class="fas fa-phone mt-0.5 text-accent shrink-0"></i> 24930401010</li>
+          <li class="flex items-start gap-2"><i class="fas fa-mobile-screen mt-0.5 text-accent shrink-0"></i> 6972194107</li>
+          <li class="flex items-start gap-2"><i class="fas fa-envelope mt-0.5 text-accent shrink-0"></i> annapipili2107@gmail.com</li>
+          <li class="flex items-start gap-2 mt-3"><i class="fas fa-clock mt-0.5 text-accent shrink-0"></i>
+            <span>Δευ-Τετ-Παρ 9:00-14:00 &amp; 17:30-20:30<br />Τρι-Πεμ 9:00-16:00</span>
+          </li>
+        </ul>
+      </div>
+      <!-- Recent news -->
+      <div>
+        <div class="text-white font-bold text-sm tracking-widest mb-4 uppercase">Τελευταία Νέα</div>
+        <ul id="footerNews" class="space-y-4 text-xs">
+          <li><div class="h-3 bg-gray-700 rounded w-3/4 mb-1 animate-pulse"></div><div class="h-2.5 bg-gray-800 rounded w-1/3 animate-pulse"></div></li>
+          <li><div class="h-3 bg-gray-700 rounded w-full mb-1 animate-pulse"></div><div class="h-2.5 bg-gray-800 rounded w-1/3 animate-pulse"></div></li>
+        </ul>
+      </div>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-gray-700 pt-6 text-center text-xs text-gray-600">
+      &copy; <span id="yr"></span> ΠΙΠΙΛΗ ΑΝΝΑ — Λογιστικές &amp; Φοροτεχνικές Υπηρεσίες
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     MOBILE MENU TOGGLE
+============================================================ -->
+<script>
+  document.getElementById('menuBtn').addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.toggle('hidden');
+  });
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  function doSearch() {
+    const q = document.getElementById('sidebarSearch').value.trim();
+    if (q) window.location.href = 'blog.html?search=' + encodeURIComponent(q);
+  }
+  document.getElementById('sidebarSearch').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doSearch();
+  });
+</script>
+
+<!-- ============================================================
+     SUPABASE — FETCH SINGLE POST
+============================================================ -->
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  const SUPABASE_URL      = 'https://smotabhgpokfvsxjdxmz.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtb3RhYmhncG9rZnZzeGpkeG16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNjEyOTUsImV4cCI6MjA4OTYzNzI5NX0.jW1l6SwtCqQCm4OnWoO8KsIFDl9Pzy-KQ9TQvuPJ8Ew';
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // ── helpers ─────────────────────────────────────────────────
+  function show(id)  { document.getElementById(id).classList.remove('hidden'); }
+  function hide(id)  { document.getElementById(id).classList.add('hidden'); }
+
+  function formatDate(iso) {
+    return new Date(iso).toLocaleDateString('el-GR', {
+      day: 'numeric', month: 'long', year: 'numeric'
+    }).toUpperCase();
+  }
+
+  function showNotFound() {
+    hide('postGrid');
+    hide('postHero');
+    show('notFound');
+  }
+
+  // ── read ?id= from URL ───────────────────────────────────────
+  const params = new URLSearchParams(window.location.search);
+  const postId = params.get('id');
+
+  if (!postId) {
+    showNotFound();
+  } else {
+    const { data: post, error } = await supabase
+      .from('posts')
+      .select('id, title, content, image_url, category, published_at, slug')
+      .eq('id', postId)
+      .single();
+
+    if (error || !post) {
+      console.error('Post fetch error:', error);
+      showNotFound();
+    } else {
+      // ── Update <title> ───────────────────────────────────────
+      document.title = `${post.title} | ΠΙΠΙΛΗ ΑΝΝΑ`;
+
+      // ── Hero section ─────────────────────────────────────────
+      if (post.image_url) {
+        document.getElementById('heroBg').style.backgroundImage = `url('${post.image_url}')`;
+      }
+      document.getElementById('postTitle').textContent    = post.title;
+      document.getElementById('postDate').textContent     = formatDate(post.published_at);
+      document.getElementById('postCategory').textContent = post.category || '—';
+
+      show('heroContent');
+
+      // ── Hero image (article body) ─────────────────────────────
+      if (post.image_url) {
+        document.getElementById('heroImage').src = post.image_url;
+        document.getElementById('heroImage').alt = post.title;
+        show('heroImageWrap');
+      }
+
+      // ── Content ───────────────────────────────────────────────
+const contentEl = document.getElementById('postContent');
+      contentEl.innerHTML = post.content || '<p class="text-gray-400">Δεν υπάρχει περιεχόμενο.</p>';
+      show('postContent');
+
+      // ── Share row ─────────────────────────────────────────────
+      show('shareRow');
+    }
+  }
+</script>
+
+  <!-- Footer recent posts -->
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    const supabase = createClient('https://smotabhgpokfvsxjdxmz.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtb3RhYmhncG9rZnZzeGpkeG16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNjEyOTUsImV4cCI6MjA4OTYzNzI5NX0.jW1l6SwtCqQCm4OnWoO8KsIFDl9Pzy-KQ9TQvuPJ8Ew');
+    const { data } = await supabase.from('posts').select('id, title, published_at').order('published_at', { ascending: false }).limit(3);
+    const el = document.getElementById('footerNews');
+    if (data && data.length > 0) {
+      el.innerHTML = data.map(p => `<li>
+        <a href="post.html?id=${p.id}" class="text-accent hover:text-white transition-colors font-medium leading-snug block">${p.title}</a>
+        <p class="text-gray-500 mt-0.5">${new Date(p.published_at).toLocaleDateString('el-GR',{day:'numeric',month:'long',year:'numeric'})}</p>
+      </li>`).join('');
+    } else {
+      el.innerHTML = '<li class="text-gray-600 text-xs">Δεν βρέθηκαν δημοσιεύσεις.</li>';
+    }
+  </script>
+
+  <!-- UserWay Accessibility Widget -->
+  <script src="https://cdn.userway.org/widget.js" data-account="3zdxx06sOy" data-position="2" data-size="large"></script>
+</body>
+</html>

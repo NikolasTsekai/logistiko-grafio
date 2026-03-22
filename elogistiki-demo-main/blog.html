@@ -2,6 +2,7 @@
 <html lang="el">
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="logo.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Blog | e-logistiki</title>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -218,21 +219,17 @@
         <div>
           <h3 class="font-bold text-gray-800 text-base mb-3">Κατηγορίες</h3>
           <ul id="categoryList" class="space-y-2">
-            <!-- "All" option -->
             <li>
-              <button
-                data-category=""
-                class="cat-link active text-left w-full text-sm text-gray-600 py-0.5"
-              >Όλα τα άρθρα</button>
+              <button data-category="" class="cat-link active text-left w-full text-sm text-gray-600 py-0.5">Όλα τα άρθρα</button>
             </li>
-            <li><button data-category="Blog"                  class="cat-link text-left w-full text-sm text-gray-600 py-0.5">Blog</button></li>
-            <li><button data-category="Briefing της ημέρας"   class="cat-link text-left w-full text-sm text-gray-600 py-0.5">Briefing της ημέρας</button></li>
-            <li><button data-category="Covid-19"              class="cat-link text-left w-full text-sm text-gray-600 py-0.5">Covid-19</button></li>
-            <li><button data-category="myDATA"                class="cat-link text-left w-full text-sm text-gray-600 py-0.5">myDATA</button></li>
-            <li><button data-category="Taxheaven"             class="cat-link text-left w-full text-sm text-gray-600 py-0.5">Taxheaven</button></li>
-            <li><button data-category="Αγγελίες"              class="cat-link text-left w-full text-sm text-gray-600 py-0.5">Αγγελίες</button></li>
-            <li><button data-category="Ανακοινώσεις"          class="cat-link text-left w-full text-sm text-gray-600 py-0.5">Ανακοινώσεις</button></li>
-            <li><button data-category="Άρθρα"                 class="cat-link text-left w-full text-sm text-gray-600 py-0.5">Άρθρα</button></li>
+            <li><button data-category="Blog"                 class="cat-link text-left w-full text-sm text-gray-600 py-0.5">Blog</button></li>
+            <li><button data-category="Briefing της ημέρας"  class="cat-link text-left w-full text-sm text-gray-600 py-0.5">Briefing της ημέρας</button></li>
+            <li><button data-category="Covid-19"             class="cat-link text-left w-full text-sm text-gray-600 py-0.5">Covid-19</button></li>
+            <li><button data-category="myDATA"               class="cat-link text-left w-full text-sm text-gray-600 py-0.5">myDATA</button></li>
+            <li><button data-category="Taxheaven"            class="cat-link text-left w-full text-sm text-gray-600 py-0.5">Taxheaven</button></li>
+            <li><button data-category="Αγγελίες"             class="cat-link text-left w-full text-sm text-gray-600 py-0.5">Αγγελίες</button></li>
+            <li><button data-category="Ανακοινώσεις"         class="cat-link text-left w-full text-sm text-gray-600 py-0.5">Ανακοινώσεις</button></li>
+            <li><button data-category="Άρθρα"                class="cat-link text-left w-full text-sm text-gray-600 py-0.5">Άρθρα</button></li>
           </ul>
         </div>
 
@@ -419,7 +416,7 @@
   }
 
   function renderFooterRecent(posts) {
-    const el = document.getElementById('footerRecentPosts');
+    const el = document.getElementById('footerNews');
     if (!posts || posts.length === 0) { el.innerHTML = ''; return; }
     el.innerHTML = posts.slice(0, 3).map(p => `
       <li>

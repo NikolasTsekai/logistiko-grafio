@@ -2,6 +2,7 @@
 <html lang="el">
   <head>
     <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>e-logistiki | Λογιστικές & Φοροτεχνικές Υπηρεσίες</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -494,34 +495,31 @@
           <form
             id="contactForm"
             class="grid grid-cols-2 gap-4"
+            novalidate
             onsubmit="handleFormSubmit(event)"
           >
             <input
+              id="iName"
               type="text"
               placeholder="Ονοματεπώνυμο*"
-              required
               class="border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 placeholder-gray-400"
             />
             <input
+              id="iEmail"
               type="email"
               placeholder="Email*"
-              required
               class="border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 placeholder-gray-400"
             />
             <input
+              id="iTitle"
               type="text"
-              placeholder="Θέμα*"
-              required
-              class="border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 placeholder-gray-400"
+              placeholder="Θέμα (Προαιρετικό)"
+              class="col-span-2 border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 placeholder-gray-400"
             />
-            <input
-              type="tel"
-              placeholder="Τηλέφωνο"
-              class="border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 placeholder-gray-400"
-            />
+
             <textarea
+              id="iMessage"
               placeholder="Μήνυμα*"
-              required
               rows="5"
               class="col-span-2 border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 placeholder-gray-400 resize-none"
             ></textarea>
@@ -728,23 +726,77 @@
       /* ---- Contact form ---- */
       function handleFormSubmit(e) {
         e.preventDefault();
-        const form = document.getElementById("contactForm");
-        const success = document.getElementById("formSuccess");
-        success.classList.remove("hidden");
+
+        const name    = document.getElementById('iName').value.trim();
+        const email   = document.getElementById('iEmail').value.trim();
+        const message = document.getElementById('iMessage').value.trim();
+        const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+        function setError(id, hasError) {
+          document.getElementById(id).style.borderColor = hasError ? '#ef4444' : '';
+        }
+
+        setError('iName',    !name);
+        setError('iEmail',   !email || !emailOk);
+        setError('iMessage', !message);
+
+        if (!name || !email || !emailOk || !message) return;
+
+        const form    = document.getElementById('contactForm');
+        const success = document.getElementById('formSuccess');
+        success.classList.remove('hidden');
         form.reset();
-        setTimeout(() => success.classList.add("hidden"), 5000);
+        ['iName','iEmail','iMessage'].forEach(id => document.getElementById(id).style.borderColor = '');
+        setTimeout(() => success.classList.add('hidden'), 5000);
       }
     </script>
 
-    <!-- ── Safety net: if module never runs (CDN fail / ad-blocker), clear skeletons after 8s -->
-    <script>
-      var _newsSafetyNet = setTimeout(function () {
-        var g = document.getElementById("news-grid");
-        if (g && g.querySelector(".animate-pulse")) {
-          g.innerHTML =
-            '<p class="col-span-3 text-center text-gray-400 text-sm py-8">Αδυναμία φόρτωσης. <a href="" class="underline">Ανανεώστε</a>.</p>';
-        }
-      }, 8000);
+        <!-- Dynamic latest news from Supabase -->
+    <script type="module">
+      import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+      const supabase = createClient(
+        'https://smotabhgpokfvsxjdxmz.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtb3RhYmhncG9rZnZzeGpkeG16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNjEyOTUsImV4cCI6MjA4OTYzNzI5NX0.jW1l6SwtCqQCm4OnWoO8KsIFDl9Pzy-KQ9TQvuPJ8Ew'
+      );
+
+      function formatDate(iso) {
+        if (!iso) return '';
+        return new Date(iso).toLocaleDateString('el-GR', { day: 'numeric', month: 'long', year: 'numeric' });
+      }
+
+      function newsCardHTML(post) {
+        const img   = post.image_url || '';
+        const date  = formatDate(post.published_at);
+        const title = post.title || '(χωρίς τίτλο)';
+        const cat   = post.category || '';
+        const href  = 'post.html?id=' + post.id;
+        return '<article class="news-card bg-white overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow">'
+          + '<a href="' + href + '" class="news-img-wrap">'
+          + (img ? '<img src="' + img + '" alt="' + title + '" loading="lazy" onerror="this.classList.add("broken")" />' : '')
+          + '</a><div class="p-6 flex flex-col flex-1">'
+          + '<p class="text-xs text-gray-400 mb-2">' + date + '</p>'
+          + '<a href="' + href + '" class="font-semibold text-accent hover:underline text-sm leading-snug flex-1">' + title + '</a>'
+          + (cat ? '<div class="mt-3"><span class="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5">' + cat + '</span></div>' : '')
+          + '</div></article>';
+      }
+
+      const grid = document.getElementById('news-grid');
+
+      const { data, error } = await supabase
+        .from('posts')
+        .select('id, title, image_url, published_at, category')
+        .order('published_at', { ascending: false })
+        .limit(3);
+
+      if (!error && data && data.length > 0) {
+        grid.innerHTML = data.map(newsCardHTML).join('');
+        document.getElementById('footerNews').innerHTML = data.map(function(p) {
+          return '<li><a href="post.html?id=' + p.id + '" class="text-accent hover:text-white transition-colors font-medium leading-snug block">' + (p.title || '') + '</a><p class="text-gray-500 mt-0.5">' + formatDate(p.published_at) + '</p></li>';
+        }).join('');
+      } else {
+        grid.innerHTML = '<p class="col-span-3 text-center text-gray-400 text-sm py-8">Δεν βρέθηκαν δημοσιεύσεις.</p>';
+      }
     </script>
 
     <!-- ── Dynamic latest news from Supabase ───────────────────── -->

@@ -2,6 +2,7 @@
 <html lang="el">
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="logo.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Επικοινωνία | e-logistiki</title>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -69,6 +70,7 @@
     }
     .fade-up { animation: fadeUp .7s ease forwards; }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
 <body class="font-sans text-gray-700 bg-white">
 
@@ -168,35 +170,30 @@
 
         <form id="contactForm" novalidate class="space-y-5">
           <div>
-            <label class="block text-sm font-medium text-gray-600 mb-1.5" for="cName">Ονοματεπώνυμο</label>
-            <input id="cName" type="text" placeholder="Ονοματεπώνυμο*" required
+            <label class="block text-sm font-medium text-gray-600 mb-1.5" for="fname">Ονοματεπώνυμο</label>
+            <input id="fname" name="name" type="text" placeholder="Ονοματεπώνυμο*" required
                    class="form-input w-full border border-gray-200 rounded px-4 py-2.5 text-sm transition-all" />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-600 mb-1.5" for="cEmail">Email</label>
-            <input id="cEmail" type="email" placeholder="Email*" required
+            <label class="block text-sm font-medium text-gray-600 mb-1.5" for="femail">Email</label>
+            <input id="femail" name="email" type="email" placeholder="Email*" required
                    class="form-input w-full border border-gray-200 rounded px-4 py-2.5 text-sm transition-all" />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-600 mb-1.5" for="cSubject">Θέμα</label>
-            <input id="cSubject" type="text" placeholder="Θέμα*" required
+            <label class="block text-sm font-medium text-gray-600 mb-1.5" for="ftitle">Θέμα <span class="text-gray-400 font-normal">(Προαιρετικό)</span></label>
+            <input id="ftitle" name="title" type="text" placeholder="Θέμα"
                    class="form-input w-full border border-gray-200 rounded px-4 py-2.5 text-sm transition-all" />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-600 mb-1.5" for="cMessage">Μήνυμα</label>
-            <textarea id="cMessage" rows="6" placeholder="Μήνυμα*" required
+            <label class="block text-sm font-medium text-gray-600 mb-1.5" for="fmessage">Μήνυμα</label>
+            <textarea id="fmessage" name="message" rows="6" placeholder="Μήνυμα*" required
                       class="form-input w-full border border-gray-200 rounded px-4 py-2.5 text-sm transition-all resize-y"></textarea>
           </div>
 
-          <!-- Success message (hidden by default) -->
-          <div id="formSuccess" class="hidden bg-green-50 border border-green-200 text-green-700 text-sm rounded px-4 py-3 flex items-center gap-2">
-            <i class="fas fa-circle-check"></i>
-            <span>Το μήνυμά σας στάλθηκε επιτυχώς!</span>
-          </div>
-
-          <button type="submit"
-                  class="bg-gray-900 hover:bg-black text-white font-semibold text-sm px-8 py-3 rounded transition-colors tracking-wide">
-            Αποστολή
+          <button id="submitBtn" type="submit"
+                  class="bg-navy hover:bg-navyDark text-white font-semibold text-sm px-8 py-3 rounded transition-colors tracking-wide flex items-center gap-2">
+            <i id="submitIcon" class="fas fa-paper-plane"></i>
+            <span id="submitText">Αποστολή</span>
           </button>
         </form>
       </div>
@@ -315,14 +312,96 @@
     document.getElementById('mobileMenu').classList.toggle('hidden');
   });
 
-  // Form submit
+  // ── EmailJS form submit ─────────────────────────────────────
+  emailjs.init('HUeMAJAye1nlNY1jA');
+
   document.getElementById('contactForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    document.getElementById('formSuccess').classList.remove('hidden');
-    this.reset();
-    setTimeout(() => document.getElementById('formSuccess').classList.add('hidden'), 5000);
+
+    const name    = document.getElementById('fname').value.trim();
+    const email   = document.getElementById('femail').value.trim();
+    const message = document.getElementById('fmessage').value.trim();
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    function setError(id, hasError) {
+      document.getElementById(id).style.borderColor = hasError ? '#ef4444' : '';
+    }
+    setError('fname',    !name);
+    setError('femail',   !email || !emailOk);
+    setError('fmessage', !message);
+
+    if (!name || !email || !emailOk || !message) return;
+
+    const btn      = document.getElementById('submitBtn');
+    const icon     = document.getElementById('submitIcon');
+    const text     = document.getElementById('submitText');
+
+    // Loading state
+    btn.disabled      = true;
+    icon.className    = 'fas fa-spinner fa-spin';
+    text.textContent  = 'Αποστολή...';
+
+    emailjs.sendForm('service_8czl6gh', 'template_laegyks', this)
+      .then(function() {
+        showToast('Το μήνυμά σας στάλθηκε επιτυχώς!', 'success');
+        document.getElementById('contactForm').reset();
+        ['fname','femail','fmessage'].forEach(id => document.getElementById(id).style.borderColor = '');
+      })
+      .catch(function(err) {
+        showToast('Σφάλμα αποστολής. Δοκιμάστε ξανά.', 'error');
+        console.error('EmailJS error:', err);
+      })
+      .finally(function() {
+        btn.disabled     = false;
+        icon.className   = 'fas fa-paper-plane';
+        text.textContent = 'Αποστολή';
+      });
   });
+
+  // ── Toast notification ───────────────────────────────────────
+  function showToast(message, type) {
+    const toast = document.getElementById('toast');
+    const toastIcon = document.getElementById('toastIcon');
+    const toastMsg  = document.getElementById('toastMsg');
+
+    toastIcon.className = type === 'success'
+      ? 'fas fa-circle-check text-lg shrink-0'
+      : 'fas fa-circle-exclamation text-lg shrink-0';
+
+    toast.className = 'fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 rounded-xl shadow-xl text-white text-sm font-medium min-w-[260px] transition-all duration-300 '
+      + (type === 'success' ? 'bg-green-600' : 'bg-red-500');
+
+    toastMsg.textContent = message;
+    toast.classList.remove('opacity-0', 'translate-y-4');
+
+    setTimeout(function() {
+      toast.classList.add('opacity-0', 'translate-y-4');
+    }, 4000);
+  }
 </script>
+
+  
+<!-- Toast notification -->
+<div id="toast" class="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 rounded-xl shadow-xl text-white text-sm font-medium min-w-[260px] opacity-0 translate-y-4 transition-all duration-300 bg-green-600">
+  <i id="toastIcon" class="fas fa-circle-check text-lg shrink-0"></i>
+  <span id="toastMsg"></span>
+</div>
+
+<!-- Footer recent posts -->
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    const supabase = createClient('https://smotabhgpokfvsxjdxmz.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtb3RhYmhncG9rZnZzeGpkeG16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNjEyOTUsImV4cCI6MjA4OTYzNzI5NX0.jW1l6SwtCqQCm4OnWoO8KsIFDl9Pzy-KQ9TQvuPJ8Ew');
+    const { data } = await supabase.from('posts').select('id, title, published_at').order('published_at', { ascending: false }).limit(3);
+    const el = document.getElementById('footerNews');
+    if (data && data.length > 0) {
+      el.innerHTML = data.map(p => `<li>
+        <a href="post.html?id=${p.id}" class="text-accent hover:text-white transition-colors font-medium leading-snug block">${p.title}</a>
+        <p class="text-gray-500 mt-0.5">${new Date(p.published_at).toLocaleDateString('el-GR',{day:'numeric',month:'long',year:'numeric'})}</p>
+      </li>`).join('');
+    } else {
+      el.innerHTML = '<li class="text-gray-600 text-xs">Δεν βρέθηκαν δημοσιεύσεις.</li>';
+    }
+  </script>
 
   <!-- UserWay Accessibility Widget -->
   <script src="https://cdn.userway.org/widget.js" data-account="3zdxx06sOy" data-position="2" data-size="large"></script>
