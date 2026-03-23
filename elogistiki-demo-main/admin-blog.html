@@ -143,20 +143,6 @@
               <option value="Άρθρα">Άρθρα</option>
             </select>
           </div>
-          <div>
-            <label class="block text-sm font-semibold text-gray-600 mb-1.5" for="postImageUrl">
-              URL Εικόνας Εξωφύλλου
-            </label>
-            <input id="postImageUrl" type="url" placeholder="https://..."
-                   class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm transition-all" />
-          </div>
-        </div>
-
-        <!-- Image preview -->
-        <div id="imagePreviewWrapper" class="hidden">
-          <p class="text-xs text-gray-400 mb-1.5 font-medium">Προεπισκόπηση εικόνας</p>
-          <img id="imagePreview" src="" alt="Preview"
-               class="w-full max-h-48 object-cover rounded-lg border border-gray-100" />
         </div>
 
         <!-- Excerpt -->
@@ -258,19 +244,6 @@
     }
   });
 
-  // Image URL preview
-  document.getElementById('postImageUrl').addEventListener('input', function () {
-    const url = this.value.trim();
-    const wrapper = document.getElementById('imagePreviewWrapper');
-    const img     = document.getElementById('imagePreview');
-    if (url) {
-      img.src = url;
-      wrapper.classList.remove('hidden');
-    } else {
-      wrapper.classList.add('hidden');
-    }
-  });
-
   // Clear form
   document.getElementById('clearFormBtn').addEventListener('click', resetForm);
   document.getElementById('cancelEditBtn').addEventListener('click', resetForm);
@@ -279,10 +252,10 @@
     document.getElementById('editingId').value    = '';
     document.getElementById('postTitle').value    = '';
     document.getElementById('postCategory').value = '';
-    document.getElementById('postImageUrl').value = '';
+
     document.getElementById('postExcerpt').value  = '';
     quill.setContents([]);
-    document.getElementById('imagePreviewWrapper').classList.add('hidden');
+
     document.getElementById('panelTitle').textContent    = 'Νέο Άρθρο';
     document.getElementById('submitBtnLabel').textContent = 'Δημοσίευση';
     document.getElementById('cancelEditBtn').classList.add('hidden');
@@ -336,11 +309,9 @@
   // ── DB STATUS ────────────────────────────────────────────────
   async function checkConnection() {
     const { error } = await supabase.from('posts').select('id').limit(1);
-    const el = document.getElementById('dbStatus');
     if (error) {
-      el.innerHTML = '<span class="w-2 h-2 rounded-full bg-red-500 inline-block"></span> Αποτυχία σύνδεσης — ελέγξτε τα credentials.';
+      console.error('Supabase connection failed:', error.message);
     } else {
-      el.innerHTML = '<span class="w-2 h-2 rounded-full bg-green-500 inline-block"></span> Συνδεδεμένο στη Supabase.';
       loadStats();
       loadPostsList();
     }
@@ -431,17 +402,11 @@
     document.getElementById('editingId').value    = post.id;
     document.getElementById('postTitle').value    = post.title || '';
     document.getElementById('postCategory').value = post.category || '';
-    document.getElementById('postImageUrl').value = post.image_url || '';
+
     document.getElementById('postExcerpt').value  = post.excerpt || '';
 
     // Set Quill content (expects stored HTML)
     quill.clipboard.dangerouslyPasteHTML(post.content || '');
-
-    // Update image preview
-    if (post.image_url) {
-      document.getElementById('imagePreview').src = post.image_url;
-      document.getElementById('imagePreviewWrapper').classList.remove('hidden');
-    }
 
     document.getElementById('panelTitle').textContent     = 'Επεξεργασία Άρθρου';
     document.getElementById('submitBtnLabel').textContent  = 'Αποθήκευση';
@@ -469,7 +434,6 @@
     const editingId   = document.getElementById('editingId').value.trim();
     const title       = document.getElementById('postTitle').value.trim();
     const category    = document.getElementById('postCategory').value;
-    const imageUrl    = document.getElementById('postImageUrl').value.trim();
     const excerpt     = document.getElementById('postExcerpt').value.trim();
     const htmlContent = quill.root.innerHTML;
 
@@ -494,7 +458,7 @@
       title,
       content:      htmlContent,
       excerpt:      excerpt || null,
-      image_url:    imageUrl || null,
+
       category,
       slug,
       // Only set published_at on insert (don't overwrite on update)

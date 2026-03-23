@@ -71,9 +71,25 @@
     .fade-up { animation: fadeUp .7s ease forwards; }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script>
+    // Disable browser scroll restoration
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    // Clear all form fields on load
+    window.addEventListener('load', function() {
+      document.querySelectorAll('form').forEach(f => f.reset());
+      if (window.location.hash) {
+        document.querySelector(window.location.hash)?.scrollIntoView();
+      } else {
+        window.scrollTo(0, 0);
+      }
+    });
+  </script>
 </head>
 <body class="font-sans text-gray-700 bg-white">
 
+<!-- ============================================================
+     TOP BAR
+============================================================ -->
 <!-- ============================================================
      TOP BAR
 ============================================================ -->
@@ -89,13 +105,7 @@
         annapipili2107@gmail.com
       </a>
     </div>
-    <div class="flex items-center gap-3">
-      <span class="text-xs opacity-75 border border-white/30 px-2 py-0.5 cursor-pointer hover:border-white/70 transition-colors">
-        Ελληνικά ▾
-      </span>
-    </div>
   </div>
-</div>
 </div>
 
 <!-- ============================================================
@@ -168,7 +178,7 @@
           Θα χαρούμε να σας εξυπηρετήσουμε και να συνεργαστούμε.
         </p>
 
-        <form id="contactForm" novalidate class="space-y-5">
+        <form id="contactForm" autocomplete="off" novalidate class="space-y-5">
           <div>
             <label class="block text-sm font-medium text-gray-600 mb-1.5" for="fname">Ονοματεπώνυμο</label>
             <input id="fname" name="name" type="text" placeholder="Ονοματεπώνυμο*" required
@@ -341,10 +351,15 @@
     icon.className    = 'fas fa-spinner fa-spin';
     text.textContent  = 'Αποστολή...';
 
-    emailjs.sendForm('service_8czl6gh', 'template_laegyks', this)
+    const form = this;
+    emailjs.sendForm('service_8czl6gh', 'template_laegyks', form)
       .then(function() {
         showToast('Το μήνυμά σας στάλθηκε επιτυχώς!', 'success');
-        document.getElementById('contactForm').reset();
+        form.reset();
+        document.getElementById('fname').value = '';
+        document.getElementById('femail').value = '';
+        document.getElementById('fmessage').value = '';
+        document.getElementById('fsubject').value = '';
         ['fname','femail','fmessage'].forEach(id => document.getElementById(id).style.borderColor = '');
       })
       .catch(function(err) {

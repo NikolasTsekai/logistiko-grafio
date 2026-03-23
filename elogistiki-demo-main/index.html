@@ -101,40 +101,7 @@
         border-radius: 0 !important;
         height: 100%;
       }
-      .news-img-wrap {
-        aspect-ratio: 16/9;
-        overflow: hidden;
-        position: relative;
-        background: #e5e7eb;
-        display: block;
-      }
-      .news-img-wrap::after {
-        content: "No Image Available";
-        position: absolute;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #9ca3af;
-        font-size: 0.75rem;
-        pointer-events: none;
-      }
-      .news-img-wrap img {
-        position: relative;
-        z-index: 1;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-        transition: transform 0.4s ease;
-        border-radius: 0 !important;
-      }
-      .news-img-wrap img.broken {
-        display: none;
-      }
-      .news-card:hover .news-img-wrap img {
-        transform: scale(1.04);
-      }
+
       #news-grid {
         align-items: stretch;
       }
@@ -154,39 +121,40 @@
         animation: fadeIn 0.8s ease forwards;
       }
     </style>
-  </head>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script>
+    // Disable browser scroll restoration
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    // Clear all form fields on load
+    window.addEventListener('load', function() {
+      document.querySelectorAll('form').forEach(f => f.reset());
+      if (window.location.hash) {
+        document.querySelector(window.location.hash)?.scrollIntoView();
+      } else {
+        window.scrollTo(0, 0);
+      }
+    });
+  </script>
+</head>
   <body class="font-sans text-gray-700 bg-white">
     <!-- ============================================================
      TOP BAR
 ============================================================ -->
+    <!-- ============================================================
+     TOP BAR
+============================================================ -->
     <div class="bg-navy text-white text-sm py-2 px-4">
-      <div
-        class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2"
-      >
+      <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
         <!-- left -->
         <div class="flex items-center gap-5 flex-wrap">
-          <a
-            href="tel:+302493401010"
-            class="flex items-center gap-1.5 hover:text-blue-300 transition-colors"
-          >
+          <a href="tel:+302493401010" class="flex items-center gap-1.5 hover:text-blue-300 transition-colors">
             <i class="fa-solid fa-phone text-xs opacity-75"></i>
             Τ. 2493401010 | Κ. 6972194107
           </a>
-          <a
-            href="mailto:annapipili2107@gmail.com"
-            class="flex items-center gap-1.5 hover:text-blue-300 transition-colors"
-          >
+          <a href="mailto:annapipili2107@gmail.com" class="flex items-center gap-1.5 hover:text-blue-300 transition-colors">
             <i class="fa-regular fa-envelope text-xs opacity-75"></i>
             annapipili2107@gmail.com
           </a>
-        </div>
-        <!-- right -->
-        <div class="flex items-center gap-3">
-          <span
-            class="text-xs opacity-75 border border-white/30 px-2 py-0.5 cursor-pointer hover:border-white/70 transition-colors"
-          >
-            Ελληνικά ▾
-          </span>
         </div>
       </div>
     </div>
@@ -331,7 +299,7 @@
           <!-- Image -->
           <div class="relative min-h-72 lg:min-h-0">
             <img
-              src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&q=80"
+              src="real-one.png"
               alt="Γραφεία e-logistiki"
               class="w-full h-full object-cover"
             />
@@ -493,42 +461,48 @@
 
           <!-- Form -->
           <form
-            id="contactForm"
+            id="contactForm" autocomplete="off"
             class="grid grid-cols-2 gap-4"
             novalidate
-            onsubmit="handleFormSubmit(event)"
+            
           >
             <input
               id="iName"
               type="text"
+              name="name"
               placeholder="Ονοματεπώνυμο*"
               class="border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 placeholder-gray-400"
             />
             <input
               id="iEmail"
               type="email"
+              name="email"
               placeholder="Email*"
               class="border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 placeholder-gray-400"
             />
             <input
               id="iTitle"
               type="text"
+              name="title"
               placeholder="Θέμα (Προαιρετικό)"
               class="col-span-2 border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 placeholder-gray-400"
             />
 
             <textarea
               id="iMessage"
+              name="message"
               placeholder="Μήνυμα*"
               rows="5"
               class="col-span-2 border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 placeholder-gray-400 resize-none"
             ></textarea>
             <div class="col-span-2">
               <button
+                id="submitBtnIndex"
                 type="submit"
-                class="bg-navy text-white font-semibold px-8 py-3 hover:bg-navyDark transition-colors text-sm"
+                class="bg-navy text-white font-semibold px-8 py-3 hover:bg-navyDark transition-colors text-sm flex items-center gap-2"
               >
-                Αποστολή
+                <i id="submitIconIndex"></i>
+                <span id="submitTextIndex">Αποστολή</span>
               </button>
               <p id="formSuccess" class="hidden text-green-600 text-sm mt-3">
                 <i class="fas fa-check-circle mr-1"></i> Το μήνυμά σας εστάλη
@@ -680,17 +654,13 @@
 ============================================================ -->
     <script>
       /* ---- Mobile menu toggle ---- */
-      const menuBtn = document.getElementById("menuBtn");
-      const mobileMenu = document.getElementById("mobileMenu");
-      menuBtn.addEventListener("click", () => {
-        mobileMenu.classList.toggle("hidden");
-      });
+      const menuBtn = document.getElementById('menuBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
 
       /* ---- Navbar scroll shadow ---- */
-      const navbar = document.getElementById("navbar");
-      window.addEventListener("scroll", () => {
-        navbar.classList.toggle("shadow-md", window.scrollY > 10);
-      });
+      const navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', () => navbar.classList.toggle('shadow-md', window.scrollY > 10));
 
       /* ---- Stat counter animation ---- */
       function animateCounter(el, target, duration = 1800) {
@@ -698,33 +668,26 @@
         const step = target / (duration / 16);
         const timer = setInterval(() => {
           start += step;
-          if (start >= target) {
-            el.textContent = target;
-            clearInterval(timer);
-          } else {
-            el.textContent = Math.floor(start);
-          }
+          if (start >= target) { el.textContent = target; clearInterval(timer); }
+          else el.textContent = Math.floor(start);
         }, 16);
       }
-
-      const statsSection = document.querySelector("#stat1")?.closest("section");
+      const statsSection = document.querySelector('#stat1')?.closest('section');
       if (statsSection) {
-        const observer = new IntersectionObserver(
-          (entries) => {
-            if (entries[0].isIntersecting) {
-              animateCounter(document.getElementById("stat1"), 11);
-              animateCounter(document.getElementById("stat2"), 30);
-              animateCounter(document.getElementById("stat3"), 130);
-              observer.disconnect();
-            }
-          },
-          { threshold: 0.4 },
-        );
-        observer.observe(statsSection);
+        new IntersectionObserver((entries) => {
+          if (entries[0].isIntersecting) {
+            animateCounter(document.getElementById('stat1'), 11);
+            animateCounter(document.getElementById('stat2'), 30);
+            animateCounter(document.getElementById('stat3'), 130);
+          }
+        }, { threshold: 0.4 }).observe(statsSection);
       }
 
+      /* ---- EmailJS init ---- */
+      emailjs.init('HUeMAJAye1nlNY1jA');
+
       /* ---- Contact form ---- */
-      function handleFormSubmit(e) {
+      document.getElementById('contactForm').addEventListener('submit', function(e) {
         e.preventDefault();
 
         const name    = document.getElementById('iName').value.trim();
@@ -732,22 +695,43 @@
         const message = document.getElementById('iMessage').value.trim();
         const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-        function setError(id, hasError) {
-          document.getElementById(id).style.borderColor = hasError ? '#ef4444' : '';
-        }
-
-        setError('iName',    !name);
-        setError('iEmail',   !email || !emailOk);
-        setError('iMessage', !message);
-
+        function setErr(id, err) { document.getElementById(id).style.borderColor = err ? '#ef4444' : ''; }
+        setErr('iName',    !name);
+        setErr('iEmail',   !email || !emailOk);
+        setErr('iMessage', !message);
         if (!name || !email || !emailOk || !message) return;
 
-        const form    = document.getElementById('contactForm');
-        const success = document.getElementById('formSuccess');
-        success.classList.remove('hidden');
-        form.reset();
-        ['iName','iEmail','iMessage'].forEach(id => document.getElementById(id).style.borderColor = '');
-        setTimeout(() => success.classList.add('hidden'), 5000);
+        const btn  = document.getElementById('submitBtnIndex');
+        const icon = document.getElementById('submitIconIndex');
+        const txt  = document.getElementById('submitTextIndex');
+        btn.disabled   = true;
+        icon.className = 'fas fa-spinner fa-spin mr-2';
+        txt.textContent = 'Αποστολή...';
+
+        const form = this;
+        emailjs.sendForm('service_8czl6gh', 'template_laegyks', form)
+          .then(function() {
+            showIndexToast('Το μήνυμά σας στάλθηκε επιτυχώς!', 'success');
+            form.reset();
+            ['iName','iEmail','iMessage'].forEach(id => document.getElementById(id).style.borderColor = '');
+          })
+          .catch(function() {
+            showIndexToast('Σφάλμα αποστολής. Δοκιμάστε ξανά.', 'error');
+          })
+          .finally(function() {
+            btn.disabled    = false;
+            icon.className  = '';
+            txt.textContent = 'Αποστολή';
+          });
+      });
+
+      function showIndexToast(msg, type) {
+        const t = document.getElementById('indexToast');
+        t.className = 'fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 rounded shadow-lg text-white text-sm transition-all '
+          + (type === 'success' ? 'bg-green-600' : 'bg-red-600');
+        t.innerHTML = '<i class="fas ' + (type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation') + '"></i> ' + msg;
+        t.classList.remove('hidden');
+        setTimeout(() => t.classList.add('hidden'), 4000);
       }
     </script>
 
@@ -766,17 +750,17 @@
       }
 
       function newsCardHTML(post) {
-        const img   = post.image_url || '';
-        const date  = formatDate(post.published_at);
-        const title = post.title || '(χωρίς τίτλο)';
-        const cat   = post.category || '';
-        const href  = 'post.html?id=' + post.id;
+        const img     = post.image_url || '';
+        const date    = formatDate(post.published_at);
+        const title   = post.title || '(χωρίς τίτλο)';
+        const cat     = post.category || '';
+        const excerpt = post.excerpt || '';
+        const href    = 'post.html?id=' + post.id;
         return '<article class="news-card bg-white overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow">'
-          + '<a href="' + href + '" class="news-img-wrap">'
-          + (img ? '<img src="' + img + '" alt="' + title + '" loading="lazy" onerror="this.classList.add("broken")" />' : '')
-          + '</a><div class="p-6 flex flex-col flex-1">'
+          + '<div class="p-6 flex flex-col flex-1">'
           + '<p class="text-xs text-gray-400 mb-2">' + date + '</p>'
           + '<a href="' + href + '" class="font-semibold text-accent hover:underline text-sm leading-snug flex-1">' + title + '</a>'
+          + (excerpt ? '<p class="text-gray-500 text-sm leading-relaxed mt-2 mb-1 line-clamp-2">' + excerpt + '</p>' : '')
           + (cat ? '<div class="mt-3"><span class="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5">' + cat + '</span></div>' : '')
           + '</div></article>';
       }
@@ -785,7 +769,7 @@
 
       const { data, error } = await supabase
         .from('posts')
-        .select('id, title, image_url, published_at, category')
+        .select('id, title, excerpt, image_url, published_at, category')
         .order('published_at', { ascending: false })
         .limit(3);
 
@@ -796,96 +780,6 @@
         }).join('');
       } else {
         grid.innerHTML = '<p class="col-span-3 text-center text-gray-400 text-sm py-8">Δεν βρέθηκαν δημοσιεύσεις.</p>';
-      }
-    </script>
-
-    <!-- ── Dynamic latest news from Supabase ───────────────────── -->
-    <script type="module">
-      let supabase;
-      try {
-        const { createClient } =
-          await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
-        supabase = createClient(
-          "https://smotabhgpokfvsxjdxmz.supabase.co",
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtb3RhYmhncG9rZnZzeGpkeG16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNjEyOTUsImV4cCI6MjA4OTYzNzI5NX0.jW1l6SwtCqQCm4OnWoO8KsIFDl9Pzy-KQ9TQvuPJ8Ew",
-        );
-      } catch {
-        // Module import failed — safety net script above will clear skeletons
-        return;
-      }
-
-      function formatDate(iso) {
-        if (!iso) return "";
-        return new Date(iso).toLocaleDateString("el-GR", {
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-        });
-      }
-
-      function newsCardHTML(post) {
-        const img = post.image_url || "";
-        const date = formatDate(post.published_at);
-        const title = post.title || "(χωρίς τίτλο)";
-        const cat = post.category || "";
-        const href = `post.html?id=${post.id}`;
-        return `
-      <article class="news-card bg-white overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-        <a href="${href}" class="news-img-wrap">
-          ${img ? `<img src="${img}" alt="${title}" loading="lazy" onerror="this.classList.add('broken')" />` : ""}
-        </a>
-        <div class="p-6 flex flex-col flex-1">
-          <p class="text-xs text-gray-400 mb-2">${date}</p>
-          <a href="${href}" class="font-semibold text-accent hover:underline text-sm leading-snug flex-1">${title}</a>
-          ${cat ? `<div class="mt-3"><span class="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5">${cat}</span></div>` : ""}
-        </div>
-      </article>`;
-      }
-
-      const grid = document.getElementById("news-grid");
-
-      try {
-        const { data, error } = await new Promise((resolve, reject) => {
-          const timer = setTimeout(() => reject(new Error("timeout")), 7000);
-          supabase
-            .from("posts")
-            .select("id, title, image_url, published_at, category")
-            .order("published_at", { ascending: false })
-            .limit(3)
-            .then((r) => {
-              clearTimeout(timer);
-              resolve(r);
-            })
-            .catch((e) => {
-              clearTimeout(timer);
-              reject(e);
-            });
-        });
-
-        clearTimeout(window._newsSafetyNet);
-
-        if (!error && data && data.length > 0) {
-          grid.innerHTML = data.map(newsCardHTML).join("");
-
-          document.getElementById("footerNews").innerHTML = data
-            .map((p) => {
-              const date = formatDate(p.published_at);
-              const title = p.title || "(χωρίς τίτλο)";
-              const href = `post.html?id=${p.id}`;
-              return `<li>
-          <a href="${href}" class="text-accent hover:text-white transition-colors font-medium leading-snug block">${title}</a>
-          <p class="text-gray-500 mt-0.5">${date}</p>
-        </li>`;
-            })
-            .join("");
-        } else {
-          grid.innerHTML =
-            '<p class="col-span-3 text-center text-gray-400 text-sm py-8">Δεν βρέθηκαν δημοσιεύσεις.</p>';
-        }
-      } catch {
-        clearTimeout(window._newsSafetyNet);
-        grid.innerHTML =
-          '<p class="col-span-3 text-center text-gray-400 text-sm py-8">Αδυναμία φόρτωσης. <a href="" class="underline">Ανανεώστε</a>.</p>';
       }
     </script>
 

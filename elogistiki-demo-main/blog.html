@@ -50,11 +50,7 @@
     /* POST CARD */
     .post-card { transition: box-shadow .2s ease; border-radius: 0 !important; display: flex; flex-direction: column; height: 100%; }
     .post-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,.10); }
-    .post-img-wrap { aspect-ratio: 16/9; overflow: hidden; position: relative; background: #e5e7eb; display: block; }
-    .post-img-wrap::after { content: 'No Image Available'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #9ca3af; font-size: .75rem; pointer-events: none; }
-    .post-img-wrap img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease; border-radius: 0 !important; }
-    .post-img-wrap img.broken { display: none; }
-    .post-card:hover .post-img-wrap img { transform: scale(1.04); }
+
     #posts-container { align-items: stretch; }
 
     /* CATEGORY LINK */
@@ -69,9 +65,23 @@
     /* SEARCH FOCUS */
     #searchInput:focus { outline: none; border-color: #3b5fc0; box-shadow: 0 0 0 3px rgba(59,95,192,.15); }
   </style>
+  <script>
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.addEventListener('load', function() {
+      document.querySelectorAll('form').forEach(f => f.reset());
+      if (window.location.hash) {
+        document.querySelector(window.location.hash)?.scrollIntoView();
+      } else {
+        window.scrollTo(0, 0);
+      }
+    });
+  </script>
 </head>
 <body class="font-sans text-gray-700 bg-white">
 
+<!-- ============================================================
+     TOP BAR
+============================================================ -->
 <!-- ============================================================
      TOP BAR
 ============================================================ -->
@@ -87,13 +97,7 @@
         annapipili2107@gmail.com
       </a>
     </div>
-    <div class="flex items-center gap-3">
-      <span class="text-xs opacity-75 border border-white/30 px-2 py-0.5 cursor-pointer hover:border-white/70 transition-colors">
-        Ελληνικά ▾
-      </span>
-    </div>
   </div>
-</div>
 </div>
 
 <!-- ============================================================
@@ -367,9 +371,6 @@
 
     return `
       <article class="post-card bg-white border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-        <a href="${slug}" class="post-img-wrap">
-          ${image ? `<img src="${image}" alt="${title}" loading="lazy" onerror="this.classList.add('broken')" />` : ''}
-        </a>
         <div class="p-5 flex flex-col flex-1">
           <p class="text-xs text-gray-400 mb-2 tracking-wide">${date}</p>
           <a href="${slug}" class="block font-bold text-gray-800 text-base leading-snug hover:text-accent transition-colors mb-3 flex-1">
@@ -408,7 +409,7 @@
     if (!posts || posts.length === 0) { el.innerHTML = '<li class="text-gray-400 text-xs">Δεν υπάρχουν άρθρα.</li>'; return; }
     el.innerHTML = posts.slice(0, 5).map(p => `
       <li>
-        <a href="${p.slug || '#'}" class="text-accent hover:text-navy transition-colors leading-snug block text-sm">
+        <a href="post.html?id=${p.id}" class="text-accent hover:text-navy transition-colors leading-snug block text-sm">
           ${p.title}
         </a>
         <p class="text-gray-400 text-[11px] mt-0.5">${formatDate(p.published_at)}</p>
@@ -420,7 +421,7 @@
     if (!posts || posts.length === 0) { el.innerHTML = ''; return; }
     el.innerHTML = posts.slice(0, 3).map(p => `
       <li>
-        <a href="${p.slug || '#'}" class="text-accent hover:text-white transition-colors font-medium leading-snug block">
+        <a href="post.html?id=${p.id}" class="text-accent hover:text-white transition-colors font-medium leading-snug block">
           ${p.title}
         </a>
         <p class="text-gray-500 mt-0.5">${formatDate(p.published_at)}</p>

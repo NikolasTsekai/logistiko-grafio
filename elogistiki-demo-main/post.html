@@ -34,6 +34,17 @@
   <style>
     /* ── Navbar ── */
     #navbar { transition: box-shadow .3s; }
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 0; height: 2px;
+      background: #3b5fc0;
+      transition: width .25s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link.active::after { width: 100%; }
 
     /* ── Prose styling for Quill HTML content ── */
     .post-content p   { margin-bottom: 1rem; line-height: 1.8; color: #374151; }
@@ -81,56 +92,50 @@
 <!-- ============================================================
      NAVBAR
 ============================================================ -->
-<header id="navbar" class="sticky top-0 z-50 bg-white border-b border-gray-100">
-  <!-- Top bar -->
-  <div class="bg-navy text-white text-xs py-2">
-    <div class="max-w-7xl mx-auto px-6 flex items-center justify-between gap-4 flex-wrap">
-      <div class="flex items-center gap-4 flex-wrap">
-        <span class="flex items-center gap-1.5">
-          <i class="fas fa-phone text-[10px]"></i> Τ. 2493401010 | Κ. 6972194107
-        </span>
-        <span class="flex items-center gap-1.5">
-          <i class="fas fa-envelope text-[10px]"></i> annapipili2107@gmail.com
-        </span>
-      </div>
-      <div class="flex items-center gap-3">
-        <button class="hover:text-gray-300 transition-colors" title="Ελληνικά">ΕΛ</button>
-        <span class="text-gray-600">|</span>
-        <button class="hover:text-gray-300 transition-colors" title="English">EN</button>
-      </div>
+<div class="bg-navy text-white text-sm py-2 px-4">
+  <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+    <div class="flex items-center gap-5 flex-wrap">
+      <a href="tel:+302493401010" class="flex items-center gap-1.5 hover:text-blue-300 transition-colors">
+        <i class="fa-solid fa-phone text-xs opacity-75"></i>
+        Τ. 2493401010 | Κ. 6972194107
+      </a>
+      <a href="mailto:annapipili2107@gmail.com" class="flex items-center gap-1.5 hover:text-blue-300 transition-colors">
+        <i class="fa-regular fa-envelope text-xs opacity-75"></i>
+        annapipili2107@gmail.com
+      </a>
     </div>
   </div>
+</div>
 
-  <!-- Main nav -->
-  <nav class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
-    <a href="index.html" class="flex items-center gap-3">
+<nav id="navbar" class="bg-white shadow-sm sticky top-0 z-50 transition-all duration-300">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2">
       <img src="logo.png" alt="ΠΙΠΙΛΗ ΑΝΝΑ" class="h-20 w-auto" />
     </a>
 
-    <!-- Desktop menu -->
-    <ul class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-      <li><a href="index.html" class="hover:text-navy transition-colors">Αρχική</a></li>
-      <li><a href="services.html" class="hover:text-navy transition-colors">Υπηρεσίες</a></li>
-      <li><a href="blog.html" class="text-accent font-semibold">Blog</a></li>
-      <li><a href="contact.html" class="hover:text-navy transition-colors">Επικοινωνία</a></li>
+    <ul class="hidden lg:flex items-center gap-6 text-sm font-medium text-gray-600">
+      <li><a href="index.html" class="nav-link hover:text-navy transition-colors">Αρχική</a></li>
+      <li><a href="services.html" class="nav-link hover:text-navy transition-colors">Υπηρεσίες</a></li>
+      <li><a href="blog.html" class="nav-link active text-accent font-semibold">Blog</a></li>
+      <li><a href="contact.html" class="nav-link hover:text-navy transition-colors">Επικοινωνία</a></li>
     </ul>
 
-    <!-- Mobile burger -->
-    <button id="menuBtn" class="md:hidden text-gray-600 text-xl">
-      <i class="fas fa-bars"></i>
-    </button>
-  </nav>
+    <div class="flex items-center gap-3">
+      <button id="menuBtn" class="lg:hidden p-2 text-gray-600 hover:text-navy transition-colors" aria-label="Menu">
+        <i class="fas fa-bars text-lg"></i>
+      </button>
+    </div>
+  </div>
 
-  <!-- Mobile menu -->
-  <div id="mobileMenu" class="hidden md:hidden border-t border-gray-100 bg-white px-6 pb-4">
-    <ul class="flex flex-col gap-4 pt-4 text-sm font-medium text-gray-600">
-      <li><a href="index.html">Αρχική</a></li>
-      <li><a href="services.html">Υπηρεσίες</a></li>
-      <li><a href="blog.html" class="text-accent font-semibold">Blog</a></li>
-      <li><a href="contact.html">Επικοινωνία</a></li>
+  <div id="mobileMenu" class="hidden lg:hidden border-t border-gray-100 bg-white px-4 py-3">
+    <ul class="flex flex-col gap-3 text-sm font-medium text-gray-600">
+      <li><a href="index.html" class="block hover:text-navy transition-colors py-1">Αρχική</a></li>
+      <li><a href="services.html" class="block hover:text-navy transition-colors py-1">Υπηρεσίες</a></li>
+      <li><a href="blog.html" class="block text-accent font-semibold py-1">Blog</a></li>
+      <li><a href="contact.html" class="block hover:text-navy transition-colors py-1">Επικοινωνία</a></li>
     </ul>
   </div>
-</header>
+</nav>
 
 <!-- ============================================================
      POST HERO (title + meta — populated by JS)
@@ -142,7 +147,7 @@
 
   <!-- Actual content (hidden until loaded) -->
   <div id="heroContent" class="hidden relative z-10 max-w-4xl mx-auto px-6 py-16">
-    <h1 id="postTitle" class="text-3xl md:text-4xl font-extrabold leading-tight mb-4"></h1>
+    <h1 id="postTitle" class="text-3xl md:text-4xl font-extrabold leading-tight mb-4" aria-label="Τίτλος άρθρου"></h1>
     <div class="flex flex-wrap items-center gap-4 text-sm text-blue-200">
       <span><i class="far fa-clock mr-1"></i><span id="postDate"></span></span>
       <span><i class="far fa-folder mr-1"></i><span id="postCategory"></span></span>
@@ -166,11 +171,10 @@
     </a>
   </div>
 
-  <!-- Grid layout -->
-  <div id="postGrid" class="grid lg:grid-cols-3 gap-12">
+  <!-- Article content -->
+  <div id="postGrid" class="max-w-3xl mx-auto">
 
-    <!-- ── LEFT: Main content ── -->
-    <article class="lg:col-span-2">
+    <article>
 
       <!-- Hero image -->
       <div id="heroImageWrap" class="hidden mb-8 rounded-lg overflow-hidden shadow">
@@ -189,38 +193,6 @@
 
     </article>
 
-    <!-- ── RIGHT: Sidebar ── -->
-    <aside class="lg:col-span-1 space-y-10">
-
-      <!-- Search -->
-      <div>
-        <h3 class="text-base font-bold text-gray-800 mb-4 pb-2 border-b border-gray-200">Αναζήτηση</h3>
-        <div class="relative">
-          <input id="sidebarSearch" type="text" placeholder="Search..."
-                 class="w-full border border-gray-200 rounded px-4 py-2.5 text-sm pr-10 focus:outline-none focus:border-accent transition-colors" />
-          <button onclick="doSearch()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-accent transition-colors">
-            <i class="fas fa-magnifying-glass text-sm"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- Categories -->
-      <div>
-        <h3 class="text-base font-bold text-gray-800 mb-4 pb-2 border-b border-gray-200">Κατηγορίες</h3>
-        <ul class="space-y-2.5 text-sm text-accent">
-          <li><a href="blog.html?cat=Blog"                    class="hover:underline hover:text-navy transition-colors">Blog</a></li>
-          <li><a href="blog.html?cat=Briefing+της+ημέρας"     class="hover:underline hover:text-navy transition-colors">Briefing της ημέρας</a></li>
-          <li><a href="blog.html?cat=Covid-19"                class="hover:underline hover:text-navy transition-colors">Covid-19</a></li>
-          <li><a href="blog.html?cat=myDATA"                  class="hover:underline hover:text-navy transition-colors">myDATA</a></li>
-          <li><a href="blog.html?cat=Taxheaven"               class="hover:underline hover:text-navy transition-colors">Taxheaven</a></li>
-          <li><a href="blog.html?cat=Αγγελίες"                class="hover:underline hover:text-navy transition-colors">Αγγελίες</a></li>
-          <li><a href="blog.html?cat=Ανακοινώσεις"            class="hover:underline hover:text-navy transition-colors">Ανακοινώσεις</a></li>
-          <li><a href="blog.html?cat=Άρθρα"                   class="hover:underline hover:text-navy transition-colors">Άρθρα</a></li>
-        </ul>
-      </div>
-
-    </aside>
-
   </div><!-- /postGrid -->
 </main>
 
@@ -230,37 +202,57 @@
 <footer class="bg-navyDark text-gray-400 pt-16 pb-6">
   <div class="max-w-7xl mx-auto px-6">
     <div class="grid md:grid-cols-3 gap-12 mb-12">
-      <!-- Brand -->
+      <!-- Contact info -->
       <div>
-        <img src="logo.png" alt="ΠΙΠΙΛΗ ΑΝΝΑ" class="h-16 w-auto mb-4 brightness-200" />
-        <p class="text-xs leading-relaxed">Εξειδικευμένες λογιστικές, φοροτεχνικές και συμβουλευτικές υπηρεσίες.</p>
+        <p class="flex items-start gap-2 text-xs mb-2">
+          <i class="fas fa-location-dot shrink-0 text-accent mt-0.5"></i>
+          Π.ΖΗΔΡΟΥ 3, ΕΛΑΣΣΟΝΑ<br />ΤΚ. 40200
+        </p>
+        <p class="flex items-center gap-2 text-xs mb-1.5">
+          <i class="fas fa-phone shrink-0 text-accent"></i>
+          <a href="tel:+302493401010" class="hover:text-white transition-colors">24930401010</a>
+        </p>
+        <p class="flex items-center gap-2 text-xs mb-1.5">
+          <i class="fas fa-phone shrink-0 text-accent"></i>
+          <a href="tel:+306972194107" class="hover:text-white transition-colors">6972194107</a>
+        </p>
+        <p class="flex items-center gap-2 text-xs">
+          <i class="fas fa-envelope shrink-0 text-accent"></i>
+          <a href="mailto:annapipili2107@gmail.com" class="hover:text-white transition-colors">annapipili2107@gmail.com</a>
+        </p>
+        <p class="flex items-start gap-2 text-xs mt-2">
+          <i class="fas fa-clock shrink-0 text-accent mt-0.5"></i>
+          <span>Δευ-Τετ-Παρ 9:00-14:00 &amp; 17:30-20:30<br />Τρι-Πεμ 9:00-16:00</span>
+        </p>
       </div>
-      <!-- Contact -->
-      <div>
-        <div class="text-white font-bold text-sm tracking-widest mb-4 uppercase">Επικοινωνία</div>
-        <ul class="space-y-2 text-xs">
-          <li class="flex items-start gap-2"><i class="fas fa-location-dot mt-0.5 text-accent shrink-0"></i> Π.ΖΗΔΡΟΥ 3, ΕΛΑΣΣΟΝΑ / ΤΚ. 40200</li>
-          <li class="flex items-start gap-2"><i class="fas fa-phone mt-0.5 text-accent shrink-0"></i> 24930401010</li>
-          <li class="flex items-start gap-2"><i class="fas fa-mobile-screen mt-0.5 text-accent shrink-0"></i> 6972194107</li>
-          <li class="flex items-start gap-2"><i class="fas fa-envelope mt-0.5 text-accent shrink-0"></i> annapipili2107@gmail.com</li>
-          <li class="flex items-start gap-2 mt-3"><i class="fas fa-clock mt-0.5 text-accent shrink-0"></i>
-            <span>Δευ-Τετ-Παρ 9:00-14:00 &amp; 17:30-20:30<br />Τρι-Πεμ 9:00-16:00</span>
-          </li>
-        </ul>
-      </div>
+
       <!-- Recent news -->
       <div>
         <div class="text-white font-bold text-sm tracking-widest mb-4 uppercase">Τελευταία Νέα</div>
         <ul id="footerNews" class="space-y-4 text-xs">
           <li><div class="h-3 bg-gray-700 rounded w-3/4 mb-1 animate-pulse"></div><div class="h-2.5 bg-gray-800 rounded w-1/3 animate-pulse"></div></li>
           <li><div class="h-3 bg-gray-700 rounded w-full mb-1 animate-pulse"></div><div class="h-2.5 bg-gray-800 rounded w-1/3 animate-pulse"></div></li>
+          <li><div class="h-3 bg-gray-700 rounded w-2/3 mb-1 animate-pulse"></div><div class="h-2.5 bg-gray-800 rounded w-1/3 animate-pulse"></div></li>
         </ul>
       </div>
+
+      <!-- Quick links -->
+      <div>
+        <div class="text-white font-bold text-sm tracking-widest mb-4 uppercase">Χρήσιμα</div>
+        <ul class="space-y-2 text-xs">
+          <li><a href="index.html" class="hover:text-white transition-colors flex items-center gap-2"><i class="fas fa-arrow-right text-[10px]"></i> Αρχική</a></li>
+          <li><a href="services.html" class="hover:text-white transition-colors flex items-center gap-2"><i class="fas fa-arrow-right text-[10px]"></i> Υπηρεσίες</a></li>
+          <li><a href="blog.html" class="hover:text-white transition-colors flex items-center gap-2"><i class="fas fa-arrow-right text-[10px]"></i> Blog</a></li>
+          <li><a href="contact.html" class="hover:text-white transition-colors flex items-center gap-2"><i class="fas fa-arrow-right text-[10px]"></i> Επικοινωνία</a></li>
         </ul>
       </div>
     </div>
-    <div class="border-t border-gray-700 pt-6 text-center text-xs text-gray-600">
-      &copy; <span id="yr"></span> ΠΙΠΙΛΗ ΑΝΝΑ — Λογιστικές &amp; Φοροτεχνικές Υπηρεσίες
+
+    <div class="border-t border-gray-700/50 pt-6 flex flex-wrap justify-between items-center gap-4 text-xs text-gray-600">
+      <div class="flex gap-4">
+        <a href="#" class="hover:text-gray-400 transition-colors">Πολιτική Απορρήτου</a>
+        <a href="#" class="hover:text-gray-400 transition-colors">Όροι Χρήσης</a>
+      </div>
     </div>
   </div>
 </footer>
@@ -272,8 +264,6 @@
   document.getElementById('menuBtn').addEventListener('click', () => {
     document.getElementById('mobileMenu').classList.toggle('hidden');
   });
-  document.getElementById('yr').textContent = new Date().getFullYear();
-
   function doSearch() {
     const q = document.getElementById('sidebarSearch').value.trim();
     if (q) window.location.href = 'blog.html?search=' + encodeURIComponent(q);

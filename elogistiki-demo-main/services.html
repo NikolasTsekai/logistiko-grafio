@@ -107,38 +107,36 @@
         animation: fadeUp 0.7s ease forwards;
       }
     </style>
-  </head>
+    <script>
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.addEventListener('load', function() {
+      document.querySelectorAll('form').forEach(f => f.reset());
+      if (window.location.hash) {
+        document.querySelector(window.location.hash)?.scrollIntoView();
+      } else {
+        window.scrollTo(0, 0);
+      }
+    });
+  </script>
+</head>
   <body class="font-sans text-gray-700 bg-white">
     <!-- ============================================================
      TOP BAR
 ============================================================ -->
+    <!-- ============================================================
+     TOP BAR
+============================================================ -->
     <div class="bg-navy text-white text-sm py-2 px-4">
-      <div
-        class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2"
-      >
+      <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
         <div class="flex items-center gap-5 flex-wrap">
-          
-          <a
-            href="tel:+302493401010"
-            class="flex items-center gap-1.5 hover:text-blue-300 transition-colors"
-          >
+          <a href="tel:+302493401010" class="flex items-center gap-1.5 hover:text-blue-300 transition-colors">
             <i class="fa-solid fa-phone text-xs opacity-75"></i>
             Τ. 2493401010 | Κ. 6972194107
           </a>
-          <a
-            href="mailto:annapipili2107@gmail.com"
-            class="flex items-center gap-1.5 hover:text-blue-300 transition-colors"
-          >
+          <a href="mailto:annapipili2107@gmail.com" class="flex items-center gap-1.5 hover:text-blue-300 transition-colors">
             <i class="fa-regular fa-envelope text-xs opacity-75"></i>
             annapipili2107@gmail.com
           </a>
-        </div>
-        <div class="flex items-center gap-3">
-          <span
-            class="text-xs opacity-75 border border-white/30 rounded px-2 py-0.5 cursor-pointer hover:border-white/70 transition-colors"
-          >
-            Ελληνικά ▾
-          </span>
         </div>
       </div>
     </div>
