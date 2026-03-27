@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Υπηρεσίες | e-logistiki</title>
+    <title>Λογιστικές & Φοροτεχνικές Υπηρεσίες | ΠΙΠΙΛΗ ΑΝΝΑ Ελασσόνα</title>
+      <meta name="description" content="Πλήρης γκάμα λογιστικών και φοροτεχνικών υπηρεσιών για επιχειρήσεις και ιδιώτες στην Ελασσόνα και Λάρισα. Μισθοδοσία, δηλώσεις ΦΠΑ, Ε1, Ε2, Ε9 και περισσότερα." />
+    <meta name="keywords" content="λογιστικές υπηρεσίες Ελασσόνα, φοροτεχνικές υπηρεσίες Λάρισα, μισθοδοσία, δηλώσεις ΦΠΑ, φορολογικές δηλώσεις" />
+    <link rel="canonical" href="https://www.annapipili.gr/services.html" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
@@ -153,7 +156,7 @@
       >
         <!-- Logo -->
         <a href="index.html" class="flex items-center gap-2">
-          <img src="logo.png" alt="ΠΙΠΙΛΗ ΑΝΝΑ" class="h-20 w-auto" />
+          <img src="logo.png" alt="Λογότυπο ΠΙΠΙΛΗ ΑΝΝΑ" class="h-20 w-auto" />
         </a>
 
         <!-- Desktop links -->
@@ -325,7 +328,7 @@
       <div class="h-80 lg:h-auto">
         <img
           src="p2.png"
-          alt="Λογιστικές Υπηρεσίες"
+          alt="Λογίστρια ενημερώνει πελάτη για λογιστικές υπηρεσίες επιχείρησης"
           class="w-full h-full object-cover"
         />
       </div>
@@ -339,7 +342,7 @@
       <div class="h-80 lg:h-auto order-2 lg:order-1">
         <img
           src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&q=80"
-          alt="Φορολογικές Υπηρεσίες"
+          alt="Σύγχρονο κτίριο γραφείων που συμβολίζει επαγγελματικές φορολογικές υπηρεσίες"
           class="w-full h-full object-cover"
         />
       </div>
@@ -578,8 +581,8 @@
           class="border-t border-gray-700/50 pt-6 flex flex-wrap justify-between items-center gap-4 text-xs text-gray-600"
         >
           <div class="flex gap-4">
-            <a href="#" class="hover:text-gray-400 transition-colors">Πολιτική Απορρήτου</a>
-            <a href="#" class="hover:text-gray-400 transition-colors">Όροι Χρήσης</a>
+            <a href="privacy.html" class="hover:text-gray-400 transition-colors">Πολιτική Απορρήτου</a>
+            <a href="terms.html" class="hover:text-gray-400 transition-colors">Όροι Χρήσης</a>
           </div>
         </div>
       </div>
@@ -636,6 +639,19 @@
       }
     </script>
 
+  <!-- GDPR Cookie Banner -->
+  <div id="cookieBanner" style="position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#111e3d;color:#e5e7eb;padding:16px 24px;display:none;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;box-shadow:0 -4px 20px rgba(0,0,0,0.25);font-family:'Segoe UI',Arial,sans-serif;font-size:14px;opacity:1;transition:opacity 0.4s ease;">
+    <p style="margin:0;flex:1;min-width:200px;line-height:1.5;">Χρησιμοποιούμε cookies για τη σωστή λειτουργία της ιστοσελίδας μας.</p>
+    <div style="display:flex;gap:10px;flex-shrink:0;">
+      <button onclick="cookieChoice('accepted')" style="background:#3b5fc0;color:#fff;border:none;border-radius:6px;padding:8px 20px;font-size:14px;font-weight:600;cursor:pointer;" onmouseover="this.style.background='#2d4fa8'" onmouseout="this.style.background='#3b5fc0'">Αποδοχή</button>
+      <button onclick="cookieChoice('rejected')" style="background:transparent;color:#9ca3af;border:1px solid #4b5563;border-radius:6px;padding:8px 20px;font-size:14px;font-weight:600;cursor:pointer;" onmouseover="this.style.borderColor='#9ca3af';this.style.color='#e5e7eb'" onmouseout="this.style.borderColor='#4b5563';this.style.color='#9ca3af'">Απόρριψη</button>
+    </div>
+  </div>
+  <script>
+    (function(){if(!localStorage.getItem('cookieConsent')){var b=document.getElementById('cookieBanner');b.style.display='flex';}})();
+    function cookieChoice(c){localStorage.setItem('cookieConsent',c);var b=document.getElementById('cookieBanner');b.style.opacity='0';setTimeout(function(){b.style.display='none';},400);}
+  </script>
+
     <!-- UserWay Accessibility Widget -->
     <script
       src="https://cdn.userway.org/widget.js"
@@ -643,5 +659,58 @@
       data-position="2"
       data-size="large"
     ></script>
-  </body>
+    <!-- Local SEO: JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AccountingService",
+    "name": "ΠΙΠΙΛΗ ΑΝΝΑ – Λογιστικό & Φοροτεχνικό Γραφείο",
+    "image": "https://www.annapipili.gr/logo.png",
+    "url": "https://www.annapipili.gr/",
+    "telephone": ["+302493401010", "+306972194107"],
+    "email": "annapipili2107@gmail.com",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Πάνου Ζήδρου 3",
+      "addressLocality": "Ελασσόνα",
+      "addressRegion": "Λάρισα",
+      "postalCode": "40200",
+      "addressCountry": "GR"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 39.8914,
+      "longitude": 22.1878
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Wednesday", "Friday"],
+        "opens": "09:00",
+        "closes": "14:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Wednesday", "Friday"],
+        "opens": "17:30",
+        "closes": "20:30"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Tuesday", "Thursday"],
+        "opens": "09:00",
+        "closes": "16:00"
+      }
+    ],
+    "areaServed": [
+      {"@type": "City", "name": "Ελασσόνα"},
+      {"@type": "City", "name": "Λάρισα"}
+    ],
+    "priceRange": "€€",
+    "description": "Λογιστικό και φοροτεχνικό γραφείο στην Ελασσόνα. Εξειδικευμένες υπηρεσίες για επιχειρήσεις και ιδιώτες. Εξ αποστάσεως εξυπηρέτηση για Λάρισα και ευρύτερη περιοχή.",
+    "sameAs": []
+  }
+  </script>
+
+</body>
 </html>

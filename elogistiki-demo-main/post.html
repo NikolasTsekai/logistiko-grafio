@@ -110,7 +110,7 @@
 <nav id="navbar" class="bg-white shadow-sm sticky top-0 z-50 transition-all duration-300">
   <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
     <a href="index.html" class="flex items-center gap-2">
-      <img src="logo.png" alt="ΠΙΠΙΛΗ ΑΝΝΑ" class="h-20 w-auto" />
+      <img src="logo.png" alt="Λογότυπο ΠΙΠΙΛΗ ΑΝΝΑ" class="h-20 w-auto" />
     </a>
 
     <ul class="hidden lg:flex items-center gap-6 text-sm font-medium text-gray-600">
@@ -147,7 +147,7 @@
 
   <!-- Actual content (hidden until loaded) -->
   <div id="heroContent" class="hidden relative z-10 max-w-4xl mx-auto px-6 py-16">
-    <h1 id="postTitle" class="text-3xl md:text-4xl font-extrabold leading-tight mb-4" aria-label="Τίτλος άρθρου"></h1>
+    <h1 id="postTitle" class="text-3xl md:text-4xl font-extrabold leading-tight mb-4" aria-live="polite" aria-label="Τίτλος άρθρου">&#8203;</h1>
     <div class="flex flex-wrap items-center gap-4 text-sm text-blue-200">
       <span><i class="far fa-clock mr-1"></i><span id="postDate"></span></span>
       <span><i class="far fa-folder mr-1"></i><span id="postCategory"></span></span>
@@ -250,8 +250,8 @@
 
     <div class="border-t border-gray-700/50 pt-6 flex flex-wrap justify-between items-center gap-4 text-xs text-gray-600">
       <div class="flex gap-4">
-        <a href="#" class="hover:text-gray-400 transition-colors">Πολιτική Απορρήτου</a>
-        <a href="#" class="hover:text-gray-400 transition-colors">Όροι Χρήσης</a>
+        <a href="privacy.html" class="hover:text-gray-400 transition-colors">Πολιτική Απορρήτου</a>
+        <a href="terms.html" class="hover:text-gray-400 transition-colors">Όροι Χρήσης</a>
       </div>
     </div>
   </div>
@@ -346,22 +346,32 @@ const contentEl = document.getElementById('postContent');
       show('shareRow');
     }
   }
+
+
+  // ── Footer recent posts ───────────────────────────────────────
+  const { data: footerData } = await supabase.from('posts').select('id, title, published_at').order('published_at', { ascending: false }).limit(3);
+  const footerEl = document.getElementById('footerNews');
+  if (footerData && footerData.length > 0) {
+    footerEl.innerHTML = footerData.map(p => `<li>
+      <a href="post.html?id=${p.id}" class="text-accent hover:text-white transition-colors font-medium leading-snug block">${p.title}</a>
+      <p class="text-gray-500 mt-0.5">${new Date(p.published_at).toLocaleDateString('el-GR',{day:'numeric',month:'long',year:'numeric'})}</p>
+    </li>`).join('');
+  } else {
+    footerEl.innerHTML = '<li class="text-gray-600 text-xs">Δεν βρέθηκαν δημοσιεύσεις.</li>';
+  }
 </script>
 
-  <!-- Footer recent posts -->
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-    const supabase = createClient('https://smotabhgpokfvsxjdxmz.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtb3RhYmhncG9rZnZzeGpkeG16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNjEyOTUsImV4cCI6MjA4OTYzNzI5NX0.jW1l6SwtCqQCm4OnWoO8KsIFDl9Pzy-KQ9TQvuPJ8Ew');
-    const { data } = await supabase.from('posts').select('id, title, published_at').order('published_at', { ascending: false }).limit(3);
-    const el = document.getElementById('footerNews');
-    if (data && data.length > 0) {
-      el.innerHTML = data.map(p => `<li>
-        <a href="post.html?id=${p.id}" class="text-accent hover:text-white transition-colors font-medium leading-snug block">${p.title}</a>
-        <p class="text-gray-500 mt-0.5">${new Date(p.published_at).toLocaleDateString('el-GR',{day:'numeric',month:'long',year:'numeric'})}</p>
-      </li>`).join('');
-    } else {
-      el.innerHTML = '<li class="text-gray-600 text-xs">Δεν βρέθηκαν δημοσιεύσεις.</li>';
-    }
+  <!-- GDPR Cookie Banner -->
+  <div id="cookieBanner" style="position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#111e3d;color:#e5e7eb;padding:16px 24px;display:none;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;box-shadow:0 -4px 20px rgba(0,0,0,0.25);font-family:'Segoe UI',Arial,sans-serif;font-size:14px;opacity:1;transition:opacity 0.4s ease;">
+    <p style="margin:0;flex:1;min-width:200px;line-height:1.5;">Χρησιμοποιούμε cookies για τη σωστή λειτουργία της ιστοσελίδας μας.</p>
+    <div style="display:flex;gap:10px;flex-shrink:0;">
+      <button onclick="cookieChoice('accepted')" style="background:#3b5fc0;color:#fff;border:none;border-radius:6px;padding:8px 20px;font-size:14px;font-weight:600;cursor:pointer;" onmouseover="this.style.background='#2d4fa8'" onmouseout="this.style.background='#3b5fc0'">Αποδοχή</button>
+      <button onclick="cookieChoice('rejected')" style="background:transparent;color:#9ca3af;border:1px solid #4b5563;border-radius:6px;padding:8px 20px;font-size:14px;font-weight:600;cursor:pointer;" onmouseover="this.style.borderColor='#9ca3af';this.style.color='#e5e7eb'" onmouseout="this.style.borderColor='#4b5563';this.style.color='#9ca3af'">Απόρριψη</button>
+    </div>
+  </div>
+  <script>
+    (function(){if(!localStorage.getItem('cookieConsent')){var b=document.getElementById('cookieBanner');b.style.display='flex';}})();
+    function cookieChoice(c){localStorage.setItem('cookieConsent',c);var b=document.getElementById('cookieBanner');b.style.opacity='0';setTimeout(function(){b.style.display='none';},400);}
   </script>
 
   <!-- UserWay Accessibility Widget -->

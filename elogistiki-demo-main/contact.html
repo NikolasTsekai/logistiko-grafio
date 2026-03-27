@@ -4,7 +4,10 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="logo.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Επικοινωνία | e-logistiki</title>
+  <title>Επικοινωνία | Λογιστικό Γραφείο ΠΙΠΙΛΗ ΑΝΝΑ – Ελασσόνα</title>
+      <meta name="description" content="Επικοινωνήστε με το λογιστικό γραφείο ΠΙΠΙΛΗ ΑΝΝΑ στην Ελασσόνα. Τηλ: 2493401010. Εξυπηρέτηση για Ελασσόνα και Λάρισα ψηφιακά ή τηλεφωνικά." />
+  <meta name="keywords" content="επικοινωνία λογιστικό γραφείο Ελασσόνα, φοροτεχνικός Ελασσόνα τηλέφωνο" />
+  <link rel="canonical" href="https://www.annapipili.gr/contact.html" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <script>
@@ -115,7 +118,7 @@
   <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
     <!-- Logo -->
     <a href="index.html" class="flex items-center gap-2">
-      <img src="logo.png" alt="ΠΙΠΙΛΗ ΑΝΝΑ" class="h-20 w-auto" />
+      <img src="logo.png" alt="Λογότυπο ΠΙΠΙΛΗ ΑΝΝΑ" class="h-20 w-auto" />
       
     </a>
 
@@ -214,10 +217,16 @@
         <!-- Location -->
         <div class="mb-10">
           <h2 class="text-2xl font-bold text-gray-800 section-heading mb-6">Τοποθεσία</h2>
-          <p class="text-gray-600 text-sm leading-relaxed mt-4">
-            Πάνου Ζήδρου 3, Ελασσόνα<br>
-            402 00
-          </p>
+          <address class="not-italic">
+            <p class="text-gray-600 text-sm leading-relaxed mt-4">
+              <strong class="text-navy">Έδρα – Ελασσόνα</strong><br>
+              Πάνου Ζήδρου 3, Ελασσόνα<br>
+              ΤΚ 402 00, Νομός Λάρισας
+            </p>
+            <p class="text-gray-500 text-xs mt-2 italic">
+              Εξυπηρέτηση και για Λάρισα εξ αποστάσεως (τηλεφωνικά &amp; ψηφιακά)
+            </p>
+          </address>
           <ul class="mt-5 space-y-3">
             <li class="flex items-center gap-2.5 text-sm text-gray-600">
               <i class="fas fa-phone text-accent text-xs w-4 text-center"></i>
@@ -232,6 +241,15 @@
               <a href="mailto:annapipili2107@gmail.com" class="text-accent hover:underline">annapipili2107@gmail.com</a>
             </li>
           </ul>
+        </div>
+
+        <!-- Accessibility notice -->
+        <div class="mb-10 flex items-start gap-3 bg-blue-50 border border-blue-100 rounded-lg px-4 py-3">
+          <i class="fas fa-universal-access text-accent text-lg shrink-0 mt-0.5"></i>
+          <p class="text-gray-600 text-sm leading-relaxed">
+            <span class="font-semibold text-navy">Προσβασιμότητα ΑμεΑ:</span>
+            Λόγω έλλειψης ανελκυστήρα, παρέχουμε πλήρη εξ αποστάσεως εξυπηρέτηση. Επικοινωνήστε μαζί μας ψηφιακά, τηλεφωνικά.
+          </p>
         </div>
 
         <!-- Map -->
@@ -309,8 +327,8 @@
 
         <div class="border-t border-gray-700/50 pt-6 flex flex-wrap justify-between items-center gap-4 text-xs text-gray-600">
           <div class="flex gap-4">
-            <a href="#" class="hover:text-gray-400 transition-colors">Πολιτική Απορρήτου</a>
-            <a href="#" class="hover:text-gray-400 transition-colors">Όροι Χρήσης</a>
+            <a href="privacy.html" class="hover:text-gray-400 transition-colors">Πολιτική Απορρήτου</a>
+            <a href="terms.html" class="hover:text-gray-400 transition-colors">Όροι Χρήσης</a>
           </div>
         </div>
       </div>
@@ -352,7 +370,7 @@
     text.textContent  = 'Αποστολή...';
 
     const form = this;
-    emailjs.sendForm('service_8czl6gh', 'template_laegyks', form)
+    emailjs.sendForm('service_b9lrlke', 'template_laegyks', form)
       .then(function() {
         showToast('Το μήνυμά σας στάλθηκε επιτυχώς!', 'success');
         form.reset();
@@ -418,7 +436,73 @@
     }
   </script>
 
+  <!-- GDPR Cookie Banner -->
+  <div id="cookieBanner" style="position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#111e3d;color:#e5e7eb;padding:16px 24px;display:none;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;box-shadow:0 -4px 20px rgba(0,0,0,0.25);font-family:'Segoe UI',Arial,sans-serif;font-size:14px;opacity:1;transition:opacity 0.4s ease;">
+    <p style="margin:0;flex:1;min-width:200px;line-height:1.5;">Χρησιμοποιούμε cookies για τη σωστή λειτουργία της ιστοσελίδας μας.</p>
+    <div style="display:flex;gap:10px;flex-shrink:0;">
+      <button onclick="cookieChoice('accepted')" style="background:#3b5fc0;color:#fff;border:none;border-radius:6px;padding:8px 20px;font-size:14px;font-weight:600;cursor:pointer;" onmouseover="this.style.background='#2d4fa8'" onmouseout="this.style.background='#3b5fc0'">Αποδοχή</button>
+      <button onclick="cookieChoice('rejected')" style="background:transparent;color:#9ca3af;border:1px solid #4b5563;border-radius:6px;padding:8px 20px;font-size:14px;font-weight:600;cursor:pointer;" onmouseover="this.style.borderColor='#9ca3af';this.style.color='#e5e7eb'" onmouseout="this.style.borderColor='#4b5563';this.style.color='#9ca3af'">Απόρριψη</button>
+    </div>
+  </div>
+  <script>
+    (function(){if(!localStorage.getItem('cookieConsent')){var b=document.getElementById('cookieBanner');b.style.display='flex';}})();
+    function cookieChoice(c){localStorage.setItem('cookieConsent',c);var b=document.getElementById('cookieBanner');b.style.opacity='0';setTimeout(function(){b.style.display='none';},400);}
+  </script>
+
   <!-- UserWay Accessibility Widget -->
   <script src="https://cdn.userway.org/widget.js" data-account="3zdxx06sOy" data-position="2" data-size="large"></script>
+  <!-- Local SEO: JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AccountingService",
+    "name": "ΠΙΠΙΛΗ ΑΝΝΑ – Λογιστικό & Φοροτεχνικό Γραφείο",
+    "image": "https://www.annapipili.gr/logo.png",
+    "url": "https://www.annapipili.gr/",
+    "telephone": ["+302493401010", "+306972194107"],
+    "email": "annapipili2107@gmail.com",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Πάνου Ζήδρου 3",
+      "addressLocality": "Ελασσόνα",
+      "addressRegion": "Λάρισα",
+      "postalCode": "40200",
+      "addressCountry": "GR"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 39.8914,
+      "longitude": 22.1878
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Wednesday", "Friday"],
+        "opens": "09:00",
+        "closes": "14:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Wednesday", "Friday"],
+        "opens": "17:30",
+        "closes": "20:30"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Tuesday", "Thursday"],
+        "opens": "09:00",
+        "closes": "16:00"
+      }
+    ],
+    "areaServed": [
+      {"@type": "City", "name": "Ελασσόνα"},
+      {"@type": "City", "name": "Λάρισα"}
+    ],
+    "priceRange": "€€",
+    "description": "Λογιστικό και φοροτεχνικό γραφείο στην Ελασσόνα. Εξειδικευμένες υπηρεσίες για επιχειρήσεις και ιδιώτες. Εξ αποστάσεως εξυπηρέτηση για Λάρισα και ευρύτερη περιοχή.",
+    "sameAs": []
+  }
+  </script>
+
 </body>
 </html>

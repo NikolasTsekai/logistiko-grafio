@@ -4,7 +4,10 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="logo.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blog | e-logistiki</title>
+  <title>Blog Φορολογικών Ενημερώσεων | ΠΙΠΙΛΗ ΑΝΝΑ Ελασσόνα</title>
+      <meta name="description" content="Ενημερωθείτε για τα τελευταία φορολογικά νέα, myDATA, ΦΠΑ και λογιστικές αλλαγές. Χρήσιμα άρθρα από το λογιστικό γραφείο ΠΙΠΙΛΗ ΑΝΝΑ στην Ελασσόνα." />
+  <meta name="keywords" content="φορολογικά νέα, myDATA, ΦΠΑ, λογιστικές ενημερώσεις, blog λογιστή Ελασσόνα" />
+  <link rel="canonical" href="https://www.annapipili.gr/blog.html" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <script>
@@ -106,7 +109,7 @@
 <nav id="navbar" class="bg-white shadow-sm sticky top-0 z-50 transition-all duration-300">
   <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
     <a href="index.html" class="flex items-center gap-2">
-      <img src="logo.png" alt="ΠΙΠΙΛΗ ΑΝΝΑ" class="h-20 w-auto" />
+      <img src="logo.png" alt="Λογότυπο ΠΙΠΙΛΗ ΑΝΝΑ" class="h-20 w-auto" />
       
     </a>
 
@@ -306,8 +309,8 @@
 
         <div class="border-t border-gray-700/50 pt-6 flex flex-wrap justify-between items-center gap-4 text-xs text-gray-600">
           <div class="flex gap-4">
-            <a href="#" class="hover:text-gray-400 transition-colors">Πολιτική Απορρήτου</a>
-            <a href="#" class="hover:text-gray-400 transition-colors">Όροι Χρήσης</a>
+            <a href="privacy.html" class="hover:text-gray-400 transition-colors">Πολιτική Απορρήτου</a>
+            <a href="terms.html" class="hover:text-gray-400 transition-colors">Όροι Χρήσης</a>
           </div>
         </div>
       </div>
@@ -607,6 +610,19 @@
           '</div>';
       }
     }, 12000);
+  </script>
+
+  <!-- GDPR Cookie Banner -->
+  <div id="cookieBanner" style="position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#111e3d;color:#e5e7eb;padding:16px 24px;display:none;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;box-shadow:0 -4px 20px rgba(0,0,0,0.25);font-family:'Segoe UI',Arial,sans-serif;font-size:14px;opacity:1;transition:opacity 0.4s ease;">
+    <p style="margin:0;flex:1;min-width:200px;line-height:1.5;">Χρησιμοποιούμε cookies για τη σωστή λειτουργία της ιστοσελίδας μας.</p>
+    <div style="display:flex;gap:10px;flex-shrink:0;">
+      <button onclick="cookieChoice('accepted')" style="background:#3b5fc0;color:#fff;border:none;border-radius:6px;padding:8px 20px;font-size:14px;font-weight:600;cursor:pointer;" onmouseover="this.style.background='#2d4fa8'" onmouseout="this.style.background='#3b5fc0'">Αποδοχή</button>
+      <button onclick="cookieChoice('rejected')" style="background:transparent;color:#9ca3af;border:1px solid #4b5563;border-radius:6px;padding:8px 20px;font-size:14px;font-weight:600;cursor:pointer;" onmouseover="this.style.borderColor='#9ca3af';this.style.color='#e5e7eb'" onmouseout="this.style.borderColor='#4b5563';this.style.color='#9ca3af'">Απόρριψη</button>
+    </div>
+  </div>
+  <script>
+    (function(){if(!localStorage.getItem('cookieConsent')){var b=document.getElementById('cookieBanner');b.style.display='flex';}})();
+    function cookieChoice(c){localStorage.setItem('cookieConsent',c);var b=document.getElementById('cookieBanner');b.style.opacity='0';setTimeout(function(){b.style.display='none';},400);}
   </script>
 
   <!-- UserWay Accessibility Widget -->
