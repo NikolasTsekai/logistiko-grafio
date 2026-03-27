@@ -1,177 +1,379 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="el">
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="logo.png" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Πολιτική Απορρήτου & Cookies | ΠΙΠΙΛΗ ΑΝΝΑ</title>
-      <meta name="description" content="Πολιτική απορρήτου και χρήσης cookies του λογιστικού γραφείου ΠΙΠΙΛΗ ΑΝΝΑ. Προστασία προσωπικών δεδομένων σύμφωνα με τον GDPR." />
-  <meta name="robots" content="noindex, follow" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            navy:     '#1a2e5a',
-            navyDark: '#111e3d',
-            accent:   '#3b5fc0',
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Πολιτική Απορρήτου & Cookies | ΠΙΠΙΛΗ ΑΝΝΑ</title>
+    <meta
+      name="description"
+      content="Πολιτική απορρήτου και χρήσης cookies του λογιστικού γραφείου ΠΙΠΙΛΗ ΑΝΝΑ. Προστασία προσωπικών δεδομένων σύμφωνα με τον GDPR."
+    />
+    <meta name="robots" content="noindex, follow" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              navy: "#1a2e5a",
+              navyDark: "#111e3d",
+              accent: "#3b5fc0",
+            },
+            fontFamily: {
+              sans: ["Segoe UI", "Arial", "sans-serif"],
+            },
           },
-          fontFamily: {
-            sans: ['Segoe UI', 'Arial', 'sans-serif'],
-          }
-        }
+        },
+      };
+    </script>
+    <style>
+      html {
+        scroll-behavior: smooth;
       }
-    }
-  </script>
-  <style>
-    html { scroll-behavior: smooth; }
-    .nav-link { position: relative; }
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: -2px; left: 0;
-      width: 0; height: 2px;
-      background: #3b5fc0;
-      transition: width .25s ease;
-    }
-    .nav-link:hover::after { width: 100%; }
-  </style>
-</head>
-<body class="font-sans bg-white text-gray-800">
-
-<!-- TOP BAR -->
-<div class="bg-navy text-white text-sm py-2 px-4">
-  <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-    <div class="flex items-center gap-5 flex-wrap">
-      <a href="tel:+302493401010" class="flex items-center gap-1.5 hover:text-blue-300 transition-colors">
-        <i class="fa-solid fa-phone text-xs opacity-75"></i>
-        Τ. 2493401010 | Κ. 6972194107
-      </a>
-      <a href="mailto:annapipili2107@gmail.com" class="flex items-center gap-1.5 hover:text-blue-300 transition-colors">
-        <i class="fa-regular fa-envelope text-xs opacity-75"></i>
-        annapipili2107@gmail.com
-      </a>
-    </div>
-  </div>
-</div>
-
-<!-- NAVBAR -->
-<nav id="navbar" class="bg-white shadow-sm sticky top-0 z-50 transition-all duration-300">
-  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-    <a href="index.html" class="flex items-center gap-2">
-      <img src="logo.png" alt="Λογότυπο ΠΙΠΙΛΗ ΑΝΝΑ" class="h-20 w-auto" />
-    </a>
-    <ul class="hidden lg:flex items-center gap-6 text-sm font-medium text-gray-600">
-      <li><a href="index.html"    class="nav-link hover:text-navy transition-colors">Αρχική</a></li>
-      <li><a href="services.html" class="nav-link hover:text-navy transition-colors">Υπηρεσίες</a></li>
-      <li><a href="blog.html"     class="nav-link hover:text-navy transition-colors">Blog</a></li>
-      <li><a href="contact.html"  class="nav-link hover:text-navy transition-colors">Επικοινωνία</a></li>
-    </ul>
-    <div class="flex items-center gap-3">
-      <button id="menuBtn" class="lg:hidden p-2 text-gray-600 hover:text-navy transition-colors" aria-label="Menu">
-        <i class="fas fa-bars text-lg"></i>
-      </button>
-    </div>
-  </div>
-  <div id="mobileMenu" class="hidden lg:hidden border-t border-gray-100 bg-white px-4 py-3">
-    <ul class="flex flex-col gap-3 text-sm font-medium text-gray-600">
-      <li><a href="index.html"    class="block hover:text-navy transition-colors py-1">Αρχική</a></li>
-      <li><a href="services.html" class="block hover:text-navy transition-colors py-1">Υπηρεσίες</a></li>
-      <li><a href="blog.html"     class="block hover:text-navy transition-colors py-1">Blog</a></li>
-      <li><a href="contact.html"  class="block hover:text-navy transition-colors py-1">Επικοινωνία</a></li>
-    </ul>
-  </div>
-</nav>
-
-<!-- HERO -->
-<section class="bg-navy text-white py-16 px-6 text-center">
-  <p class="text-white/50 text-xs tracking-[.3em] uppercase mb-4">
-    <a href="index.html" class="hover:text-white/80 transition-colors">Αρχική</a>
-    <span class="mx-2">/</span>Πολιτική Απορρήτου
-  </p>
-  <h1 class="text-4xl md:text-5xl font-black leading-tight">Πολιτική Απορρήτου</h1>
-  <p class="text-white/60 text-xs tracking-[.3em] uppercase mt-4">& Χρήση Cookies</p>
-</section>
-
-<!-- MAIN CONTENT -->
-<main class="max-w-3xl mx-auto px-6 py-16">
-
-  <p class="text-gray-600 leading-relaxed mb-10">
-    Το λογιστικό μας γραφείο δεσμεύεται να προστατεύει τα προσωπικά σας δεδομένα, σύμφωνα με τον Γενικό Κανονισμό Προστασίας Δεδομένων (GDPR).
-  </p>
-
-  <section class="mb-10">
-    <h2 class="text-xl font-bold text-navy mb-3 pb-2 border-b border-gray-200">Ποια δεδομένα συλλέγουμε και γιατί</h2>
-    <p class="text-gray-600 leading-relaxed">
-      Όταν χρησιμοποιείτε τη φόρμα επικοινωνίας της ιστοσελίδας μας, συλλέγουμε το Ονοματεπώνυμο και το Email σας, καθώς και το περιεχόμενο του μηνύματός σας. Ο μοναδικός σκοπός της συλλογής αυτών των στοιχείων είναι για να μπορέσουμε να επικοινωνήσουμε μαζί σας.
-    </p>
-  </section>
-
-  <section class="mb-10">
-    <h2 class="text-xl font-bold text-navy mb-3 pb-2 border-b border-gray-200">Προστασία και Κοινοποίηση Δεδομένων</h2>
-    <p class="text-gray-600 leading-relaxed">
-      Τα στοιχεία σας παραμένουν αυστηρά εμπιστευτικά. Δεν τα μοιραζόμαστε και δεν τα παραχωρούμε σε τρίτους.
-    </p>
-  </section>
-
-  <section class="mb-10">
-    <h2 class="text-xl font-bold text-navy mb-3 pb-2 border-b border-gray-200">Τα δικαιώματά σας</h2>
-    <p class="text-gray-600 leading-relaxed">
-      Έχετε το δικαίωμα να ζητήσετε πρόσβαση, διόρθωση ή οριστική διαγραφή των στοιχείων σας από το αρχείο μας ανά πάσα στιγμή επικοινωνώντας μαζί μας.
-    </p>
-  </section>
-
-  <section class="mb-10">
-    <h2 class="text-xl font-bold text-navy mb-3 pb-2 border-b border-gray-200">Πολιτική Cookies</h2>
-    <p class="text-gray-600 leading-relaxed">
-      Η ιστοσελίδα μας χρησιμοποιεί μόνο τα απολύτως απαραίτητα τεχνικά cookies, τα οποία είναι αναγκαία για τη βασική λειτουργία της. Δεν χρησιμοποιούμε cookies παρακολούθησης (tracking) χωρίς την προηγούμενη συγκατάθεσή σας.
-    </p>
-  </section>
-
-  <div class="mt-12">
-    <a href="index.html" class="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-navy transition-colors">
-      <i class="fas fa-arrow-left text-xs"></i> Πίσω στην Αρχική
-    </a>
-  </div>
-
-</main>
-
-<!-- FOOTER -->
-<footer class="bg-navyDark text-gray-400 pt-12 pb-6">
-  <div class="max-w-7xl mx-auto px-6">
-    <div class="border-t border-gray-700/50 pt-6 flex flex-wrap justify-between items-center gap-4 text-xs text-gray-600">
-      <span>&copy; <span id="yr"></span> ΠΙΠΙΛΗ ΑΝΝΑ — Λογιστικές &amp; Φοροτεχνικές Υπηρεσίες</span>
-      <div class="flex gap-4">
-        <a href="privacy.html" class="text-accent">Πολιτική Απορρήτου</a>
-        <a href="terms.html"   class="hover:text-gray-400 transition-colors">Όροι Χρήσης</a>
+      .nav-link {
+        position: relative;
+      }
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #3b5fc0;
+        transition: width 0.25s ease;
+      }
+      .nav-link:hover::after {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body class="font-sans bg-white text-gray-800">
+    <!-- TOP BAR -->
+    <div class="bg-navy text-white text-sm py-2 px-4">
+      <div
+        class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2"
+      >
+        <div class="flex items-center gap-5 flex-wrap">
+          <a
+            href="tel:+302493401010"
+            class="flex items-center gap-1.5 hover:text-blue-300 transition-colors"
+          >
+            <i class="fa-solid fa-phone text-xs opacity-75"></i>
+            Τ. 2493401010 | Κ. 6972194107
+          </a>
+          <a
+            href="mailto:annapipili2107@gmail.com"
+            class="flex items-center gap-1.5 hover:text-blue-300 transition-colors"
+          >
+            <i class="fa-regular fa-envelope text-xs opacity-75"></i>
+            annapipili2107@gmail.com
+          </a>
+        </div>
       </div>
     </div>
-  </div>
-</footer>
 
-<script>
-  document.getElementById('menuBtn').addEventListener('click', () => {
-    document.getElementById('mobileMenu').classList.toggle('hidden');
-  });
-  document.getElementById('yr').textContent = new Date().getFullYear();
-</script>
+    <!-- NAVBAR -->
+    <nav
+      id="navbar"
+      class="bg-white shadow-sm sticky top-0 z-50 transition-all duration-300"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between"
+      >
+        <a href="index.html" class="flex items-center gap-2">
+          <img src="logo.png" alt="Λογότυπο ΠΙΠΙΛΗ ΑΝΝΑ" class="h-20 w-auto" />
+        </a>
+        <ul
+          class="hidden lg:flex items-center gap-6 text-sm font-medium text-gray-600"
+        >
+          <li>
+            <a
+              href="index.html"
+              class="nav-link hover:text-navy transition-colors"
+              >Αρχική</a
+            >
+          </li>
+          <li>
+            <a
+              href="services.html"
+              class="nav-link hover:text-navy transition-colors"
+              >Υπηρεσίες</a
+            >
+          </li>
+          <li>
+            <a
+              href="blog.html"
+              class="nav-link hover:text-navy transition-colors"
+              >Blog</a
+            >
+          </li>
+          <li>
+            <a
+              href="contact.html"
+              class="nav-link hover:text-navy transition-colors"
+              >Επικοινωνία</a
+            >
+          </li>
+        </ul>
+        <div class="flex items-center gap-3">
+          <button
+            id="menuBtn"
+            class="lg:hidden p-2 text-gray-600 hover:text-navy transition-colors"
+            aria-label="Menu"
+          >
+            <i class="fas fa-bars text-lg"></i>
+          </button>
+        </div>
+      </div>
+      <div
+        id="mobileMenu"
+        class="hidden lg:hidden border-t border-gray-100 bg-white px-4 py-3"
+      >
+        <ul class="flex flex-col gap-3 text-sm font-medium text-gray-600">
+          <li>
+            <a
+              href="index.html"
+              class="block hover:text-navy transition-colors py-1"
+              >Αρχική</a
+            >
+          </li>
+          <li>
+            <a
+              href="services.html"
+              class="block hover:text-navy transition-colors py-1"
+              >Υπηρεσίες</a
+            >
+          </li>
+          <li>
+            <a
+              href="blog.html"
+              class="block hover:text-navy transition-colors py-1"
+              >Blog</a
+            >
+          </li>
+          <li>
+            <a
+              href="contact.html"
+              class="block hover:text-navy transition-colors py-1"
+              >Επικοινωνία</a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
 
-<!-- GDPR Cookie Banner -->
-<div id="cookieBanner" style="position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#111e3d;color:#e5e7eb;padding:16px 24px;display:none;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;box-shadow:0 -4px 20px rgba(0,0,0,0.25);font-family:'Segoe UI',Arial,sans-serif;font-size:14px;opacity:1;transition:opacity 0.4s ease;">
-  <p style="margin:0;flex:1;min-width:200px;line-height:1.5;">Χρησιμοποιούμε cookies για τη σωστή λειτουργία της ιστοσελίδας μας.</p>
-  <div style="display:flex;gap:10px;flex-shrink:0;">
-    <button onclick="cookieChoice('accepted')" style="background:#3b5fc0;color:#fff;border:none;border-radius:6px;padding:8px 20px;font-size:14px;font-weight:600;cursor:pointer;" onmouseover="this.style.background='#2d4fa8'" onmouseout="this.style.background='#3b5fc0'">Αποδοχή</button>
-    <button onclick="cookieChoice('rejected')" style="background:transparent;color:#9ca3af;border:1px solid #4b5563;border-radius:6px;padding:8px 20px;font-size:14px;font-weight:600;cursor:pointer;" onmouseover="this.style.borderColor='#9ca3af';this.style.color='#e5e7eb'" onmouseout="this.style.borderColor='#4b5563';this.style.color='#9ca3af'">Απόρριψη</button>
-  </div>
-</div>
-<script>
-  (function(){if(!localStorage.getItem('cookieConsent')){var b=document.getElementById('cookieBanner');b.style.display='flex';}})();
-  function cookieChoice(c){localStorage.setItem('cookieConsent',c);var b=document.getElementById('cookieBanner');b.style.opacity='0';setTimeout(function(){b.style.display='none';},400);}
-</script>
+    <!-- HERO -->
+    <section class="bg-navy text-white py-16 px-6 text-center">
+      <p class="text-white/50 text-xs tracking-[.3em] uppercase mb-4">
+        <a href="index.html" class="hover:text-white/80 transition-colors"
+          >Αρχική</a
+        >
+        <span class="mx-2">/</span>Πολιτική Απορρήτου
+      </p>
+      <h1 class="text-4xl md:text-5xl font-black leading-tight">
+        Πολιτική Απορρήτου
+      </h1>
+      <p class="text-white/60 text-xs tracking-[.3em] uppercase mt-4">
+        & Χρήση Cookies
+      </p>
+    </section>
 
-<!-- UserWay Accessibility Widget -->
-<script src="https://cdn.userway.org/widget.js" data-account="3zdxx06sOy" data-position="2" data-size="large"></script>
-</body>
+    <!-- MAIN CONTENT -->
+    <main class="max-w-3xl mx-auto px-6 py-16">
+      <p class="text-gray-600 leading-relaxed mb-10">
+        Το λογιστικό μας γραφείο δεσμεύεται να προστατεύει τα προσωπικά σας
+        δεδομένα, σύμφωνα με τον Γενικό Κανονισμό Προστασίας Δεδομένων (GDPR).
+      </p>
+
+      <section class="mb-10">
+        <h2
+          class="text-xl font-bold text-navy mb-3 pb-2 border-b border-gray-200"
+        >
+          Ποια δεδομένα συλλέγουμε και γιατί
+        </h2>
+        <p class="text-gray-600 leading-relaxed">
+          Όταν χρησιμοποιείτε τη φόρμα επικοινωνίας της ιστοσελίδας μας,
+          συλλέγουμε το Ονοματεπώνυμο και το Email σας, καθώς και το περιεχόμενο
+          του μηνύματός σας. Ο μοναδικός σκοπός της συλλογής αυτών των στοιχείων
+          είναι για να μπορέσουμε να επικοινωνήσουμε μαζί σας.
+        </p>
+      </section>
+
+      <section class="mb-10">
+        <h2
+          class="text-xl font-bold text-navy mb-3 pb-2 border-b border-gray-200"
+        >
+          Προστασία και Κοινοποίηση Δεδομένων
+        </h2>
+        <p class="text-gray-600 leading-relaxed">
+          Τα στοιχεία σας παραμένουν αυστηρά εμπιστευτικά. Δεν τα μοιραζόμαστε
+          και δεν τα παραχωρούμε σε τρίτους.
+        </p>
+      </section>
+
+      <section class="mb-10">
+        <h2
+          class="text-xl font-bold text-navy mb-3 pb-2 border-b border-gray-200"
+        >
+          Τα δικαιώματά σας
+        </h2>
+        <p class="text-gray-600 leading-relaxed">
+          Έχετε το δικαίωμα να ζητήσετε πρόσβαση, διόρθωση ή οριστική διαγραφή
+          των στοιχείων σας από το αρχείο μας ανά πάσα στιγμή επικοινωνώντας
+          μαζί μας.
+        </p>
+      </section>
+
+      <section class="mb-10">
+        <h2
+          class="text-xl font-bold text-navy mb-3 pb-2 border-b border-gray-200"
+        >
+          Πολιτική Cookies
+        </h2>
+        <p class="text-gray-600 leading-relaxed">
+          Η ιστοσελίδα μας χρησιμοποιεί μόνο τα απολύτως απαραίτητα τεχνικά
+          cookies, τα οποία είναι αναγκαία για τη βασική λειτουργία της. Δεν
+          χρησιμοποιούμε cookies παρακολούθησης (tracking) χωρίς την προηγούμενη
+          συγκατάθεσή σας.
+        </p>
+      </section>
+
+      <div class="mt-12">
+        <a
+          href="index.html"
+          class="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-navy transition-colors"
+        >
+          <i class="fas fa-arrow-left text-xs"></i> Πίσω στην Αρχική
+        </a>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-navyDark text-gray-400 pt-12 pb-6">
+      <div class="max-w-7xl mx-auto px-6">
+        <div
+          class="border-t border-gray-700/50 pt-6 flex flex-wrap justify-between items-center gap-4 text-xs text-gray-600"
+        >
+          <span
+            >&copy; <span id="yr"></span> ΠΙΠΙΛΗ ΑΝΝΑ — Λογιστικές &amp;
+            Φοροτεχνικές Υπηρεσίες</span
+          >
+          <div class="flex gap-4">
+            <a href="privacy.html" class="text-accent">Πολιτική Απορρήτου</a>
+            <a href="terms.html" class="hover:text-gray-400 transition-colors"
+              >Όροι Χρήσης</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById("menuBtn").addEventListener("click", () => {
+        document.getElementById("mobileMenu").classList.toggle("hidden");
+      });
+      document.getElementById("yr").textContent = new Date().getFullYear();
+    </script>
+
+    <!-- GDPR Cookie Banner -->
+    <div
+      id="cookieBanner"
+      style="
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 9999;
+        background: #111e3d;
+        color: #e5e7eb;
+        padding: 16px 24px;
+        display: none;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.25);
+        font-family: &quot;Segoe UI&quot;, Arial, sans-serif;
+        font-size: 14px;
+        opacity: 1;
+        transition: opacity 0.4s ease;
+      "
+    >
+      <p style="margin: 0; flex: 1; min-width: 200px; line-height: 1.5">
+        Χρησιμοποιούμε cookies για τη σωστή λειτουργία της ιστοσελίδας μας.
+      </p>
+      <div style="display: flex; gap: 10px; flex-shrink: 0">
+        <button
+          onclick="cookieChoice('accepted')"
+          style="
+            background: #3b5fc0;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+          "
+          onmouseover="this.style.background = '#2d4fa8'"
+          onmouseout="this.style.background = '#3b5fc0'"
+        >
+          Αποδοχή
+        </button>
+        <button
+          onclick="cookieChoice('rejected')"
+          style="
+            background: transparent;
+            color: #9ca3af;
+            border: 1px solid #4b5563;
+            border-radius: 6px;
+            padding: 8px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+          "
+          onmouseover="
+            this.style.borderColor = '#9ca3af';
+            this.style.color = '#e5e7eb';
+          "
+          onmouseout="
+            this.style.borderColor = '#4b5563';
+            this.style.color = '#9ca3af';
+          "
+        >
+          Απόρριψη
+        </button>
+      </div>
+    </div>
+    <script>
+      (function () {
+        if (!localStorage.getItem("cookieConsent")) {
+          var b = document.getElementById("cookieBanner");
+          b.style.display = "flex";
+        }
+      })();
+      function cookieChoice(c) {
+        localStorage.setItem("cookieConsent", c);
+        var b = document.getElementById("cookieBanner");
+        b.style.opacity = "0";
+        setTimeout(function () {
+          b.style.display = "none";
+        }, 400);
+      }
+    </script>
+
+    <!-- UserWay Accessibility Widget -->
+    <script
+      src="https://cdn.userway.org/widget.js"
+      data-account="3zdxx06sOy"
+      data-position="2"
+      data-size="large"
+    ></script>
+  </body>
 </html>
