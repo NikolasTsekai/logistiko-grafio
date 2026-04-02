@@ -137,8 +137,8 @@
       // Clear all form fields on load
       window.addEventListener("load", function () {
         document.querySelectorAll("form").forEach((f) => f.reset());
-        if (window.location.hash) {
-          document.querySelector(window.location.hash)?.scrollIntoView();
+        if (globalThis.location.hash) {
+          document.querySelector(globalThis.location.hash)?.scrollIntoView();
         } else {
           window.scrollTo(0, 0);
         }
@@ -522,9 +522,15 @@
                 <i id="submitIconIndex"></i>
                 <span id="submitTextIndex">Αποστολή</span>
               </button>
-              <p id="formSuccess" class="hidden text-green-600 text-sm mt-3" data-nosnippet>
-                <i class="fas fa-check-circle mr-1"></i> Το μήνυμά σας εστάλη
-                επιτυχώς!
+              <p
+                id="formSuccess"
+                class="hidden text-green-600 text-sm mt-3"
+                data-nosnippet
+              >
+                <i class="fas fa-check-circle mr-1"></i> Λογιστικό Γραφείο
+                Πιπίλη στην Ελασσόνα. Προσφέρουμε ολοκληρωμένες λογιστικές,
+                φοροτεχνικές υπηρεσίες υψηλής ποιότητας για επιχειρήσεις και
+                ιδιώτες.
               </p>
             </div>
           </form>
@@ -741,9 +747,8 @@
           icon.className = "fas fa-spinner fa-spin mr-2";
           txt.textContent = "Αποστολή...";
 
-          const form = this;
           emailjs
-            .sendForm("service_b9lrlke", "template_laegyks", form)
+            .sendForm("service_b9lrlke", "template_laegyks", this)
             .then(function () {
               showIndexToast("Το μήνυμά σας στάλθηκε επιτυχώς!", "success");
               form.reset();
@@ -795,7 +800,6 @@
       }
 
       function newsCardHTML(post) {
-        const img = post.image_url || "";
         const date = formatDate(post.published_at);
         const title = post.title || "(χωρίς τίτλο)";
         const cat = post.category || "";
